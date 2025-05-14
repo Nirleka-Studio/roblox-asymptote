@@ -42,7 +42,17 @@ local function validate_character(player: Player): boolean
 	return true
 end
 
-local function is_point_in_radius(point: Vector3, origin: Vector3, radius: number): boolean
+function sight.create_comp(npc_head: BasePart, config: SightConfig): SightComp
+	return {
+		npc_head = npc_head,
+		sight_config = config,
+		sight_ray_params = create_ray_params(npc_head),
+		sight_plrs_to_check = {},
+		sight_plrs_in_view = {}
+	} :: SightComp
+end
+
+function sight.is_point_in_radius(point: Vector3, origin: Vector3, radius: number): boolean
 	local diff = point - origin
 	local dist = diff.Magnitude
 
@@ -53,7 +63,7 @@ local function is_point_in_radius(point: Vector3, origin: Vector3, radius: numbe
 	return true
 end
 
-local function is_point_in_angle(point: Vector3, origin: Vector3, forward: Vector3, vision_angle: number)
+function sight.is_point_in_angle(point: Vector3, origin: Vector3, forward: Vector3, vision_angle: number)
 	local diff = (point - origin)
 	local dot = forward:Dot(diff.Unit)
 
@@ -65,7 +75,38 @@ local function is_point_in_angle(point: Vector3, origin: Vector3, forward: Vecto
 	return true
 end
 
-local function sweep_ray(comp: SightComp, player: Player, angle_deg: number, num_rays: number): boolean
+function sight.is_player_within_sight_bounds(sight_comp: SightComp, player: Player): boolean
+	if not validate_character(player) then
+		return false
+	end
+
+	-- for the sake of the goddamn strict type checker
+	local char = player.Character :: Model
+	local plr_root_part = char:FindFirstChild("HumanoidRootPart") :: Part
+	local pos_plr_root = plr_root_part.Position
+	local pos_npc_head = sight_comp.npc_head.Position
+
+	if not sight.is_point_in_radius(
+		pos_plr_root,
+		pos_npc_head,
+		sight_comp.sight_config.sight_radius
+	) then
+		return false
+	end
+
+	if not sight.is_point_in_angle(
+		pos_plr_root,
+		pos_npc_head,
+		sight_comp.npc_head.CFrame.LookVector,
+		sight_comp.sight_config.peripheral_vision_angle
+	) then
+		return false
+	end
+
+	return true
+end
+
+function sight.ray_sweep(comp: SightComp, player: Player, angle_deg: number, num_rays: number): boolean
 	if not validate_character(player) then
 		return false
 	end
@@ -86,7 +127,7 @@ local function sweep_ray(comp: SightComp, player: Player, angle_deg: number, num
 		local angle = -half_angle + i * step_rad
 		local rotated = CFrame.fromAxisAngle(axis, angle) * direction
 
-		local result = sight.cast_ray(comp, rotated * comp.sight_config.sight_radius)
+		local result = sight.ray_cast(comp, rotated * comp.sight_config.sight_radius)
 
 		if result and result.Instance:IsDescendantOf(player.Character :: Model) then
 			return true -- early return
@@ -96,32 +137,7 @@ local function sweep_ray(comp: SightComp, player: Player, angle_deg: number, num
 	return false
 end
 
-function sight.create_comp(npc_head: BasePart, config: SightConfig): SightComp
-	return {
-		npc_head = npc_head,
-		sight_config = config,
-		sight_ray_params = create_ray_params(npc_head),
-		sight_plrs_to_check = {},
-		sight_plrs_in_view = {}
-	} :: SightComp
-end
-
-function sight.process(comp: SightComp)
-	-- check if its empty
-	if next(comp.sight_plrs_to_check) == nil then
-		return
-	end
-
-	for plr in comp.sight_plrs_to_check do
-		if not sight.is_player_visible(comp, plr) then
-			continue
-		end
-
-
-	end
-end
-
-function sight.cast_ray(comp: SightComp, direction: Vector3): RaycastResult?
+function sight.ray_cast(comp: SightComp, direction: Vector3): RaycastResult?
 	local dir_magnitude = direction.Magnitude
 	if dir_magnitude == 0 then return nil end -- pretty rare, but itll fuck us royally if it does happen.
 
@@ -164,42 +180,11 @@ function sight.is_player_visible(sight_comp: SightComp, player: Player): boolean
 		return false
 	end
 
-	if not sweep_ray(
+	if not sight.ray_sweep(
 		sight_comp,
 		player,
 		sight_comp.sight_config.angle_deg,
 		sight_comp.sight_config.num_rays
-	) then
-		return false
-	end
-
-	return true
-end
-
-function sight.is_player_within_sight_bounds(sight_comp: SightComp, player: Player): boolean
-	if not validate_character(player) then
-		return false
-	end
-
-	-- for the sake of the goddamn strict type checker
-	local char = player.Character :: Model
-	local plr_root_part = char:FindFirstChild("HumanoidRootPart") :: Part
-	local pos_plr_root = plr_root_part.Position
-	local pos_npc_head = sight_comp.npc_head.Position
-
-	if not is_point_in_radius(
-		pos_plr_root,
-		pos_npc_head,
-		sight_comp.sight_config.sight_radius
-	) then
-		return false
-	end
-
-	if not is_point_in_angle(
-		pos_plr_root,
-		pos_npc_head,
-		sight_comp.npc_head.CFrame.LookVector,
-		sight_comp.sight_config.peripheral_vision_angle
 	) then
 		return false
 	end
