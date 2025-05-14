@@ -106,6 +106,23 @@ function sight.is_player_within_sight_bounds(sight_comp: SightComp, player: Play
 	return true
 end
 
+function sight.is_player_visible(sight_comp: SightComp, player: Player): boolean
+	if not sight.is_player_within_sight_bounds(sight_comp, player) then
+		return false
+	end
+
+	if not sight.ray_sweep(
+		sight_comp,
+		player,
+		sight_comp.sight_config.angle_deg,
+		sight_comp.sight_config.num_rays
+	) then
+		return false
+	end
+
+	return true
+end
+
 function sight.ray_sweep(comp: SightComp, player: Player, angle_deg: number, num_rays: number): boolean
 	if not validate_character(player) then
 		return false
@@ -173,23 +190,6 @@ function sight.ray_cast(comp: SightComp, direction: Vector3): RaycastResult?
 	end
 
 	return final_result
-end
-
-function sight.is_player_visible(sight_comp: SightComp, player: Player): boolean
-	if not sight.is_player_within_sight_bounds(sight_comp, player) then
-		return false
-	end
-
-	if not sight.ray_sweep(
-		sight_comp,
-		player,
-		sight_comp.sight_config.angle_deg,
-		sight_comp.sight_config.num_rays
-	) then
-		return false
-	end
-
-	return true
 end
 
 return sight
