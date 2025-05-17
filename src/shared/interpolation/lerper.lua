@@ -1,6 +1,7 @@
 export type LerpObject = {
 	cur_value: number,
 	fnl_value: number,
+	str_value: number,
 	dur: number,
 	elapsed: number,
 	easing_func: (number) -> number
@@ -40,9 +41,12 @@ function lerper.create(
 	return {
 		cur_value = start_value,
 		fnl_value = final_value,
+		str_value = start_value,
 		dur = dur,
 		elapsed = 0,
-		easing_func = easing_func
+		easing_func = if easing_func then easing_func else function(c: number)
+			return lerper.ease(c, 1)
+		end
 	} :: LerpObject
 end
 
@@ -57,7 +61,7 @@ function lerper.step(obj: LerpObject, delta: number, step_func: (cur_value: numb
 	if obj.easing_func then
 		c = obj.easing_func(c, obj.p_x)
 	end
-	obj.cur_value = math.lerp(obj.cur_value, obj.fnl_value, c) -- omg the luau team added math.lerp???? since when????
+	obj.cur_value = math.lerp(obj.str_value, obj.fnl_value, c) -- omg the luau team added math.lerp???? since when????
 
 	if step_func then
 		step_func(obj.cur_value)
