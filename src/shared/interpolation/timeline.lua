@@ -41,6 +41,14 @@ function timeline.create(start_value: number, final_value: number, duration: num
 	}, timeline)
 end
 
+function timeline._finish(self: Timeline): ()
+	if self._step_connection then -- fucking typechecker.
+		self._step_connection:Disconnect()
+	end
+	self.playing = false
+	self.finished:Fire()
+end
+
 function timeline._start_transition(
 	self: Timeline,
 	start_value: number,
@@ -65,10 +73,15 @@ function timeline._start_transition(
 		self.current_value = self.comp_lerper.cur_value
 		self.step:Fire()
 
-		if self.current_value == self.final_value then
-			self._step_connection:Disconnect()
-			self.playing = false
-			self.finished:Fire()
+		if self.direction == "forward" and (self.current_value == self.final_value) then
+			self:_finish()
+			return
+		end
+
+		-- another goddamn type checker blocked bug again.
+		-- luau. wtf.
+		if self.direction == "reverse" and (self.current_value == self.final_value) then
+			self:_finish()
 		end
 	end)
 end
