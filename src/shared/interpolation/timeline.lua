@@ -104,4 +104,4 @@ function timeline.reverse_from_end(self: Timeline)
 	self:_start_transition(self.final_value, self.start_value, self.duration, "reverse")
 end
 
-return timeline
+return timeline :: { create: (start_value: number, final_value: number, duration: number) -> Timeline }
