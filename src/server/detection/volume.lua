@@ -65,18 +65,8 @@ function volume.get_parts_within_zone(self: Volume): { BasePart? }
 	local overlapping_parts = workspace:GetPartBoundsInBox(self._region3.CFrame, self._region3.Size)
 
 	for _, part in ipairs(overlapping_parts) do
-		-- another fucking typechecker bug AGAINNN
-		-- FYM UNKNOWN?!?! COULD BE NIL?! MY ASS.
-		-- IF I PUT THIS SHIT OUTSIDE THE LOOP, ITS FINE NOW IS IT!??!
-		-- HOW FUCKING RETARDED.
-		--if not self:get_parts_within_zone(part) then
-		--	continue
-		--end
-
-		-- OHHH, BUT THIS WORKS?!??!?!
-		-- WTF IS WRONG WITH YOU
-		local its_shit = self:get_parts_within_zone(part)
-		if not its_shit then
+		local is_fully_in = self:get_parts_within_zone(part)
+		if not is_fully_in then
 			continue
 		end
 
