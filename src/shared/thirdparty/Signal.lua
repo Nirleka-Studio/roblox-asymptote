@@ -189,4 +189,6 @@ setmetatable(Signal, {
 	end
 })
 
-return Signal
+return Signal :: {
+	new: () -> Signal
+}
