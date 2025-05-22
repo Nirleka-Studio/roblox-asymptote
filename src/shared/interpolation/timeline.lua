@@ -73,14 +73,12 @@ function timeline._start_transition(
 		self.current_value = self.comp_lerper.cur_value
 		self.step:Fire()
 
-		if self.direction == "forward" and (self.current_value == self.final_value) then
+		local is_at_final_value = (self.current_value == self.final_value)
+
+		if self.direction == "forward" and is_at_final_value then
 			self:_finish()
 			return
-		end
-
-		-- another goddamn type checker blocked bug again.
-		-- luau. wtf.
-		if self.direction == "reverse" and (self.current_value == self.final_value) then
+		elseif self.direction == "reverse" and is_at_final_value then
 			self:_finish()
 		end
 	end)
