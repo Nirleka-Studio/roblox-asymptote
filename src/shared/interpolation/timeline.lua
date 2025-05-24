@@ -1,7 +1,7 @@
 --!strict
 
 local RunService = game:GetService("RunService")
-local Signal = require("../../shared/thirdparty/Signal")
+local Signal = require(game:GetService("ReplicatedStorage").shared.thirdparty.Signal)
 local lerper = require("./lerper")
 
 local timeline = {}
