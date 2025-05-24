@@ -18,9 +18,13 @@
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "client": {
-          "$path": "src/client"
+          "$path": "src/client/modules"
         }
       }
+    },
+
+    "StarterGui" : {
+      "$path": "src/client/starter_gui"
     }
   }
 }
