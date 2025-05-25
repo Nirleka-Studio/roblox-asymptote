@@ -11,40 +11,15 @@
 			"children": [
 				{
 					"name": "shared",
+					"className": "Folder"
+				},
+				{
+					"name": "remotes",
 					"className": "Folder",
 					"children": [
 						{
-							"name": "interpolation",
-							"className": "Folder",
-							"children": [
-								{
-									"name": "lerper",
-									"className": "ModuleScript",
-									"filePaths": [
-										"src/shared\\interpolation\\lerper.lua"
-									]
-								},
-								{
-									"name": "timeline",
-									"className": "ModuleScript",
-									"filePaths": [
-										"src/shared\\interpolation\\timeline.lua"
-									]
-								}
-							]
-						},
-						{
-							"name": "thirdparty",
-							"className": "Folder",
-							"children": [
-								{
-									"name": "Signal",
-									"className": "ModuleScript",
-									"filePaths": [
-										"src/shared\\thirdparty\\Signal.lua"
-									]
-								}
-							]
+							"name": "Detection",
+							"className": "RemoteEvent"
 						}
 					]
 				}

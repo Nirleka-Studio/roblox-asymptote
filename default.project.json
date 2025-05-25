@@ -2,28 +2,30 @@
   "name": "roblox-asymptote",
   "tree": {
     "$className": "DataModel",
-
     "ReplicatedStorage": {
       "shared": {
-        "$path": "src/shared"
+        "$path": "src/shared/modules"
+      },
+      "remotes": {
+        "$className": "Folder",
+        "Detection": {
+          "$className": "RemoteEvent"
+        }
       }
     },
-
     "ServerScriptService": {
       "server": {
         "$path": "src/server"
       }
     },
-
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "client": {
-          "$path": "src/client/modules"
+          "$path": "src/client"
         }
       }
     },
-
-    "StarterGui" : {
+    "StarterGui": {
       "$path": "src/client/starter_gui"
     }
   }
