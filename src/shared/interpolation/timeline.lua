@@ -18,8 +18,8 @@ type TimelineData = {
 	direction: "forward" | "reverse",
 	playing: boolean,
 
-	step: Signal<()>, -- Signal with no arguments
-	finished: Signal<()>, -- Signal with no arguments
+	step: Signal<...any>, -- Signal with no arguments
+	finished: Signal<...any>, -- Signal with no arguments
 	_step_connection: Signal.Connection<()>?
 }
 
@@ -36,7 +36,7 @@ function timeline.create(start_value: number, final_value: number, duration: num
 		comp_lerper = lerper.create(start_value, final_value, duration, nil),
 		step = Signal.new(),
 		finished = Signal.new(),
-		_step_connection = nil
+		_step_connection = nil :: Signal.Connection<()>? -- fuck you
 	}, timeline)
 end
 
