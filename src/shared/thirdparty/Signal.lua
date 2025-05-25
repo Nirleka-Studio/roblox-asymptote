@@ -30,7 +30,7 @@ export type Signal<T...> = {
 	_handlerListHead: Connection<T...> | false,
 	Connect: (self: Signal<T...>, callback: (T...) -> ()) -> Connection<T...>,
 	DisconnectAll: (self: Signal<T...>) -> (),
-	Fire: (self: Signal<T...>, ...any) -> (),
+	Fire: (self: Signal<T...>, T...) -> (),
 	Wait: (self: Signal<T...>) -> (),
 	Once: (self: Signal<T...>, callback: (T...) -> ()) -> Connection<T...>
 }
