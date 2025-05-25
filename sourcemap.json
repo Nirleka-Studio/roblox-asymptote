@@ -10,16 +10,51 @@
 			"className": "ReplicatedStorage",
 			"children": [
 				{
-					"name": "shared",
-					"className": "Folder"
-				},
-				{
 					"name": "remotes",
 					"className": "Folder",
 					"children": [
 						{
 							"name": "Detection",
 							"className": "RemoteEvent"
+						}
+					]
+				},
+				{
+					"name": "shared",
+					"className": "Folder",
+					"children": [
+						{
+							"name": "interpolation",
+							"className": "Folder",
+							"children": [
+								{
+									"name": "lerper",
+									"className": "ModuleScript",
+									"filePaths": [
+										"src/shared\\interpolation\\lerper.lua"
+									]
+								},
+								{
+									"name": "timeline",
+									"className": "ModuleScript",
+									"filePaths": [
+										"src/shared\\interpolation\\timeline.lua"
+									]
+								}
+							]
+						},
+						{
+							"name": "thirdparty",
+							"className": "Folder",
+							"children": [
+								{
+									"name": "Signal",
+									"className": "ModuleScript",
+									"filePaths": [
+										"src/shared\\thirdparty\\Signal.lua"
+									]
+								}
+							]
 						}
 					]
 				}
@@ -117,21 +152,97 @@
 							"className": "Folder",
 							"children": [
 								{
-									"name": "gui",
+									"name": "loader",
+									"className": "LocalScript",
+									"filePaths": [
+										"src/client\\loader.client.lua"
+									]
+								},
+								{
+									"name": "modules",
 									"className": "Folder",
 									"children": [
 										{
-											"name": "world_pointer",
-											"className": "ModuleScript",
-											"filePaths": [
-												"src/client/modules\\gui\\world_pointer.lua"
+											"name": "core",
+											"className": "Folder",
+											"children": [
+												{
+													"name": "get_core",
+													"className": "ModuleScript",
+													"filePaths": [
+														"src/client\\modules\\core\\get_core.lua"
+													]
+												}
+											]
+										},
+										{
+											"name": "gui",
+											"className": "Folder",
+											"children": [
+												{
+													"name": "world_pointer",
+													"className": "ModuleScript",
+													"filePaths": [
+														"src/client\\modules\\gui\\world_pointer.lua"
+													]
+												}
+											]
+										},
+										{
+											"name": "input",
+											"className": "Folder",
+											"children": [
+												{
+													"name": "mouse",
+													"className": "ModuleScript",
+													"filePaths": [
+														"src/client\\modules\\input\\mouse.lua"
+													]
+												}
 											]
 										}
 									]
 								},
 								{
-									"name": "input",
-									"className": "Folder"
+									"name": "starter_gui",
+									"className": "Folder",
+									"children": [
+										{
+											"name": "Detection",
+											"className": "ScreenGui",
+											"filePaths": [
+												"src/client\\starter_gui\\Detection.rbxmx"
+											],
+											"children": [
+												{
+													"name": "SusMeter",
+													"className": "Frame",
+													"children": [
+														{
+															"name": "Frame",
+															"className": "Frame",
+															"children": [
+																{
+																	"name": "A1",
+																	"className": "ImageLabel"
+																},
+																{
+																	"name": "CanvasGroup",
+																	"className": "CanvasGroup",
+																	"children": [
+																		{
+																			"name": "A1",
+																			"className": "ImageLabel"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
 								}
 							]
 						}
