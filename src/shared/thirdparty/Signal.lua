@@ -1,84 +1,74 @@
 --!strict
 
---------------------------------------------------------------------------------
---               Batched Yield-Safe Signal Implementation                     --
--- This is a Signal class which has effectively identical behavior to a       --
--- normal RBXScriptSignal, with the only difference being a couple extra      --
--- stack frames at the bottom of the stack trace when an error is thrown.     --
--- This implementation caches runner coroutines, so the ability to yield in   --
--- the signal handlers comes at minimal extra cost over a naive signal        --
--- implementation that either always or never spawns a thread.                --
---                                                                            --
--- API:                                                                       --
---   local Signal = require(THIS MODULE)                                      --
---   local sig = Signal.new()                                                 --
---   local connection = sig:Connect(function(arg1, arg2, ...) ... end)        --
---   sig:Fire(arg1, arg2, ...)                                                --
---   connection:Disconnect()                                                  --
---   sig:DisconnectAll()                                                      --
---   local arg1, arg2, ... = sig:Wait()                                       --
---                                                                            --
--- Licence:                                                                   --
---   Licenced under the MIT licence.                                          --
---                                                                            --
--- Authors:                                                                   --
---   stravant   - July 31st, 2021 - Created the file.                         --
---   NirlekaDev - May 17th, 2025 - Modified the file.                         --
---              Modified to be compatible with type checking.                 --
---------------------------------------------------------------------------------
+--[=[
+	Fully typed version of the GoodSignal module by Mark Langen.
+	Now no need to worry what values your signals return.
 
--- The currently idle thread to run the next handler on
-local freeRunnerThread = nil
+	```lua
+	local new_signal: Signal<number, boolean> = Signal.new()
 
--- Function which acquires the currently idle handler runner thread, runs the
--- function fn on it, and then releases the thread, returning it to being the
--- currently idle one.
--- If there was a currently idle runner thread already, that's okay, that old
--- one will just get thrown and eventually GCed.
-local function acquireRunnerThreadAndCallEventHandler(fn, ...)
+	new_signal:Connect(function(x: number, y: boolean) -- parameter types recognised
+		-- some code
+	end)
+
+	new_signal:Fire(function()
+		return 3071, true -- even if we return the wrong types,
+	                      -- the type solver will complain
+	end)
+	```
+]=]
+
+export type Connection<T...> = {
+	_connected: boolean,
+	_signal: Signal<T...>,
+	_callback: (T...) -> (),
+	_next: Connection<T...> | false,
+	Disconnect: (self: Connection<T...>) -> (),
+}
+
+export type Signal<T...> = {
+	_handlerListHead: Connection<T...> | false,
+	Connect: (self: Signal<T...>, callback: (T...) -> ()) -> Connection<T...>,
+	DisconnectAll: (self: Signal<T...>) -> (),
+	Fire: (self: Signal<T...>, ...any) -> (),
+	Wait: (self: Signal<T...>) -> (),
+	Once: (self: Signal<T...>, callback: (T...) -> ()) -> Connection<T...>
+}
+
+----------
+
+local freeRunnerThread: thread? = nil
+
+local function acquireRunnerThreadAndCallEventHandler<T...>(callback: (T...) -> (), ...: T...): ()
 	local acquiredRunnerThread = freeRunnerThread
 	freeRunnerThread = nil
-	fn(...)
-	-- The handler finished running, this runner thread is free again.
+	callback(...)
 	freeRunnerThread = acquiredRunnerThread
 end
 
--- Coroutine runner that we create coroutines of. The coroutine can be
--- repeatedly resumed with functions to run followed by the argument to run
--- them with.
-local function runEventHandlerInFreeThread()
-	-- Note: We cannot use the initial set of arguments passed to
-	-- runEventHandlerInFreeThread for a call to the handler, because those
-	-- arguments would stay on the stack for the duration of the thread's
-	-- existence, temporarily leaking references. Without access to raw bytecode
-	-- there's no way for us to clear the "..." references from the stack.
+local function runEventHandlerInFreeThread(): ()
 	while true do
 		acquireRunnerThreadAndCallEventHandler(coroutine.yield())
 	end
 end
 
--- Connection class
+----------
+
 local Connection = {}
 Connection.__index = Connection
 
-type SignalFn = (...any) -> (...any)
-
-function Connection.new(signal: RBXScriptSignal, fn: SignalFn)
+function Connection.new<T...>(signal: Signal<T...>, callback: (T...) -> ()): Connection<T...>
 	return setmetatable({
 		_connected = true,
 		_signal = signal,
-		_fn = fn,
+		_callback = callback,
 		_next = false,
-	}, Connection)
+	}, Connection) :: Connection<T...>
 end
 
-function Connection:Disconnect()
+function Connection.Disconnect<T...>(self: Connection<T...>): ()
 	self._connected = false
 
-	-- Unhook the node, but DON'T clear it. That way any fire calls that are
-	-- currently sitting on this node will be able to iterate forwards off of
-	-- it, but any subsequent fire calls will not hit it, and it will be GCed
-	-- when no more fire calls are sitting on it.
 	if self._signal._handlerListHead == self then
 		self._signal._handlerListHead = self._next
 	else
@@ -92,7 +82,6 @@ function Connection:Disconnect()
 	end
 end
 
--- Make Connection strict
 setmetatable(Connection, {
 	__index = function(tb, key)
 		error(("Attempt to get Connection::%s (not a valid member)"):format(tostring(key)), 2)
@@ -102,84 +91,67 @@ setmetatable(Connection, {
 	end
 })
 
--- Signal class
+----------
+
 local Signal = {}
 Signal.__index = Signal
 
-type SignalData = {
-	_handlerListHead: boolean
-}
-
-export type Signal = typeof(setmetatable({} :: SignalData, Signal))
-
-function Signal.new(): Signal
+function Signal.new(): Signal<...any> -- leave it to type `any` as it will be refined eitherway
 	return setmetatable({
 		_handlerListHead = false,
-	}, Signal)
+	}, Signal) :: Signal<...any>
 end
 
-function Signal:Connect(fn)
-	local connection = Connection.new(self, fn)
+function Signal.Connect<T...>(self: Signal<T...>, callback: (T...) -> ())
+	local connection = Connection.new(self, callback)
 	if self._handlerListHead then
 		connection._next = self._handlerListHead
 		self._handlerListHead = connection
 	else
-		self._handlerListHead = connection
+		self._handlerListHead = connection :: any -- luau type solver bug. eh.
 	end
 	return connection
 end
 
--- Disconnect all handlers. Since we use a linked list it suffices to clear the
--- reference to the head handler.
-function Signal:DisconnectAll()
+function Signal.DisconnectAll<T...>(self: Signal<T...>)
 	self._handlerListHead = false
 end
 
--- Signal:Fire(...) implemented by running the handler functions on the
--- coRunnerThread, and any time the resulting thread yielded without returning
--- to us, that means that it yielded to the Roblox scheduler and has been taken
--- over by Roblox scheduling, meaning we have to make a new coroutine runner.
-function Signal:Fire(...)
+function Signal.Fire<T...>(self: Signal<T...>, ...: T...)
 	local item = self._handlerListHead
 	while item do
 		if item._connected then
 			if not freeRunnerThread then
 				freeRunnerThread = coroutine.create(runEventHandlerInFreeThread)
-				-- Get the freeRunnerThread to the first yield
-				coroutine.resume(freeRunnerThread)
+				coroutine.resume(freeRunnerThread :: thread)
 			end
-			task.spawn(freeRunnerThread, item._fn, ...)
+			task.spawn(freeRunnerThread :: thread, item._callback, ...)
 		end
 		item = item._next
 	end
 end
 
--- Implement Signal:Wait() in terms of a temporary connection using
--- a Signal:Connect() which disconnects itself.
-function Signal:Wait()
+function Signal.Wait<T...>(self: Signal<T...>)
 	local waitingCoroutine = coroutine.running()
-	local cn
-	cn = self:Connect(function(...)
-		cn:Disconnect()
+	local connection: Connection<T...>
+	connection = self:Connect(function(...)
+		connection:Disconnect()
 		task.spawn(waitingCoroutine, ...)
 	end)
 	return coroutine.yield()
 end
 
--- Implement Signal:Once() in terms of a connection which disconnects
--- itself before running the handler.
-function Signal:Once(fn)
-	local cn
+function Signal.Once<T...>(self: Signal<T...>, callback: (T...) -> ())
+	local cn: Connection<T...>
 	cn = self:Connect(function(...)
 		if cn._connected then
 			cn:Disconnect()
 		end
-		fn(...)
+		callback(...)
 	end)
 	return cn
 end
 
--- Make signal strict
 setmetatable(Signal, {
 	__index = function(tb, key)
 		error(("Attempt to get Signal::%s (not a valid member)"):format(tostring(key)), 2)
@@ -189,6 +161,6 @@ setmetatable(Signal, {
 	end
 })
 
-return Signal :: {
-	new: () -> Signal
+return Signal :: { -- only exposes constructor
+	new: () -> Signal<...any>
 }
