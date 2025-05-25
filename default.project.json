@@ -4,7 +4,7 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "shared": {
-        "$path": "src/shared/modules"
+        "$path": "src/shared"
       },
       "remotes": {
         "$className": "Folder",
