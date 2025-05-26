@@ -1,0 +1,2606 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<Meta name="ExplicitAutoJoints">true</Meta>
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Model" referent="RBX57E380013DF04839931461998B71A96F">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+			<bool name="DefinesCapabilities">false</bool>
+			<token name="LevelOfDetail">0</token>
+			<CoordinateFrame name="ModelMeshCFrame">
+				<X>0</X>
+				<Y>0</Y>
+				<Z>0</Z>
+				<R00>1</R00>
+				<R01>0</R01>
+				<R02>0</R02>
+				<R10>0</R10>
+				<R11>1</R11>
+				<R12>0</R12>
+				<R20>0</R20>
+				<R21>0</R21>
+				<R22>1</R22>
+			</CoordinateFrame>
+			<SharedString name="ModelMeshData">yuZpQdnvvUBOTYh1jqZ2cA==</SharedString>
+			<Vector3 name="ModelMeshSize">
+				<X>0</X>
+				<Y>0</Y>
+				<Z>0</Z>
+			</Vector3>
+			<token name="ModelStreamingMode">0</token>
+			<string name="Name">Dave</string>
+			<bool name="NeedsPivotMigration">false</bool>
+			<Ref name="PrimaryPart">RBXA0913C7BD79D49AAB79C081ABB37B422</Ref>
+			<float name="ScaleFactor">1</float>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags">VGVzdF9OcGM=</BinaryString>
+			<OptionalCoordinateFrame name="WorldPivotData">
+				<CFrame>
+					<X>0.40892601</X>
+					<Y>0</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CFrame>
+			</OptionalCoordinateFrame>
+		</Properties>
+		<Item class="Part" referent="RBXA0913C7BD79D49AAB79C081ABB37B422">
+			<Properties>
+				<bool name="Anchored">false</bool>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AudioCanCollide">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">4</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>0.40892601</X>
+					<Y>4.5</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">true</bool>
+				<bool name="CanQuery">true</bool>
+				<bool name="CanTouch">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="CastShadow">true</bool>
+				<string name="CollisionGroup">Default</string>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4286545791</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="EnableFluidForces">true</bool>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">-0.5</float>
+				<float name="LeftParamB">0.5</float>
+				<token name="LeftSurface">0</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">256</token>
+				<string name="MaterialVariantSerialized"></string>
+				<string name="Name">Head</string>
+				<CoordinateFrame name="PivotOffset">
+					<X>0</X>
+					<Y>-4.5</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">-0.5</float>
+				<float name="RightParamB">0.5</float>
+				<token name="RightSurface">0</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">0</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">0</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">0</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>2</X>
+					<Y>1</Y>
+					<Z>1</Z>
+				</Vector3>
+			</Properties>
+			<Item class="SpecialMesh" referent="RBXCD703A305CCA4BE4A2B10EE35C542121">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="MeshId"><null></null></Content>
+					<token name="MeshType">0</token>
+					<string name="Name">Mesh</string>
+					<Vector3 name="Offset">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+					</Vector3>
+					<Vector3 name="Scale">
+						<X>1.25</X>
+						<Y>1.25</Y>
+						<Z>1.25</Z>
+					</Vector3>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<Content name="TextureId"><null></null></Content>
+					<Vector3 name="VertexColor">
+						<X>1</X>
+						<Y>1</Y>
+						<Z>1</Z>
+					</Vector3>
+				</Properties>
+			</Item>
+			<Item class="Decal" referent="RBX0381F47B4AF748B687FE8DC1993A15C8">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<Color3 name="Color3">
+						<R>1</R>
+						<G>1</G>
+						<B>1</B>
+					</Color3>
+					<bool name="DefinesCapabilities">false</bool>
+					<token name="Face">5</token>
+					<string name="Name">face</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<Content name="Texture"><url>rbxasset://textures/face.png</url></Content>
+					<float name="Transparency">0</float>
+					<int name="ZIndex">1</int>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX7326144B5F1740F782D0AE27CDD27ED4">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>0.600000024</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">HairAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX253C5AD758EE4FC992A0A6EA408B3968">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>0.600000024</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">HatAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBXB85ED0BF480447398B52E94DEB120B75">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>-0.600000024</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">FaceFrontAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBXD5E85B9E98724AF3AFFEDD2D572B995D">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">FaceCenterAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="Part" referent="RBXA1D1E4DD6CAA490397F1AB17FACAD988">
+			<Properties>
+				<bool name="Anchored">false</bool>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AudioCanCollide">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">4</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>0.40892601</X>
+					<Y>3</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">true</bool>
+				<bool name="CanQuery">true</bool>
+				<bool name="CanTouch">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="CastShadow">true</bool>
+				<string name="CollisionGroup">Default</string>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4286545791</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="EnableFluidForces">true</bool>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">0</float>
+				<float name="LeftParamB">0</float>
+				<token name="LeftSurface">2</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">256</token>
+				<string name="MaterialVariantSerialized"></string>
+				<string name="Name">Torso</string>
+				<CoordinateFrame name="PivotOffset">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">0</float>
+				<float name="RightParamB">0</float>
+				<token name="RightSurface">2</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">3</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">0</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">0</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>2</X>
+					<Y>2</Y>
+					<Z>1</Z>
+				</Vector3>
+			</Properties>
+			<Item class="Decal" referent="RBX7BC6EEA9B0854AEB9C7702F409A401D8">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<Color3 name="Color3">
+						<R>1</R>
+						<G>1</G>
+						<B>1</B>
+					</Color3>
+					<bool name="DefinesCapabilities">false</bool>
+					<token name="Face">5</token>
+					<string name="Name">roblox</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<Content name="Texture"><null></null></Content>
+					<float name="Transparency">0</float>
+					<int name="ZIndex">1</int>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX530088F8AEED4F12A7324F8A745F5661">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">NeckAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX2AABAC75277B45EDA93190FEA21E7A78">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>-0.5</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">BodyFrontAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX74B72AF29E144760B6D3EA48A517A1D2">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0.5</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">BodyBackAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX08F331878FA2431EA14C50D0AC7D45DE">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>-1</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">LeftCollarAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBXC2F39056AE4444F9AD4738A4A293E44E">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>1</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">RightCollarAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX241BF2BC864B457C872503910C130D7A">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>-1</Y>
+						<Z>-0.5</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">WaistFrontAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBXAA25DA8345A8418BA5A2AAC5CBA8A61F">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>-1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">WaistCenterAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX472A673198AC468CB6D836E591E849FD">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>-1</Y>
+						<Z>0.5</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">WaistBackAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Motor6D" referent="RBX66861CC4BE4B4DD58D6436D1EEC04497">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="C0">
+						<X>1</X>
+						<Y>0.5</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>-0</R12>
+						<R20>-1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<CoordinateFrame name="C1">
+						<X>-0.5</X>
+						<Y>0.5</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>-0</R12>
+						<R20>-1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<float name="DesiredAngle">0</float>
+					<bool name="Enabled">true</bool>
+					<float name="MaxVelocity">0.100000001</float>
+					<string name="Name">Right Shoulder</string>
+					<Ref name="Part0">RBXA1D1E4DD6CAA490397F1AB17FACAD988</Ref>
+					<Ref name="Part1">RBXEFCD324D7E0C4210A31683A8AADF46FF</Ref>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="Motor6D" referent="RBX73C82F39663E48ECA8A7F93F25414EFB">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="C0">
+						<X>-1</X>
+						<Y>0.5</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>-1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<CoordinateFrame name="C1">
+						<X>0.5</X>
+						<Y>0.5</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>-1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<float name="DesiredAngle">0</float>
+					<bool name="Enabled">true</bool>
+					<float name="MaxVelocity">0.100000001</float>
+					<string name="Name">Left Shoulder</string>
+					<Ref name="Part0">RBXA1D1E4DD6CAA490397F1AB17FACAD988</Ref>
+					<Ref name="Part1">RBX65FC8798BEF5416BA73C8FD6A77D7393</Ref>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="Motor6D" referent="RBX7E4EC6D44D9C4FDE8E0F9BB7D671AB89">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="C0">
+						<X>1</X>
+						<Y>-1</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>-0</R12>
+						<R20>-1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<CoordinateFrame name="C1">
+						<X>0.5</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>-0</R12>
+						<R20>-1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<float name="DesiredAngle">0</float>
+					<bool name="Enabled">true</bool>
+					<float name="MaxVelocity">0.100000001</float>
+					<string name="Name">Right Hip</string>
+					<Ref name="Part0">RBXA1D1E4DD6CAA490397F1AB17FACAD988</Ref>
+					<Ref name="Part1">RBX0F7BD9561D58416685AB815412B77229</Ref>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="Motor6D" referent="RBX5BF1D1EF3B8B4326AC428A5079C5A71F">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="C0">
+						<X>-1</X>
+						<Y>-1</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>-1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<CoordinateFrame name="C1">
+						<X>-0.5</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>0</R00>
+						<R01>0</R01>
+						<R02>-1</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>1</R20>
+						<R21>0</R21>
+						<R22>0</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<float name="DesiredAngle">0</float>
+					<bool name="Enabled">true</bool>
+					<float name="MaxVelocity">0.100000001</float>
+					<string name="Name">Left Hip</string>
+					<Ref name="Part0">RBXA1D1E4DD6CAA490397F1AB17FACAD988</Ref>
+					<Ref name="Part1">RBX4BE85A4195FF407985CAEBCA5B7CDFEF</Ref>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="Motor6D" referent="RBXA36A5C0F8D144EBA801CC86B44F53BCE">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="C0">
+						<X>0</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>-1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>0</R11>
+						<R12>1</R12>
+						<R20>0</R20>
+						<R21>1</R21>
+						<R22>-0</R22>
+					</CoordinateFrame>
+					<CoordinateFrame name="C1">
+						<X>0</X>
+						<Y>-0.5</Y>
+						<Z>0</Z>
+						<R00>-1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>0</R11>
+						<R12>1</R12>
+						<R20>0</R20>
+						<R21>1</R21>
+						<R22>-0</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<float name="DesiredAngle">0</float>
+					<bool name="Enabled">true</bool>
+					<float name="MaxVelocity">0.100000001</float>
+					<string name="Name">Neck</string>
+					<Ref name="Part0">RBXA1D1E4DD6CAA490397F1AB17FACAD988</Ref>
+					<Ref name="Part1">RBXA0913C7BD79D49AAB79C081ABB37B422</Ref>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="Part" referent="RBX65FC8798BEF5416BA73C8FD6A77D7393">
+			<Properties>
+				<bool name="Anchored">false</bool>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AudioCanCollide">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">4</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>-1.09107399</X>
+					<Y>3</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">false</bool>
+				<bool name="CanQuery">true</bool>
+				<bool name="CanTouch">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="CastShadow">true</bool>
+				<string name="CollisionGroup">Default</string>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4286545791</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="EnableFluidForces">true</bool>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">-0.5</float>
+				<float name="LeftParamB">0.5</float>
+				<token name="LeftSurface">0</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">256</token>
+				<string name="MaterialVariantSerialized"></string>
+				<string name="Name">Left Arm</string>
+				<CoordinateFrame name="PivotOffset">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">-0.5</float>
+				<float name="RightParamB">0.5</float>
+				<token name="RightSurface">0</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">3</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">0</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">0</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>1</X>
+					<Y>2</Y>
+					<Z>1</Z>
+				</Vector3>
+			</Properties>
+			<Item class="Attachment" referent="RBX9A272AAE567D4D6397F5C0521DD01681">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">LeftShoulderAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX51D13AD2BFD34A639BC9D665FA6A2547">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>-1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">LeftGripAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="Part" referent="RBXEFCD324D7E0C4210A31683A8AADF46FF">
+			<Properties>
+				<bool name="Anchored">false</bool>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AudioCanCollide">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">4</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>1.90892601</X>
+					<Y>3</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">false</bool>
+				<bool name="CanQuery">true</bool>
+				<bool name="CanTouch">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="CastShadow">true</bool>
+				<string name="CollisionGroup">Default</string>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4286545791</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="EnableFluidForces">true</bool>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">-0.5</float>
+				<float name="LeftParamB">0.5</float>
+				<token name="LeftSurface">0</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">256</token>
+				<string name="MaterialVariantSerialized"></string>
+				<string name="Name">Right Arm</string>
+				<CoordinateFrame name="PivotOffset">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">-0.5</float>
+				<float name="RightParamB">0.5</float>
+				<token name="RightSurface">0</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">3</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">0</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">0</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>1</X>
+					<Y>2</Y>
+					<Z>1</Z>
+				</Vector3>
+			</Properties>
+			<Item class="Attachment" referent="RBX963B3BE963D24E7F8FE6487F674E1E98">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">RightShoulderAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Attachment" referent="RBX52A057EB03124B8785CFB1E0277A1361">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>-1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">RightGripAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="Part" referent="RBX4BE85A4195FF407985CAEBCA5B7CDFEF">
+			<Properties>
+				<bool name="Anchored">false</bool>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AudioCanCollide">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">0</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>-0.0910739899</X>
+					<Y>1</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">false</bool>
+				<bool name="CanQuery">true</bool>
+				<bool name="CanTouch">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="CastShadow">true</bool>
+				<string name="CollisionGroup">Default</string>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4286545791</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="EnableFluidForces">true</bool>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">-0.5</float>
+				<float name="LeftParamB">0.5</float>
+				<token name="LeftSurface">0</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">256</token>
+				<string name="MaterialVariantSerialized"></string>
+				<string name="Name">Left Leg</string>
+				<CoordinateFrame name="PivotOffset">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">-0.5</float>
+				<float name="RightParamB">0.5</float>
+				<token name="RightSurface">0</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">3</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">0</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">0</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>1</X>
+					<Y>2</Y>
+					<Z>1</Z>
+				</Vector3>
+			</Properties>
+			<Item class="Attachment" referent="RBXA8ED048CBBA24CA89E15D25B41D41B18">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>-1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">LeftFootAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="Part" referent="RBX0F7BD9561D58416685AB815412B77229">
+			<Properties>
+				<bool name="Anchored">false</bool>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AudioCanCollide">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">0</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>0.90892601</X>
+					<Y>1</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">false</bool>
+				<bool name="CanQuery">true</bool>
+				<bool name="CanTouch">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="CastShadow">true</bool>
+				<string name="CollisionGroup">Default</string>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4286545791</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="EnableFluidForces">true</bool>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">-0.5</float>
+				<float name="LeftParamB">0.5</float>
+				<token name="LeftSurface">0</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">256</token>
+				<string name="MaterialVariantSerialized"></string>
+				<string name="Name">Right Leg</string>
+				<CoordinateFrame name="PivotOffset">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">-0.5</float>
+				<float name="RightParamB">0.5</float>
+				<token name="RightSurface">0</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">3</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">0</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">0</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>1</X>
+					<Y>2</Y>
+					<Z>1</Z>
+				</Vector3>
+			</Properties>
+			<Item class="Attachment" referent="RBXB9F1A89B28124F6084BA11B6715BFD2D">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>-1</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">RightFootAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="Humanoid" referent="RBX9E912714EE354E58A842FEF007D548A6">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AutoJumpEnabled">true</bool>
+				<bool name="AutoRotate">true</bool>
+				<bool name="AutomaticScalingEnabled">true</bool>
+				<bool name="BreakJointsOnDeath">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<token name="CollisionType">0</token>
+				<bool name="DefinesCapabilities">false</bool>
+				<token name="DisplayDistanceType">0</token>
+				<string name="DisplayName"></string>
+				<bool name="EvaluateStateMachine">true</bool>
+				<float name="HealthDisplayDistance">100</float>
+				<token name="HealthDisplayType">0</token>
+				<float name="Health_XML">100</float>
+				<float name="HipHeight">0</float>
+				<Vector3 name="InternalBodyScale">
+					<X>1</X>
+					<Y>1</Y>
+					<Z>1</Z>
+				</Vector3>
+				<float name="InternalHeadScale">1</float>
+				<float name="JumpHeight">7.19999981</float>
+				<float name="JumpPower">50</float>
+				<float name="MaxHealth">100</float>
+				<float name="MaxSlopeAngle">89</float>
+				<string name="Name">Humanoid</string>
+				<float name="NameDisplayDistance">100</float>
+				<token name="NameOcclusion">2</token>
+				<bool name="RequiresNeck">true</bool>
+				<token name="RigType">0</token>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<bool name="UseJumpPower">true</bool>
+				<float name="WalkSpeed">16</float>
+			</Properties>
+			<Item class="Animator" referent="RBXCA99EC098034446DA5F3DCAF9B49F2A2">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">Animator</string>
+					<bool name="PreferLodEnabled">true</bool>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="HumanoidDescription" referent="RBXA942ABCA506649B49215B51E9A2702B7">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<float name="BodyTypeScale">0</float>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<int64 name="ClimbAnimation">0</int64>
+					<bool name="DefinesCapabilities">false</bool>
+					<float name="DepthScale">1</float>
+					<string name="EmotesDataInternal"></string>
+					<string name="EquippedEmotesDataInternal"></string>
+					<int64 name="Face">0</int64>
+					<int64 name="FallAnimation">0</int64>
+					<int64 name="GraphicTShirt">0</int64>
+					<float name="HeadScale">1</float>
+					<float name="HeightScale">1</float>
+					<int64 name="IdleAnimation">0</int64>
+					<int64 name="JumpAnimation">0</int64>
+					<int64 name="MoodAnimation">0</int64>
+					<string name="Name">HumanoidDescription</string>
+					<int64 name="Pants">0</int64>
+					<float name="ProportionScale">0</float>
+					<int64 name="RunAnimation">0</int64>
+					<int64 name="Shirt">0</int64>
+					<int64 name="SourceAssetId">-1</int64>
+					<int64 name="SwimAnimation">0</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<int64 name="WalkAnimation">0</int64>
+					<float name="WidthScale">1</float>
+				</Properties>
+				<Item class="BodyPartDescription" referent="RBXF76831592ADA4F38A688DAB5BA21BBC0">
+					<Properties>
+						<int64 name="AssetId">0</int64>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<token name="BodyPart">0</token>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<Color3 name="Color">
+							<R>0.5</R>
+							<G>0.5</G>
+							<B>0.5</B>
+						</Color3>
+						<bool name="DefinesCapabilities">false</bool>
+						<Ref name="Instance">null</Ref>
+						<string name="Name">BodyPartDescription</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="BodyPartDescription" referent="RBX0CC615625C6540048023E4AF7AC69646">
+					<Properties>
+						<int64 name="AssetId">0</int64>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<token name="BodyPart">2</token>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<Color3 name="Color">
+							<R>0.5</R>
+							<G>0.5</G>
+							<B>0.5</B>
+						</Color3>
+						<bool name="DefinesCapabilities">false</bool>
+						<Ref name="Instance">null</Ref>
+						<string name="Name">BodyPartDescription</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="BodyPartDescription" referent="RBXA0A8624121CF42E09D45DB3327F26F3C">
+					<Properties>
+						<int64 name="AssetId">0</int64>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<token name="BodyPart">4</token>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<Color3 name="Color">
+							<R>0.5</R>
+							<G>0.5</G>
+							<B>0.5</B>
+						</Color3>
+						<bool name="DefinesCapabilities">false</bool>
+						<Ref name="Instance">null</Ref>
+						<string name="Name">BodyPartDescription</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="BodyPartDescription" referent="RBX6B9374C919954F1581272138C6EF3DF9">
+					<Properties>
+						<int64 name="AssetId">0</int64>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<token name="BodyPart">3</token>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<Color3 name="Color">
+							<R>0.5</R>
+							<G>0.5</G>
+							<B>0.5</B>
+						</Color3>
+						<bool name="DefinesCapabilities">false</bool>
+						<Ref name="Instance">null</Ref>
+						<string name="Name">BodyPartDescription</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="BodyPartDescription" referent="RBX8EF0679819C24ECFABC23ED6EAC551A8">
+					<Properties>
+						<int64 name="AssetId">0</int64>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<token name="BodyPart">5</token>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<Color3 name="Color">
+							<R>0.5</R>
+							<G>0.5</G>
+							<B>0.5</B>
+						</Color3>
+						<bool name="DefinesCapabilities">false</bool>
+						<Ref name="Instance">null</Ref>
+						<string name="Name">BodyPartDescription</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+				<Item class="BodyPartDescription" referent="RBXE562E6EF27864075BAE693A2AC4CDACC">
+					<Properties>
+						<int64 name="AssetId">0</int64>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<token name="BodyPart">1</token>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<Color3 name="Color">
+							<R>0.5</R>
+							<G>0.5</G>
+							<B>0.5</B>
+						</Color3>
+						<bool name="DefinesCapabilities">false</bool>
+						<Ref name="Instance">null</Ref>
+						<string name="Name">BodyPartDescription</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
+		<Item class="Part" referent="RBXB65D446F6A4E4A198A4257B6DE06A4AB">
+			<Properties>
+				<bool name="Anchored">false</bool>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="AudioCanCollide">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">0</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>0.40892601</X>
+					<Y>3</Y>
+					<Z>-21.6162243</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">false</bool>
+				<bool name="CanQuery">true</bool>
+				<bool name="CanTouch">true</bool>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="CastShadow">true</bool>
+				<string name="CollisionGroup">Default</string>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4288914085</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="EnableFluidForces">true</bool>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">0</float>
+				<float name="LeftParamB">0</float>
+				<token name="LeftSurface">0</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">256</token>
+				<string name="MaterialVariantSerialized"></string>
+				<string name="Name">HumanoidRootPart</string>
+				<CoordinateFrame name="PivotOffset">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+					<R00>1</R00>
+					<R01>0</R01>
+					<R02>0</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>0</R20>
+					<R21>0</R21>
+					<R22>1</R22>
+				</CoordinateFrame>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">0</float>
+				<float name="RightParamB">0</float>
+				<token name="RightSurface">0</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">0</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">1</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">0</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>2</X>
+					<Y>2</Y>
+					<Z>1</Z>
+				</Vector3>
+			</Properties>
+			<Item class="Attachment" referent="RBX9B56186E0FB545049E5EE2D6F3DA37C4">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="CFrame">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>1</R11>
+						<R12>0</R12>
+						<R20>0</R20>
+						<R21>0</R21>
+						<R22>1</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">RootAttachment</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<bool name="Visible">false</bool>
+				</Properties>
+			</Item>
+			<Item class="Motor6D" referent="RBX4061EB35433743B3A11D3B009214D6B5">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<CoordinateFrame name="C0">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>-1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>0</R11>
+						<R12>1</R12>
+						<R20>0</R20>
+						<R21>1</R21>
+						<R22>-0</R22>
+					</CoordinateFrame>
+					<CoordinateFrame name="C1">
+						<X>0</X>
+						<Y>0</Y>
+						<Z>0</Z>
+						<R00>-1</R00>
+						<R01>0</R01>
+						<R02>0</R02>
+						<R10>0</R10>
+						<R11>0</R11>
+						<R12>1</R12>
+						<R20>0</R20>
+						<R21>1</R21>
+						<R22>-0</R22>
+					</CoordinateFrame>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<float name="DesiredAngle">0</float>
+					<bool name="Enabled">true</bool>
+					<float name="MaxVelocity">0.100000001</float>
+					<string name="Name">RootJoint</string>
+					<Ref name="Part0">RBXB65D446F6A4E4A198A4257B6DE06A4AB</Ref>
+					<Ref name="Part1">RBXA1D1E4DD6CAA490397F1AB17FACAD988</Ref>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="LocalScript" referent="RBX5ABBF5CB2C2545878E4A162D3ACAF33F">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="Disabled">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Animate</string>
+				<token name="RunContext">0</token>
+				<string name="ScriptGuid">{B4094400-4EB0-40DC-9AAE-B7B4AFA849D8}</string>
+				<ProtectedString name="Source"><![CDATA[-- humanoidAnimatePlayEmote.lua
+
+local Figure = script.Parent
+local Torso = Figure:WaitForChild("Torso")
+local RightShoulder = Torso:WaitForChild("Right Shoulder")
+local LeftShoulder = Torso:WaitForChild("Left Shoulder")
+local RightHip = Torso:WaitForChild("Right Hip")
+local LeftHip = Torso:WaitForChild("Left Hip")
+local Neck = Torso:WaitForChild("Neck")
+local Humanoid = Figure:WaitForChild("Humanoid")
+local pose = "Standing"
+
+local EMOTE_TRANSITION_TIME = 0.1
+
+local userAnimateScaleRunSuccess, userAnimateScaleRunValue = pcall(function() return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun") end)
+local userAnimateScaleRun = userAnimateScaleRunSuccess and userAnimateScaleRunValue
+
+local function getRigScale()
+	if userAnimateScaleRun then
+		return Figure:GetScale()
+	else
+		return 1
+	end
+end
+
+local currentAnim = ""
+local currentAnimInstance = nil
+local currentAnimTrack = nil
+local currentAnimKeyframeHandler = nil
+local currentAnimSpeed = 1.0
+local animTable = {}
+local animNames = { 
+	idle = 	{	
+				{ id = "http://www.roblox.com/asset/?id=180435571", weight = 9 },
+				{ id = "http://www.roblox.com/asset/?id=180435792", weight = 1 }
+			},
+	walk = 	{ 	
+				{ id = "http://www.roblox.com/asset/?id=180426354", weight = 10 } 
+			}, 
+	run = 	{
+				{ id = "run.xml", weight = 10 } 
+			}, 
+	jump = 	{
+				{ id = "http://www.roblox.com/asset/?id=125750702", weight = 10 } 
+			}, 
+	fall = 	{
+				{ id = "http://www.roblox.com/asset/?id=180436148", weight = 10 } 
+			}, 
+	climb = {
+				{ id = "http://www.roblox.com/asset/?id=180436334", weight = 10 } 
+			}, 
+	sit = 	{
+				{ id = "http://www.roblox.com/asset/?id=178130996", weight = 10 } 
+			},	
+	toolnone = {
+				{ id = "http://www.roblox.com/asset/?id=182393478", weight = 10 } 
+			},
+	toolslash = {
+				{ id = "http://www.roblox.com/asset/?id=129967390", weight = 10 } 
+--				{ id = "slash.xml", weight = 10 } 
+			},
+	toollunge = {
+				{ id = "http://www.roblox.com/asset/?id=129967478", weight = 10 } 
+			},
+	wave = {
+				{ id = "http://www.roblox.com/asset/?id=128777973", weight = 10 } 
+			},
+	point = {
+				{ id = "http://www.roblox.com/asset/?id=128853357", weight = 10 } 
+			},
+	dance1 = {
+				{ id = "http://www.roblox.com/asset/?id=182435998", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=182491037", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=182491065", weight = 10 } 
+			},
+	dance2 = {
+				{ id = "http://www.roblox.com/asset/?id=182436842", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=182491248", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=182491277", weight = 10 } 
+			},
+	dance3 = {
+				{ id = "http://www.roblox.com/asset/?id=182436935", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=182491368", weight = 10 }, 
+				{ id = "http://www.roblox.com/asset/?id=182491423", weight = 10 } 
+			},
+	laugh = {
+				{ id = "http://www.roblox.com/asset/?id=129423131", weight = 10 } 
+			},
+	cheer = {
+				{ id = "http://www.roblox.com/asset/?id=129423030", weight = 10 } 
+			},
+}
+local dances = {"dance1", "dance2", "dance3"}
+
+-- Existance in this list signifies that it is an emote, the value indicates if it is a looping emote
+local emoteNames = { wave = false, point = false, dance1 = true, dance2 = true, dance3 = true, laugh = false, cheer = false}
+
+function configureAnimationSet(name, fileList)
+	if (animTable[name] ~= nil) then
+		for _, connection in pairs(animTable[name].connections) do
+			connection:disconnect()
+		end
+	end
+	animTable[name] = {}
+	animTable[name].count = 0
+	animTable[name].totalWeight = 0	
+	animTable[name].connections = {}
+
+	-- check for config values
+	local config = script:FindFirstChild(name)
+	if (config ~= nil) then
+--		print("Loading anims " .. name)
+		table.insert(animTable[name].connections, config.ChildAdded:connect(function(child) configureAnimationSet(name, fileList) end))
+		table.insert(animTable[name].connections, config.ChildRemoved:connect(function(child) configureAnimationSet(name, fileList) end))
+		local idx = 1
+		for _, childPart in pairs(config:GetChildren()) do
+			if (childPart:IsA("Animation")) then
+				table.insert(animTable[name].connections, childPart.Changed:connect(function(property) configureAnimationSet(name, fileList) end))
+				animTable[name][idx] = {}
+				animTable[name][idx].anim = childPart
+				local weightObject = childPart:FindFirstChild("Weight")
+				if (weightObject == nil) then
+					animTable[name][idx].weight = 1
+				else
+					animTable[name][idx].weight = weightObject.Value
+				end
+				animTable[name].count = animTable[name].count + 1
+				animTable[name].totalWeight = animTable[name].totalWeight + animTable[name][idx].weight
+	--			print(name .. " [" .. idx .. "] " .. animTable[name][idx].anim.AnimationId .. " (" .. animTable[name][idx].weight .. ")")
+				idx = idx + 1
+			end
+		end
+	end
+
+	-- fallback to defaults
+	if (animTable[name].count <= 0) then
+		for idx, anim in pairs(fileList) do
+			animTable[name][idx] = {}
+			animTable[name][idx].anim = Instance.new("Animation")
+			animTable[name][idx].anim.Name = name
+			animTable[name][idx].anim.AnimationId = anim.id
+			animTable[name][idx].weight = anim.weight
+			animTable[name].count = animTable[name].count + 1
+			animTable[name].totalWeight = animTable[name].totalWeight + anim.weight
+--			print(name .. " [" .. idx .. "] " .. anim.id .. " (" .. anim.weight .. ")")
+		end
+	end
+end
+
+-- Setup animation objects
+function scriptChildModified(child)
+	local fileList = animNames[child.Name]
+	if (fileList ~= nil) then
+		configureAnimationSet(child.Name, fileList)
+	end	
+end
+
+script.ChildAdded:connect(scriptChildModified)
+script.ChildRemoved:connect(scriptChildModified)
+
+-- Clear any existing animation tracks
+-- Fixes issue with characters that are moved in and out of the Workspace accumulating tracks
+local animator = if Humanoid then Humanoid:FindFirstChildOfClass("Animator") else nil
+if animator then
+	local animTracks = animator:GetPlayingAnimationTracks()
+	for i,track in ipairs(animTracks) do
+		track:Stop(0)
+		track:Destroy()
+	end
+end
+
+
+for name, fileList in pairs(animNames) do 
+	configureAnimationSet(name, fileList)
+end	
+
+-- ANIMATION
+
+-- declarations
+local toolAnim = "None"
+local toolAnimTime = 0
+
+local jumpAnimTime = 0
+local jumpAnimDuration = 0.3
+
+local toolTransitionTime = 0.1
+local fallTransitionTime = 0.3
+local jumpMaxLimbVelocity = 0.75
+
+-- functions
+
+function stopAllAnimations()
+	local oldAnim = currentAnim
+
+	-- return to idle if finishing an emote
+	if (emoteNames[oldAnim] ~= nil and emoteNames[oldAnim] == false) then
+		oldAnim = "idle"
+	end
+
+	currentAnim = ""
+	currentAnimInstance = nil
+	if (currentAnimKeyframeHandler ~= nil) then
+		currentAnimKeyframeHandler:disconnect()
+	end
+
+	if (currentAnimTrack ~= nil) then
+		currentAnimTrack:Stop()
+		currentAnimTrack:Destroy()
+		currentAnimTrack = nil
+	end
+	return oldAnim
+end
+
+function setAnimationSpeed(speed)
+	if speed ~= currentAnimSpeed then
+		currentAnimSpeed = speed
+		currentAnimTrack:AdjustSpeed(currentAnimSpeed)
+	end
+end
+
+function keyFrameReachedFunc(frameName)
+	if (frameName == "End") then
+
+		local repeatAnim = currentAnim
+		-- return to idle if finishing an emote
+		if (emoteNames[repeatAnim] ~= nil and emoteNames[repeatAnim] == false) then
+			repeatAnim = "idle"
+		end
+		
+		local animSpeed = currentAnimSpeed
+		playAnimation(repeatAnim, 0.0, Humanoid)
+		setAnimationSpeed(animSpeed)
+	end
+end
+
+-- Preload animations
+function playAnimation(animName, transitionTime, humanoid) 
+		
+	local roll = math.random(1, animTable[animName].totalWeight) 
+	local origRoll = roll
+	local idx = 1
+	while (roll > animTable[animName][idx].weight) do
+		roll = roll - animTable[animName][idx].weight
+		idx = idx + 1
+	end
+--		print(animName .. " " .. idx .. " [" .. origRoll .. "]")
+	local anim = animTable[animName][idx].anim
+
+	-- switch animation		
+	if (anim ~= currentAnimInstance) then
+		
+		if (currentAnimTrack ~= nil) then
+			currentAnimTrack:Stop(transitionTime)
+			currentAnimTrack:Destroy()
+		end
+
+		currentAnimSpeed = 1.0
+	
+		-- load it to the humanoid; get AnimationTrack
+		currentAnimTrack = humanoid:LoadAnimation(anim)
+		currentAnimTrack.Priority = Enum.AnimationPriority.Core
+		 
+		-- play the animation
+		currentAnimTrack:Play(transitionTime)
+		currentAnim = animName
+		currentAnimInstance = anim
+
+		-- set up keyframe name triggers
+		if (currentAnimKeyframeHandler ~= nil) then
+			currentAnimKeyframeHandler:disconnect()
+		end
+		currentAnimKeyframeHandler = currentAnimTrack.KeyframeReached:connect(keyFrameReachedFunc)
+		
+	end
+
+end
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+
+local toolAnimName = ""
+local toolAnimTrack = nil
+local toolAnimInstance = nil
+local currentToolAnimKeyframeHandler = nil
+
+function toolKeyFrameReachedFunc(frameName)
+	if (frameName == "End") then
+--		print("Keyframe : ".. frameName)	
+		playToolAnimation(toolAnimName, 0.0, Humanoid)
+	end
+end
+
+
+function playToolAnimation(animName, transitionTime, humanoid, priority)	 
+		
+		local roll = math.random(1, animTable[animName].totalWeight) 
+		local origRoll = roll
+		local idx = 1
+		while (roll > animTable[animName][idx].weight) do
+			roll = roll - animTable[animName][idx].weight
+			idx = idx + 1
+		end
+--		print(animName .. " * " .. idx .. " [" .. origRoll .. "]")
+		local anim = animTable[animName][idx].anim
+
+		if (toolAnimInstance ~= anim) then
+			
+			if (toolAnimTrack ~= nil) then
+				toolAnimTrack:Stop()
+				toolAnimTrack:Destroy()
+				transitionTime = 0
+			end
+					
+			-- load it to the humanoid; get AnimationTrack
+			toolAnimTrack = humanoid:LoadAnimation(anim)
+			if priority then
+				toolAnimTrack.Priority = priority
+			end
+			 
+			-- play the animation
+			toolAnimTrack:Play(transitionTime)
+			toolAnimName = animName
+			toolAnimInstance = anim
+
+			currentToolAnimKeyframeHandler = toolAnimTrack.KeyframeReached:connect(toolKeyFrameReachedFunc)
+		end
+end
+
+function stopToolAnimations()
+	local oldAnim = toolAnimName
+
+	if (currentToolAnimKeyframeHandler ~= nil) then
+		currentToolAnimKeyframeHandler:disconnect()
+	end
+
+	toolAnimName = ""
+	toolAnimInstance = nil
+	if (toolAnimTrack ~= nil) then
+		toolAnimTrack:Stop()
+		toolAnimTrack:Destroy()
+		toolAnimTrack = nil
+	end
+
+
+	return oldAnim
+end
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+
+
+function onRunning(speed)
+	speed /= getRigScale()
+	
+	if speed > 0.01 then
+		playAnimation("walk", 0.1, Humanoid)
+		if currentAnimInstance and currentAnimInstance.AnimationId == "http://www.roblox.com/asset/?id=180426354" then
+			setAnimationSpeed(speed / 14.5)
+		end
+		pose = "Running"
+	else
+		if emoteNames[currentAnim] == nil then
+			playAnimation("idle", 0.1, Humanoid)
+			pose = "Standing"
+		end
+	end
+end
+
+function onDied()
+	pose = "Dead"
+end
+
+function onJumping()
+	playAnimation("jump", 0.1, Humanoid)
+	jumpAnimTime = jumpAnimDuration
+	pose = "Jumping"
+end
+
+function onClimbing(speed)
+	speed /= getRigScale()
+	
+	playAnimation("climb", 0.1, Humanoid)
+	setAnimationSpeed(speed / 12.0)
+	pose = "Climbing"
+end
+
+function onGettingUp()
+	pose = "GettingUp"
+end
+
+function onFreeFall()
+	if (jumpAnimTime <= 0) then
+		playAnimation("fall", fallTransitionTime, Humanoid)
+	end
+	pose = "FreeFall"
+end
+
+function onFallingDown()
+	pose = "FallingDown"
+end
+
+function onSeated()
+	pose = "Seated"
+end
+
+function onPlatformStanding()
+	pose = "PlatformStanding"
+end
+
+function onSwimming(speed)
+	if speed > 0 then
+		pose = "Running"
+	else
+		pose = "Standing"
+	end
+end
+
+function getTool()	
+	for _, kid in ipairs(Figure:GetChildren()) do
+		if kid.className == "Tool" then return kid end
+	end
+	return nil
+end
+
+function getToolAnim(tool)
+	for _, c in ipairs(tool:GetChildren()) do
+		if c.Name == "toolanim" and c.className == "StringValue" then
+			return c
+		end
+	end
+	return nil
+end
+
+function animateTool()
+	
+	if (toolAnim == "None") then
+		playToolAnimation("toolnone", toolTransitionTime, Humanoid, Enum.AnimationPriority.Idle)
+		return
+	end
+
+	if (toolAnim == "Slash") then
+		playToolAnimation("toolslash", 0, Humanoid, Enum.AnimationPriority.Action)
+		return
+	end
+
+	if (toolAnim == "Lunge") then
+		playToolAnimation("toollunge", 0, Humanoid, Enum.AnimationPriority.Action)
+		return
+	end
+end
+
+function moveSit()
+	RightShoulder.MaxVelocity = 0.15
+	LeftShoulder.MaxVelocity = 0.15
+	RightShoulder:SetDesiredAngle(3.14 /2)
+	LeftShoulder:SetDesiredAngle(-3.14 /2)
+	RightHip:SetDesiredAngle(3.14 /2)
+	LeftHip:SetDesiredAngle(-3.14 /2)
+end
+
+local lastTick = 0
+
+function move(time)
+	local amplitude = 1
+	local frequency = 1
+  	local deltaTime = time - lastTick
+  	lastTick = time
+
+	local climbFudge = 0
+	local setAngles = false
+
+  	if (jumpAnimTime > 0) then
+  		jumpAnimTime = jumpAnimTime - deltaTime
+  	end
+
+	if (pose == "FreeFall" and jumpAnimTime <= 0) then
+		playAnimation("fall", fallTransitionTime, Humanoid)
+	elseif (pose == "Seated") then
+		playAnimation("sit", 0.5, Humanoid)
+		return
+	elseif (pose == "Running") then
+		playAnimation("walk", 0.1, Humanoid)
+	elseif (pose == "Dead" or pose == "GettingUp" or pose == "FallingDown" or pose == "Seated" or pose == "PlatformStanding") then
+--		print("Wha " .. pose)
+		stopAllAnimations()
+		amplitude = 0.1
+		frequency = 1
+		setAngles = true
+	end
+
+	if (setAngles) then
+		local desiredAngle = amplitude * math.sin(time * frequency)
+
+		RightShoulder:SetDesiredAngle(desiredAngle + climbFudge)
+		LeftShoulder:SetDesiredAngle(desiredAngle - climbFudge)
+		RightHip:SetDesiredAngle(-desiredAngle)
+		LeftHip:SetDesiredAngle(-desiredAngle)
+	end
+
+	-- Tool Animation handling
+	local tool = getTool()
+	if tool and tool:FindFirstChild("Handle") then
+	
+		local animStringValueObject = getToolAnim(tool)
+
+		if animStringValueObject then
+			toolAnim = animStringValueObject.Value
+			-- message recieved, delete StringValue
+			animStringValueObject.Parent = nil
+			toolAnimTime = time + .3
+		end
+
+		if time > toolAnimTime then
+			toolAnimTime = 0
+			toolAnim = "None"
+		end
+
+		animateTool()		
+	else
+		stopToolAnimations()
+		toolAnim = "None"
+		toolAnimInstance = nil
+		toolAnimTime = 0
+	end
+end
+
+-- connect events
+Humanoid.Died:connect(onDied)
+Humanoid.Running:connect(onRunning)
+Humanoid.Jumping:connect(onJumping)
+Humanoid.Climbing:connect(onClimbing)
+Humanoid.GettingUp:connect(onGettingUp)
+Humanoid.FreeFalling:connect(onFreeFall)
+Humanoid.FallingDown:connect(onFallingDown)
+Humanoid.Seated:connect(onSeated)
+Humanoid.PlatformStanding:connect(onPlatformStanding)
+Humanoid.Swimming:connect(onSwimming)
+
+---- setup emote chat hook
+game:GetService("Players").LocalPlayer.Chatted:connect(function(msg)
+	local emote = ""
+	if msg == "/e dance" then
+		emote = dances[math.random(1, #dances)]
+	elseif (string.sub(msg, 1, 3) == "/e ") then
+		emote = string.sub(msg, 4)
+	elseif (string.sub(msg, 1, 7) == "/emote ") then
+		emote = string.sub(msg, 8)
+	end
+	
+	if (pose == "Standing" and emoteNames[emote] ~= nil) then
+		playAnimation(emote, 0.1, Humanoid)
+	end
+
+end)
+
+-- emote bindable hook
+script:WaitForChild("PlayEmote").OnInvoke = function(emote)
+	-- Only play emotes when idling
+	if pose ~= "Standing" then
+		return
+	end
+	if emoteNames[emote] ~= nil then
+		-- Default emotes
+		playAnimation(emote, EMOTE_TRANSITION_TIME, Humanoid)
+
+		return true, currentAnimTrack
+	end
+
+	-- Return false to indicate that the emote could not be played
+	return false
+end
+-- main program
+
+-- initialize to idle
+playAnimation("idle", 0.1, Humanoid)
+pose = "Standing"
+
+while Figure.Parent ~= nil do
+	local _, time = wait(0.1)
+	move(time)
+end
+
+
+]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+			<Item class="StringValue" referent="RBX7E7B5BBD43B94C9C975F13EB311A6E22">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">idle</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBX1E24F3CD3A5945C695AD3C5AE74F2BE5">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180435571</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">Animation1</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="NumberValue" referent="RBXD371A049F87D42A0BB824F4718F6770A">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<string name="Name">Weight</string>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<double name="Value">9</double>
+						</Properties>
+					</Item>
+				</Item>
+				<Item class="Animation" referent="RBX25479946CBBE47C7A88514F101C4B4AD">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180435792</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">Animation2</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="NumberValue" referent="RBX92D5D6EBDFD9463389CBCACC402F904F">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+							<bool name="DefinesCapabilities">false</bool>
+							<string name="Name">Weight</string>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+							<double name="Value">1</double>
+						</Properties>
+					</Item>
+				</Item>
+			</Item>
+			<Item class="StringValue" referent="RBX4B0449C25CAC47118F660337D3D91A24">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">walk</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBX39F89BA04C00438A83E8176581AE9067">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180426354</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">WalkAnim</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="StringValue" referent="RBX503BECC2316C4985B9192F3B748AE973">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">run</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBX87F16E4980BF41648D0B8DE8385D596F">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180426354</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">RunAnim</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="StringValue" referent="RBX2858D2676BB343F6840D43EBA19B5278">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">jump</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBX4739908AEA2A43728BA6B058F04E98B6">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=125750702</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">JumpAnim</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="StringValue" referent="RBXF326E4ECD6C64717B2B2757B2D85D4A3">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">climb</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBXA3992E1BD7E44187A97A5FEC3C1EEE93">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180436334</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">ClimbAnim</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="StringValue" referent="RBXCD6C48D6A8BC4F1BBE26C0D0A7306554">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">toolnone</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBXAEF05609749B4EF592A240EBE343E9F8">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=182393478</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">ToolNoneAnim</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="StringValue" referent="RBXB02BD135FBC14863A4FADD986FF2F150">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">fall</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBX0F57D253BAF64957AA57F3B83FC6C396">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180436148</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">FallAnim</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="StringValue" referent="RBX0353CF86A1714C5993BCD5E905769398">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">sit</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<string name="Value"></string>
+				</Properties>
+				<Item class="Animation" referent="RBX5367725F43F64625931CA9E4E3671A29">
+					<Properties>
+						<Content name="AnimationId"><url>http://www.roblox.com/asset/?id=178130996</url></Content>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<string name="Name">SitAnim</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="BindableFunction" referent="RBX17D154FEFDE64A8EA9A80B60A46B53FE">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">PlayEmote</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="NumberValue" referent="RBX1F2BAE90642D4FEEA922FDCF3E8D3C75">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<string name="Name">ScaleDampeningPercent</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+					<double name="Value">1</double>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="BodyColors" referent="RBXDA5F6D189F5249998759FD307CB66316">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<Color3 name="HeadColor3">
+					<R>0.5</R>
+					<G>0.5</G>
+					<B>0.5</B>
+				</Color3>
+				<Color3 name="LeftArmColor3">
+					<R>0.5</R>
+					<G>0.5</G>
+					<B>0.5</B>
+				</Color3>
+				<Color3 name="LeftLegColor3">
+					<R>0.5</R>
+					<G>0.5</G>
+					<B>0.5</B>
+				</Color3>
+				<string name="Name">Body Colors</string>
+				<Color3 name="RightArmColor3">
+					<R>0.5</R>
+					<G>0.5</G>
+					<B>0.5</B>
+				</Color3>
+				<Color3 name="RightLegColor3">
+					<R>0.5</R>
+					<G>0.5</G>
+					<B>0.5</B>
+				</Color3>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<Color3 name="TorsoColor3">
+					<R>0.5</R>
+					<G>0.5</G>
+					<B>0.5</B>
+				</Color3>
+			</Properties>
+		</Item>
+	</Item>
+	<SharedStrings>
+		<SharedString md5="yuZpQdnvvUBOTYh1jqZ2cA=="></SharedString>
+	</SharedStrings>
+</roblox>

@@ -1,0 +1,35 @@
+{
+  "name": "roblox-asymptote-test-npc",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$path": "Workspace"
+    },
+    "ReplicatedStorage": {
+      "shared": {
+        "$path": "src/shared"
+      },
+      "remotes": {
+        "$className": "Folder",
+        "Detection": {
+          "$className": "RemoteEvent"
+        }
+      }
+    },
+    "ServerScriptService": {
+      "server": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "client": {
+          "$path": "src/client/PlayerScripts"
+        }
+      }
+    },
+    "StarterGui": {
+      "$path": "src/client/StarterGui"
+    }
+  }
+}
