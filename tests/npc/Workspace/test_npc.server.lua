@@ -29,7 +29,7 @@ local new_config: sight.SightConfig = {
 	num_rays = 5
 }
 
-local active_npcs: { Npc } = {}
+local active_npcs: { [ Model ]: Npc } = {}
 
 local function create_npc(character: Model): Npc
 	local head = character:FindFirstChild("Head") :: BasePart
@@ -83,17 +83,16 @@ end
 
 for _, npc in ipairs(CollectionService:GetTagged("Test_Npc")) do
 	local self = create_npc(npc :: Model)
+	active_npcs[npc :: Model] = self
 
 	self.timeline_sus.step:Connect(function()
 		self.current_sus = self.timeline_sus.current_value
 	end)
-
-
 end
 
 RunService.Heartbeat:Connect(function()
-	for npc in pairs(active_npcs) do
-		local self: Npc = npc -- for some reason npc gets refined to number.
+	for _, npc in pairs(active_npcs) do
+		local self: Npc = npc
 		-- Determine if ANY player is currently visible
 		local new_any_player_visible = false
 
@@ -120,14 +119,14 @@ end)
 
 Players.PlayerAdded:Connect(function(plr)
 	plr.CharacterAdded:Connect(function()
-		for npc: Npc in pairs(active_npcs :: {Npc}) do -- SOMEONE TELL ME ON WHAT GOD'S GREEN EARTH WHERE NPC GETS REFINED TO NUMBER?!
+		for _, npc: Npc in pairs(active_npcs) do
 			npc.comp_sight.sight_plrs_to_check[plr] = true
 		end
 	end)
 end)
 
 Players.PlayerRemoving:Connect(function(plr)
-	for npc: Npc in pairs(active_npcs) do
+	for _, npc: Npc in pairs(active_npcs) do
 		npc.comp_sight.sight_plrs_to_check[plr] = nil
 	end
 end)

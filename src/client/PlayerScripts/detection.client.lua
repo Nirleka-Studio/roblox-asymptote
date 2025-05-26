@@ -15,14 +15,15 @@ type MeterObject = {
 }
 
 local REMOTE: RemoteEvent = ReplicatedStorage.remotes.Detection
-local FRAME_METER_REF = Players.LocalPlayer.PlayerGui:WaitForChild("Detection").SusMeter
+local DETECTION_GUI = Players.LocalPlayer.PlayerGui:WaitForChild("Detection")
+local FRAME_METER_REF = DETECTION_GUI.SusMeter
 
 local active_meters: { [Model]: MeterObject } = {}
 
 local function clone_meter_frame(): Frame
 	local cloned: Frame = FRAME_METER_REF:Clone()
 	cloned.Visible = true
-	cloned.Parent = script.Parent
+	cloned.Parent = DETECTION_GUI
 	return cloned
 end
 
