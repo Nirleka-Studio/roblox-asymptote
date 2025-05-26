@@ -4,10 +4,10 @@ local camera = workspace.CurrentCamera
 
 local pointer = {}
 
-type WorldPointer = {
+export type WorldPointer = {
 	read gui_frame: Frame,
 	read og_abs_pos: Vector2,
-	read target_pos: Vector3
+	target_pos: Vector3
 }
 
 local function rotate_frame_by_anchor(frame: Frame, frame_og_abs_pos: Vector2, theta: number): ()
