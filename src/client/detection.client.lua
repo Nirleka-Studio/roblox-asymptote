@@ -14,8 +14,7 @@ type MeterObject = {
 	gui_inst: Frame,
 	last_sus: number,
 	current_rtween: rtween.RTween,
-	is_raising: boolean,
-	last_raising_was: boolean
+	is_raising: boolean
 }
 
 local REMOTE: RemoteEvent = game.ReplicatedStorage.remotes.Detection
@@ -36,8 +35,7 @@ local function create_meter_object(origin: Vector3): MeterObject
 		gui_inst = new_gui_inst,
 		last_sus = 0,
 		current_rtween = rtween.create(Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		is_raising = false,
-		last_raising_was = false
+		is_raising = false
 	}
 end
 
@@ -67,51 +65,27 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 	end
 
 	local function animate()
-		if current_meter.is_raising and not current_meter.last_raising_was then
+		if current_meter.is_raising then
 			if not (sus_value < 0.5) then
 				return
 			end
-
 			local current_rtween: rtween.RTween = current_meter.current_rtween
 			if current_rtween.is_playing then
-				return
+				rtween.kill(current_rtween)
 			end
-
-			rtween.tween_instance(
-				current_rtween,
-				current_meter.gui_inst.Frame.CanvasGroup.A1,
-				{ImageTransparency = 0},
-				.3
-			)
-			rtween.tween_instance(
-				current_rtween,
-				current_meter.gui_inst.Frame.A1,
-				{ImageTransparency = 0},
-				.3
-			)
+			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageTransparency = 0}, .3)
+			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 0}, .3)
 			rtween.play(current_rtween)
 		else
 			if not (sus_value < 0.5) then
 				return
 			end
-
 			local current_rtween: rtween.RTween = current_meter.current_rtween
 			if current_rtween.is_playing then
-				return
+				rtween.kill(current_rtween)
 			end
-
-			rtween.tween_instance(
-				current_rtween,
-				current_meter.gui_inst.Frame.CanvasGroup.A1,
-				{ImageTransparency = 1},
-				.5
-			)
-			rtween.tween_instance(
-				current_rtween,
-				current_meter.gui_inst.Frame.A1,
-				{ImageTransparency = 1},
-				.5
-			)
+			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageTransparency = 1}, .5)
+			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 1}, .5)
 			rtween.play(current_rtween)
 		end
 	end
