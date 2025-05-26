@@ -73,7 +73,7 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 				rtween.kill(current_rtween)
 			end
 			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageTransparency = 0}, .3)
-			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 0}, .3)
+			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 0.5}, .3) -- makes the back a lil bit transparent
 			rtween.play(current_rtween)
 		else
 			if not (sus_value < 0.5) then
