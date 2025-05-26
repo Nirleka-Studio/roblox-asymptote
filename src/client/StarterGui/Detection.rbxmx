@@ -2,7 +2,7 @@
 	<Meta name="ExplicitAutoJoints">true</Meta>
 	<External>null</External>
 	<External>nil</External>
-	<Item class="ScreenGui" referent="RBX17519EE4A927415683A96A72A261E264">
+	<Item class="ScreenGui" referent="RBX994ECB599F154802A0C04618905563B6">
 		<Properties>
 			<BinaryString name="AttributesSerialize"></BinaryString>
 			<bool name="AutoLocalize">true</bool>
@@ -25,7 +25,7 @@
 			<BinaryString name="Tags"></BinaryString>
 			<token name="ZIndexBehavior">1</token>
 		</Properties>
-		<Item class="Frame" referent="RBXB371106A2970440299BA3DC7FD85BCF8">
+		<Item class="Frame" referent="RBX214B05DB40E24AD79D4FE195A03192E8">
 			<Properties>
 				<bool name="Active">false</bool>
 				<Vector2 name="AnchorPoint">
@@ -76,9 +76,9 @@
 				<Ref name="SelectionImageObject">null</Ref>
 				<int name="SelectionOrder">0</int>
 				<UDim2 name="Size">
-					<XS>0.145641789</XS>
+					<XS>0.116861768</XS>
 					<XO>0</XO>
-					<YS>0.379999995</YS>
+					<YS>0.295484334</YS>
 					<YO>0</YO>
 				</UDim2>
 				<token name="SizeConstraint">0</token>
@@ -88,7 +88,20 @@
 				<bool name="Visible">false</bool>
 				<int name="ZIndex">1</int>
 			</Properties>
-			<Item class="Frame" referent="RBXD932EB820FF14C7F88889CD44542F7AC">
+			<Item class="UIAspectRatioConstraint" referent="RBXD3C005C8DA4B4054BC5A63DA858DE8C1">
+				<Properties>
+					<float name="AspectRatio">0.702548087</float>
+					<token name="AspectType">0</token>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<token name="DominantAxis">0</token>
+					<string name="Name">UIAspectRatioConstraint</string>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="Frame" referent="RBXBF45F0B05CAC46A2B9E0BA8B2C1EB3D8">
 				<Properties>
 					<bool name="Active">false</bool>
 					<Vector2 name="AnchorPoint">
@@ -123,9 +136,9 @@
 					<Ref name="NextSelectionRight">null</Ref>
 					<Ref name="NextSelectionUp">null</Ref>
 					<UDim2 name="Position">
-						<XS>0</XS>
+						<XS>-2.72165209e-07</XS>
 						<XO>0</XO>
-						<YS>0</YS>
+						<YS>-4.78590572e-08</YS>
 						<YO>0</YO>
 					</UDim2>
 					<Ref name="RootLocalizationTable">null</Ref>
@@ -139,9 +152,9 @@
 					<Ref name="SelectionImageObject">null</Ref>
 					<int name="SelectionOrder">0</int>
 					<UDim2 name="Size">
-						<XS>1</XS>
+						<XS>1.00000012</XS>
 						<XO>0</XO>
-						<YS>0.240602031</YS>
+						<YS>0.237582266</YS>
 						<YO>0</YO>
 					</UDim2>
 					<token name="SizeConstraint">0</token>
@@ -151,7 +164,7 @@
 					<bool name="Visible">true</bool>
 					<int name="ZIndex">1</int>
 				</Properties>
-				<Item class="ImageLabel" referent="RBX140A4C1769B74F8894409D8F0C5B510E">
+				<Item class="ImageLabel" referent="RBX7D275A4EE37945D091F815C4FF1BF5A5">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -192,7 +205,7 @@
 							<X>0</X>
 							<Y>0</Y>
 						</Vector2>
-						<float name="ImageTransparency">0</float>
+						<float name="ImageTransparency">0.5</float>
 						<bool name="Interactable">true</bool>
 						<int name="LayoutOrder">0</int>
 						<string name="Name">A1</string>
@@ -248,7 +261,7 @@
 						<int name="ZIndex">1</int>
 					</Properties>
 				</Item>
-				<Item class="CanvasGroup" referent="RBX471A4027768E4B8F9BFEA64B0A6DBD99">
+				<Item class="CanvasGroup" referent="RBX0CFDEE129E224AA3B356DD067A93E730">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -316,7 +329,7 @@
 						<bool name="Visible">true</bool>
 						<int name="ZIndex">1</int>
 					</Properties>
-					<Item class="ImageLabel" referent="RBX2DF3777E798D42CEB7416389AA4193DF">
+					<Item class="ImageLabel" referent="RBX0E5B55F5F7824F639AB199F0CA08A069">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -413,6 +426,19 @@
 							<int name="ZIndex">1</int>
 						</Properties>
 					</Item>
+				</Item>
+				<Item class="UIAspectRatioConstraint" referent="RBXFF81E9613FC8475A9E1480B924DE3C8A">
+					<Properties>
+						<float name="AspectRatio">2.95707321</float>
+						<token name="AspectType">0</token>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+						<bool name="DefinesCapabilities">false</bool>
+						<token name="DominantAxis">0</token>
+						<string name="Name">UIAspectRatioConstraint</string>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
 				</Item>
 			</Item>
 		</Item>

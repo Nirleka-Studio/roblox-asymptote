@@ -1,13 +1,10 @@
 --!strict
-task.wait(3)
 
-local world_pointer = require(game.Players.LocalPlayer.PlayerScripts.client.modules.gui.world_pointer)
-
-
--- im actually gonna fucking die.
-
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local rtween = require(game.ReplicatedStorage.shared.interpolation.rtween)
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local world_pointer = require(Players.LocalPlayer.PlayerScripts.client.modules.gui.world_pointer)
+local rtween = require(ReplicatedStorage.shared.interpolation.rtween)
 
 type MeterObject = {
 	comp_pointer: world_pointer.WorldPointer,
@@ -17,8 +14,9 @@ type MeterObject = {
 	is_raising: boolean
 }
 
-local REMOTE: RemoteEvent = game.ReplicatedStorage.remotes.Detection
-local FRAME_METER_REF: Frame = script.Parent.SusMeter
+local REMOTE: RemoteEvent = ReplicatedStorage.remotes.Detection
+local FRAME_METER_REF = Players.LocalPlayer.PlayerGui:WaitForChild("Detection").SusMeter
+
 local active_meters: { [Model]: MeterObject } = {}
 
 local function clone_meter_frame(): Frame
