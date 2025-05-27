@@ -1,6 +1,9 @@
 --!strict
 
 local PathfindingService = game:GetService("PathfindingService")
+local debug_waypoints = require(game.ReplicatedStorage.shared.debug.pathfinding.debug_waypoints)
+
+local DEBUG_MODE = true
 
 local pathfinder = {}
 pathfinder.__index = pathfinder
@@ -22,9 +25,11 @@ export type Pathfinder = typeof(setmetatable({} :: {
 	},
 	waypoints: {PathWaypoint},
 	waypoints_current_index: number,
+	main_destination: Vector3?,
 	is_moving: boolean,
 	connection_blocked: RBXScriptConnection?,
-	connection_reached: RBXScriptConnection?
+	connection_reached: RBXScriptConnection?,
+	_debug_parts: {Part}
 }, pathfinder))
 
 local DEFAULT_AGENT_PARAMS: AgentParameters = {
@@ -41,11 +46,13 @@ function pathfinder.create(character: Model, humanoid: Humanoid, agent_params: A
 			character = character,
 			humanoid = humanoid
 		},
+		main_destination = nil,
 		waypoints = {},
 		waypoints_current_index = 0,
 		is_moving = false,
 		connection_blocked = nil,
-		connection_reached = nil
+		connection_reached = nil,
+		_debug_parts = {}
 	}, pathfinder)
 
 	return self :: Pathfinder
@@ -54,7 +61,7 @@ end
 function pathfinder._on_path_blocked(self: Pathfinder, blocked_waypoint_index): ()
 	if blocked_waypoint_index > self.waypoints_current_index then
 		self.connection_blocked:Disconnect()
-		self:compute_path((self.agent.character.PrimaryPart :: BasePart).Position, to)
+		self:compute_path((self.agent.character.PrimaryPart :: BasePart).Position, self.main_destination)
 		self.connection_blocked = self.path.Blocked:Connect(function(blocked_waypoint_index)
 			self:_on_path_blocked(blocked_waypoint_index)
 		end)
@@ -74,6 +81,14 @@ function pathfinder.compute_path(self: Pathfinder, from: Vector3, to: Vector3): 
 	self.waypoints = self.path:GetWaypoints()
 	self.waypoints_current_index = 1
 
+	if DEBUG_MODE then
+		for _, part in ipairs(self._debug_parts) do
+			part:Destroy()
+		end
+
+		self._debug_parts = debug_waypoints.visualize_path(self.path)
+	end
+
 	return true
 end
 
@@ -81,13 +96,21 @@ function pathfinder.set_destination(self: Pathfinder, to: Vector3): ()
 	if self.is_moving then
 		self.connection_blocked:Disconnect()
 		self.connection_reached:Disconnect()
+
+		if DEBUG_MODE then
+			for _, part in ipairs(self._debug_parts) do
+				part:Destroy()
+			end
+		end
 	end
 	local is_computed = self:compute_path((self.agent.character.PrimaryPart :: BasePart).Position, to)
 	if not is_computed then
 		self.is_moving = false
+		self.main_destination = nil
 		return
 	end
 
+	self.main_destination = to
 	self.is_moving = true
 
 	self.connection_blocked = self.path.Blocked:Connect(function(blocked_waypoint_index)
@@ -100,6 +123,7 @@ function pathfinder.set_destination(self: Pathfinder, to: Vector3): ()
 			self.agent.humanoid:MoveTo(self.waypoints[self.waypoints_current_index].Position)
 		else
 			self.is_moving = false
+			self.main_destination = nil
 			self.connection_reached:Disconnect()
 			self.connection_blocked:Disconnect()
 		end
