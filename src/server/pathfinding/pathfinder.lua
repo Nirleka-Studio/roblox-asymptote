@@ -51,6 +51,16 @@ function pathfinder.create(character: Model, humanoid: Humanoid, agent_params: A
 	return self :: Pathfinder
 end
 
+function pathfinder._on_path_blocked(self: Pathfinder, blocked_waypoint_index): ()
+	if blocked_waypoint_index > self.waypoints_current_index then
+		self.connection_blocked:Disconnect()
+		self:compute_path((self.agent.character.PrimaryPart :: BasePart).Position, to)
+		self.connection_blocked = self.path.Blocked:Connect(function(blocked_waypoint_index)
+			self:_on_path_blocked(blocked_waypoint_index)
+		end)
+	end
+end
+
 function pathfinder.compute_path(self: Pathfinder, from: Vector3, to: Vector3): boolean
 	local success, err = pcall(function()
 		return self.path:ComputeAsync(from, to)
@@ -68,31 +78,44 @@ function pathfinder.compute_path(self: Pathfinder, from: Vector3, to: Vector3): 
 end
 
 function pathfinder.set_destination(self: Pathfinder, to: Vector3): ()
+	if self.is_moving then
+		self.connection_blocked:Disconnect()
+		self.connection_reached:Disconnect()
+	end
 	local is_computed = self:compute_path((self.agent.character.PrimaryPart :: BasePart).Position, to)
 	if not is_computed then
+		self.is_moving = false
 		return
 	end
 
+	self.is_moving = true
+
 	self.connection_blocked = self.path.Blocked:Connect(function(blocked_waypoint_index)
-		if blocked_waypoint_index > self.waypoints_current_index then
-			self.connection_blocked:Disconnect()
-			self:compute_path((self.agent.character.PrimaryPart :: BasePart).Position, to)
-		end
+		self:_on_path_blocked(blocked_waypoint_index)
 	end)
 
-	if not self.connection_reached then -- "TypeError: Type 'RBXScriptConnection' could not be converted into 'nil'" WELL NO SHIT THATS WHY WE'RE GONNA SET IT TO SOMETHING THAT IS NOT NIL. WTF IS WRONG WITH YOU.
-		self.connection_reached = self.agent.humanoid.MoveToFinished:Connect(function(reached)
-			if reached and self.waypoints_current_index < #self.waypoints then
-				self.waypoints_current_index += 1
-				self.agent.humanoid:MoveTo(self.waypoints[self.waypoints_current_index].Position)
-			else
-				self.connection_reached:Disconnect()
-				self.connection_blocked:Disconnect()
-			end
-		end)
-	end
+	self.connection_reached = self.agent.humanoid.MoveToFinished:Connect(function(reached)
+		if reached and self.waypoints_current_index < #self.waypoints then
+			self.waypoints_current_index += 1
+			self.agent.humanoid:MoveTo(self.waypoints[self.waypoints_current_index].Position)
+		else
+			self.is_moving = false
+			self.connection_reached:Disconnect()
+			self.connection_blocked:Disconnect()
+		end
+	end)
 
 	self.agent.humanoid:MoveTo(self.waypoints[self.waypoints_current_index].Position)
 end
 
-return pathfinder
+function pathfinder.stop(self: Pathfinder): ()
+	if self.is_moving then
+		self.agent.humanoid:MoveTo((self.agent.character.PrimaryPart :: BasePart).Position)
+		self.connection_blocked:Disconnect()
+		self.connection_reached:Disconnect()
+	end
+end
+
+return pathfinder :: {
+	create: typeof(pathfinder.create)
+}
