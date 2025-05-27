@@ -3,6 +3,7 @@
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local hearing = require(game.ServerScriptService.server.detection.hearing)
 local suspicion = require(game.ServerScriptService.server.detection.suspicion)
 local sight = require(game.ServerScriptService.server.detection.sight)
 
@@ -13,7 +14,7 @@ type Npc = {
 	character_head: BasePart,
 	comp_sight: sight.SightComp,
 	comp_sus: suspicion.SuspicionComp,
-	hearing_radius: number,
+	comp_hearing: hearing.HearingComp,
 	detection_type: string | "none" | "hearing" | "sight",
 	any_player_detected: boolean,
 	focusing_player: Player?,
@@ -36,34 +37,11 @@ local function create_npc(character: Model): Npc
 		character_head = head, -- for the sake of type checker
 		comp_sight = sight.create_comp(head, new_config),
 		comp_sus = suspicion.create(1/3, 1/5),
-		hearing_radius = 15,
+		comp_hearing = hearing.create(head.Position, 15),
 		detection_type = "none",
 		any_player_detected = false,
 		focusing_player = nil,
 	}
-end
-
-local function is_player_in_hearing_range(self: Npc, player: Player)
-	-- stupid checks for the sake of the typechecker.
-	if not player.Character then
-		return false
-	end
-	local root_part = player.Character:FindFirstChild("HumanoidRootPart") :: BasePart
-	if not root_part then
-		return false
-	end
-
-	local distance = (self.character_head.Position - root_part.Position).Magnitude
-	return distance <= self.hearing_radius -- You'll need to define this property
-end
-
-local function is_player_hearable(player: Player)
-	if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
-		return false
-	end
-
-	local humanoid = player.Character:FindFirstChild("Humanoid") :: Humanoid -- istg.
-	return humanoid:GetMoveVelocity().Magnitude > 0
 end
 
 local function get_detection_state(self: Npc)
@@ -83,7 +61,7 @@ local function get_detection_state(self: Npc)
 	-- if no sight detection, use hearing
 	if not sight_detected then
 		for plr in pairs(self.comp_sight.sight_plrs_to_check) do -- or use a separate hearing list
-			if is_player_in_hearing_range(self, plr) and is_player_hearable(plr) then
+			if hearing.is_player_hearable(self.comp_hearing, plr) then
 				hearing_detected = true
 				detected_player = plr
 				break
