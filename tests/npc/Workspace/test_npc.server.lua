@@ -3,8 +3,8 @@
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local suspicion = require(game.ServerScriptService.server.detection.suspicion)
 local sight = require(game.ServerScriptService.server.detection.sight)
-local timeline = require(game.ReplicatedStorage.shared.interpolation.timeline)
 
 local REMOTE = game.ReplicatedStorage.remotes.Detection
 
@@ -12,15 +12,11 @@ type Npc = {
 	character: Model,
 	character_head: BasePart,
 	comp_sight: sight.SightComp,
-	sus_raise_speed: number,
-	sus_decay_speed: number,
+	comp_sus: suspicion.SuspicionComp,
 	hearing_radius: number,
 	detection_type: string | "none" | "hearing" | "sight",
-	current_sus: number,
-	target_sus: number,
-	timeline_sus: timeline.Timeline,
 	any_player_detected: boolean,
-	focusing_player: Player?
+	focusing_player: Player?,
 }
 
 local new_config: sight.SightConfig = {
@@ -39,42 +35,12 @@ local function create_npc(character: Model): Npc
 		character = character,
 		character_head = head, -- for the sake of type checker
 		comp_sight = sight.create_comp(head, new_config),
-		sus_raise_speed = 1/3,
-		sus_decay_speed = 1/5,
+		comp_sus = suspicion.create(1/3, 1/5),
 		hearing_radius = 15,
 		detection_type = "none",
-		current_sus = 0,
-		target_sus = 0,
-		timeline_sus = timeline.create(0, 0, 1),
 		any_player_detected = false,
-		focusing_player = nil
+		focusing_player = nil,
 	}
-end
-
-local function update_suspicion_target(self: Npc, new_target: number)
-	if new_target == self.target_sus then
-		return
-	end
-	self.target_sus = new_target
-	local suspicion_difference = math.abs(new_target - self.current_sus)
-	local duration
-	if new_target > self.current_sus then
-		duration = suspicion_difference / self.sus_raise_speed
-	else
-		duration = suspicion_difference / self.sus_decay_speed
-	end
-	-- this should've been handled by the timeline itself but fuck it at this point.
-	self.timeline_sus = timeline.create(self.current_sus, new_target, duration)
-	self.timeline_sus.step:Connect(function()
-		self.current_sus = self.timeline_sus.current_value
-		if self.focusing_player then
-			REMOTE:FireClient(
-				self.focusing_player,
-				self.current_sus, self.character,
-				self.character_head.Position)
-		end
-	end)
-	self.timeline_sus:play_from_start()
 end
 
 local function is_player_in_hearing_range(self: Npc, player: Player)
@@ -133,13 +99,18 @@ local function get_detection_state(self: Npc)
 	}
 end
 
+local function send_sus_value_to_plrs(self: Npc, sus_value: number)
+	if self.focusing_player then
+		REMOTE:FireClient(
+			self.focusing_player,
+			sus_value, self.character,
+			self.character_head.Position)
+	end
+end
+
 for _, npc in ipairs(CollectionService:GetTagged("Test_Npc")) do
 	local self = create_npc(npc :: Model)
 	active_npcs[npc :: Model] = self
-
-	self.timeline_sus.step:Connect(function()
-		self.current_sus = self.timeline_sus.current_value
-	end)
 end
 
 RunService.Heartbeat:Connect(function()
@@ -162,10 +133,14 @@ RunService.Heartbeat:Connect(function()
 					self.detection_type = "hearing"
 				end
 
-				update_suspicion_target(self, 1)
+				suspicion.update_suspicion_target(self.comp_sus, 1, function(v)
+					send_sus_value_to_plrs(self, v)
+				end)
 			else
 				self.detection_type = "none"
-				update_suspicion_target(self, 0)
+				suspicion.update_suspicion_target(self.comp_sus, 0, function(v)
+					send_sus_value_to_plrs(self, v)
+				end)
 			end
 		end
 
