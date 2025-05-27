@@ -1,10 +1,5 @@
 --!strict
 
-export type PathVisualizer = {
-	last_waypoint: PathWaypoint,
-	current_waypoint: PathWaypoint
-}
-
 local function create_static_part(): Part
 	local new_part = Instance.new("Part")
 	new_part.TopSurface = Enum.SurfaceType.Smooth
@@ -32,7 +27,7 @@ local function visualize_endpoint(waypoint: PathWaypoint): Part
 	local new_part = create_static_part()
 	new_part.BrickColor = BrickColor.new("Lime green")
 	new_part.Size = Vector3.new(2.5, 2.5, 2.5)
-	new_part.Position = waypoint.Position
+	new_part.Position = waypoint.Position + Vector3.new(0, 2, 0)
 	new_part.Parent = workspace.CurrentCamera
 	return new_part
 end
@@ -46,9 +41,8 @@ local function visualize_path(path: Path): {Part}
 		local part: Part
 		if i == 1 or i == waypoints_size then
 			part = visualize_endpoint(waypoint)
-		else
-			part = visualize_waypoint(waypoint)
 		end
+		part = visualize_waypoint(waypoint)
 		table.insert(waypoint_parts, part)
 	end
 
