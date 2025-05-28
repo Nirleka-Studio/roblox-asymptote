@@ -12,8 +12,16 @@ export type HearingComp = {
 		head: BasePart
 	},
 	hearing_radius: number,
-	hearing_plrs_to_check: { [Player]: true }
+	hearing_plrs_to_check: { [Player]: true },
+	_ray_params: RaycastParams
 }
+
+local function create_ray_params(character: Model)
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = {character}
+	return params
+end
 
 local function are_equal(a: number, b: number): boolean
 	return math.abs(a - b) < EPSILON
@@ -23,17 +31,17 @@ local function vectors_are_equal(v1: Vector3, v2: Vector3): boolean
 	return are_equal(v1.X, v2.X) and are_equal(v1.Y, v2.Y) and are_equal(v1.Z, v2.Z)
 end
 
-
 local hearing = {}
 
-function hearing.create(agent: {
-	character: Model,
-	head: BasePart,
-}, hearing_radius: number): HearingComp
+function hearing.create(
+	agent: { character: Model, head: BasePart },
+	hearing_radius: number
+): HearingComp
 	return {
 		agent = agent,
 		hearing_radius = hearing_radius,
-		hearing_plrs_to_check = {}
+		hearing_plrs_to_check = {},
+		_ray_params = create_ray_params(agent.character)
 	}
 end
 
@@ -85,21 +93,21 @@ function hearing.is_player_hearable(self: HearingComp, player: Player): boolean
 		return false
 	end
 
-	local params = RaycastParams.new()
-	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = {self.agent.character}
+	local agent_head_pos = self.agent.head.Position
+	local plr_character = player.Character :: Model
+	local root_part = plr_character:FindFirstChild("HumanoidRootPart") :: Part
+	local root_part_pos = root_part.Position :: Vector3
+
 	local ray_result = workspace:Raycast(
 		self.agent.head.Position,
-		(player.Character.HumanoidRootPart.Position :: Vector3 - self.agent.head.Position).Unit * self.hearing_radius,
-		params
+		(root_part_pos:: Vector3 - agent_head_pos).Unit * self.hearing_radius,
+		self._ray_params
 	)
 
-	if ray_result then
-		Debris:AddItem(Draw.line(self.agent.head.Position, ray_result.Position), 0.1)
-	end
-
-	if not ray_result or ray_result.Instance ~= player.Character.HumanoidRootPart then
+	if not ray_result or not ray_result.Instance:IsDescendantOf(plr_character :: Model) then
 		return false
+	--else
+		--Debris:AddItem(Draw.line(agent_head_pos, ray_result.Position), 0.1)
 	end
 
 	return true
