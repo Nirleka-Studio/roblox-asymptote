@@ -39,7 +39,7 @@ local function create_npc(character: Model): Npc
 		character_head = head, -- for the sake of type checker
 		comp_sight = sight.create_comp(head, new_config),
 		comp_sus = suspicion.create(1/3, 1/5),
-		comp_hearing = hearing.create(head.Position, 15),
+		comp_hearing = hearing.create({character = character, head = head}, 15),
 		comp_pipeline = pipieline.new(),
 		focusing_player = nil,
 		any_player_detected = false

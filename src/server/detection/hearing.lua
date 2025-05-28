@@ -1,10 +1,16 @@
 --!strict
+local Debris = game:GetService("Debris")
+
+local Draw = require(game.ReplicatedStorage.shared.thirdparty.Draw)
 
 local EPSILON = 0.001
 local Hearing_Players_Last_Pos: { [Player]: Vector3 } = {}
 
 export type HearingComp = {
-	hearing_listener_pos: Vector3,
+	agent: {
+		character: Model,
+		head: BasePart
+	},
 	hearing_radius: number,
 	hearing_plrs_to_check: { [Player]: true }
 }
@@ -20,9 +26,12 @@ end
 
 local hearing = {}
 
-function hearing.create(listener_pos: Vector3, hearing_radius: number): HearingComp
+function hearing.create(agent: {
+	character: Model,
+	head: BasePart,
+}, hearing_radius: number): HearingComp
 	return {
-		hearing_listener_pos = listener_pos,
+		agent = agent,
 		hearing_radius = hearing_radius,
 		hearing_plrs_to_check = {}
 	}
@@ -38,7 +47,7 @@ function hearing.is_player_in_hearing_radius(self: HearingComp, player: Player):
 		return false
 	end
 
-	local distance = (self.hearing_listener_pos - root_part.Position).Magnitude
+	local distance = (self.agent.head.Position - root_part.Position).Magnitude
 	return distance <= self.hearing_radius
 end
 
@@ -53,16 +62,12 @@ function hearing.is_player_moving(player: Player): boolean
 		return false
 	end
 
-	print("velocity: player velocity above")
-
 	if not Hearing_Players_Last_Pos[player] then
-		print("not present, setting, returning true")
 		Hearing_Players_Last_Pos[player] = player.Character.HumanoidRootPart.Position
 		return true
 	end
 
 	if vectors_are_equal(player.Character.HumanoidRootPart.Position :: Vector3, Hearing_Players_Last_Pos[player]) then
-		print("player is not actually moving.")
 		return false
 	end
 
@@ -77,6 +82,23 @@ function hearing.is_player_hearable(self: HearingComp, player: Player): boolean
 	end
 
 	if not hearing.is_player_moving(player) then
+		return false
+	end
+
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = {self.agent.character}
+	local ray_result = workspace:Raycast(
+		self.agent.head.Position,
+		(player.Character.HumanoidRootPart.Position :: Vector3 - self.agent.head.Position).Unit * self.hearing_radius,
+		params
+	)
+
+	if ray_result then
+		Debris:AddItem(Draw.line(self.agent.head.Position, ray_result.Position), 0.1)
+	end
+
+	if not ray_result or ray_result.Instance ~= player.Character.HumanoidRootPart then
 		return false
 	end
 
