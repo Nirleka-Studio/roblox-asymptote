@@ -23,7 +23,7 @@ export type Connection<T...> = {
 	_signal: Signal<T...>,
 	_callback: (T...) -> (),
 	_next: Connection<T...> | false,
-	Disconnect: (self: Connection<T...>) -> (),
+	Disconnect: (self: Connection<T...>) -> ()
 }
 
 export type Signal<T...> = {
@@ -96,10 +96,10 @@ setmetatable(Connection, {
 local Signal = {}
 Signal.__index = Signal
 
-function Signal.new(): Signal<...any> -- leave it to type `any` as it will be refined eitherway
+function Signal.new<T...>(): Signal<T...> -- leave it to type `any` as it will be refined eitherway
 	return setmetatable({
 		_handlerListHead = false,
-	}, Signal) :: Signal<...any>
+	}, Signal) :: Signal<T...>
 end
 
 function Signal.Connect<T...>(self: Signal<T...>, callback: (T...) -> ())
@@ -162,5 +162,5 @@ setmetatable(Signal, {
 })
 
 return Signal :: { -- only exposes constructor
-	new: () -> Signal<...any>
+	new: typeof(Signal.new)
 }
