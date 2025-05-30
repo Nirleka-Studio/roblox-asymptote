@@ -3,30 +3,30 @@
 local pipeline = {}
 pipeline.__index = pipeline
 
-type DetectionStrategy = {
+type DetectionStrategy<T> = {
 	name: string,
-	callback: (any) -> DetectionResult
+	callback: (T) -> DetectionResult
 }
 
 export type DetectionResult = {
 	detected: boolean,
-	player: Player?,
-	method: ("sight" | "hearing")?
+	player: Player | nil,
+	method: ("sight" | "hearing") | nil
 }
 
-export type DetectionPipeline = typeof(setmetatable({} :: {
-	strategies: { DetectionStrategy }
+export type DetectionPipeline<T> = typeof(setmetatable({} :: {
+	strategies: { DetectionStrategy<T> }
 }, pipeline))
 
-function pipeline.new(): DetectionPipeline
+function pipeline.create(): DetectionPipeline<any>
 	return setmetatable({ strategies = {} }, pipeline)
 end
 
-function pipeline.register(self: DetectionPipeline, method: string, callback: (any) -> DetectionResult)
+function pipeline.register<T>(self: DetectionPipeline<T>, method: string, callback: (T) -> DetectionResult)
 	self.strategies[#self.strategies + 1] = { name = method, callback = callback }
 end
 
-function pipeline.run(self: DetectionPipeline, npc: any): DetectionResult
+function pipeline.run<T>(self: DetectionPipeline<T>, npc: any): DetectionResult
 	for _, strat in ipairs(self.strategies) do
 		local result = strat.callback(npc)
 		if result.detected then
@@ -36,4 +36,4 @@ function pipeline.run(self: DetectionPipeline, npc: any): DetectionResult
 	return { detected = false }
 end
 
-return pipeline :: { new: typeof(pipeline.new)}
+return pipeline :: { create: typeof(pipeline.create)}

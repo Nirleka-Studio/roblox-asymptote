@@ -1,13 +1,16 @@
-export type LerpObject = {
+--!strict
+
+local lerper = {}
+lerper.__index = lerper
+
+export type LerpObject = typeof(setmetatable({} :: {
 	cur_value: number,
 	fnl_value: number,
 	str_value: number,
 	dur: number,
 	elapsed: number,
-	easing_func: (number) -> number
-}
-
-local lerper = {}
+	easing_func: ((number) -> number)?
+}, lerper))
 
 function lerper.ease(p_x: number, p_c: number)
 	if p_x < 0 then
@@ -32,40 +35,40 @@ function lerper.ease(p_x: number, p_c: number)
 	end
 end
 
-function lerper.create(
-	start_value: number,
-	final_value: number,
-	dur: number,
-	easing_func: ((number) -> number)?
-): LerpObject
-	return {
-		cur_value = start_value,
-		fnl_value = final_value,
-		str_value = start_value,
-		dur = dur,
-		elapsed = 0,
-		easing_func = if easing_func then easing_func else function(c: number)
-			return lerper.ease(c, 1)
-		end
-	} :: LerpObject
+function lerper.smoothstep(from: number, to: number, t: number): number
+	t = math.clamp(t, 0.0, 1.0)
+	t = -2.0 * t * t * t + 3.0 * t * t
+	return to * t + from * (1 - t)
 end
 
-function lerper.step(obj: LerpObject, delta: number, step_func: (cur_value: number) -> ()?)
+function lerper.create(from: number, to: number, dur: number, easing_func: ((number) -> number)?): LerpObject
+	return setmetatable({
+		cur_value = from,
+		fnl_value = to,
+		str_value = from,
+		dur = dur,
+		elapsed = 0,
+		easing_func = easing_func
+	}, lerper)
+end
+
+function lerper.step(obj: LerpObject, delta: number)
 	if obj.cur_value == obj.fnl_value then
 		return
 	end
 
 	obj.elapsed += delta
 
+	-- keeps c between 0 and 1.
 	local c = math.clamp(obj.elapsed / obj.dur, 0.0, 1.0)
-	if obj.easing_func then
-		c = obj.easing_func(c, obj.p_x)
+	if obj.easing_func ~= nil then
+		c = obj.easing_func(c)
 	end
-	obj.cur_value = math.lerp(obj.str_value, obj.fnl_value, c) -- omg the luau team added math.lerp???? since when????
-
-	if step_func then
-		step_func(obj.cur_value)
-	end
+	obj.cur_value = math.lerp(obj.str_value, obj.fnl_value, c)
 end
 
-return lerper
+return lerper :: {
+	create: typeof(lerper.create),
+	ease: typeof(lerper.ease),
+	smoothstep: typeof(lerper.smoothstep)
+}

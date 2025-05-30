@@ -17,7 +17,7 @@ type Npc = {
 	comp_sight: sight.SightComp,
 	comp_sus: suspicion.SuspicionComp,
 	comp_hearing: hearing.HearingComp,
-	comp_pipeline: pipieline.DetectionPipeline,
+	comp_pipeline: pipieline.DetectionPipeline<Npc>,
 	focusing_player: Player?,
 	any_player_detected: boolean
 }
@@ -40,7 +40,7 @@ local function create_npc(character: Model): Npc
 		comp_sight = sight.create_comp(head, new_config),
 		comp_sus = suspicion.create(1/3, 1/5),
 		comp_hearing = hearing.create({character = character, head = head}, 15),
-		comp_pipeline = pipieline.new(),
+		comp_pipeline = pipieline.create(),
 		focusing_player = nil,
 		any_player_detected = false
 	}
@@ -52,19 +52,19 @@ local function init_npc(character: Model)
 
 	local pipeline = self.comp_pipeline
 	-- ISTG WTF ARE THESE TYPE ERRORS?!?!!!!!!!!!!!!!!
-	pipeline:register("sight", function(npc)
+	pipeline:register("sight", function(npc: Npc)
 		for plr in pairs(npc.comp_sight.sight_plrs_to_check) do
 			if sight.is_player_visible(npc.comp_sight, plr) then
-				return { detected = true, player = plr, method = "sight" }
+				return { detected = true, player = plr, method = "sight" }  :: pipieline.DetectionResult
 			end
 		end
 		return { detected = false } :: pipieline.DetectionResult
 	end)
 
-	pipeline:register("hearing", function(npc)
+	pipeline:register("hearing", function(npc: Npc)
 		for plr in pairs(npc.comp_sight.sight_plrs_to_check) do
 			if hearing.is_player_hearable(npc.comp_hearing, plr) then
-				return { detected = true, player = plr, method = "hearing" }
+				return { detected = true, player = plr, method = "hearing" }  :: pipieline.DetectionResult
 			end
 		end
 		return { detected = false } :: pipieline.DetectionResult
@@ -72,11 +72,15 @@ local function init_npc(character: Model)
 end
 
 local function send_sus_value_to_plrs(self: Npc, sus_value: number)
-	if self.focusing_player then
-		REMOTE:FireClient(
-			self.focusing_player,
-			sus_value, self.character,
-			self.character_head.Position)
+	if sus_value < 1 then
+		if self.focusing_player then
+			REMOTE:FireClient(
+				self.focusing_player,
+				sus_value, self.character,
+				self.character_head.Position)
+		end
+	else
+		warn("Caught!")
 	end
 end
 
