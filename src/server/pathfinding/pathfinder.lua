@@ -60,7 +60,7 @@ end
 
 function pathfinder._on_path_blocked(self: Pathfinder, blocked_waypoint_index): ()
 	if blocked_waypoint_index > self.waypoints_current_index then
-		self.connection_blocked:Disconnect()
+		(self.connection_blocked :: RBXScriptConnection ):Disconnect()
 		self:compute_path((self.agent.character.PrimaryPart :: BasePart).Position, self.main_destination)
 		self.connection_blocked = self.path.Blocked:Connect(function(blocked_waypoint_index)
 			self:_on_path_blocked(blocked_waypoint_index)
@@ -124,8 +124,10 @@ function pathfinder.set_destination(self: Pathfinder, to: Vector3): ()
 		else
 			self.is_moving = false
 			self.main_destination = nil
-			self.connection_reached:Disconnect()
-			self.connection_blocked:Disconnect()
+			if self.connection_reached then
+				self.connection_reached:Disconnect()
+			end
+			(self.connection_blocked :: RBXScriptConnection):Disconnect()
 		end
 	end)
 
