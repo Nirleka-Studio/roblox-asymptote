@@ -73,15 +73,19 @@ function sensor.update(self: PlayerSightSensor): ()
 		end
 	end
 
-	for player in pairs(self.plrs_in_vision) do
+	local prev_visible = self.plrs_in_vision
+	self.plrs_in_vision = {} -- reset it now
+
+	for player in pairs(prev_visible) do
 		if not current_visible_plrs[player] then
-			self.plrs_in_vision[player] = nil
+			self.on_outside_vision:Fire(player)
 		end
 	end
 
 	for player in pairs(current_visible_plrs) do
-		if not self.plrs_in_vision[player] then
-			self.plrs_in_vision[player] = true
+		self.plrs_in_vision[player] = true
+		if not prev_visible[player] then
+			self.on_inside_vision:Fire(player)
 		end
 	end
 end
