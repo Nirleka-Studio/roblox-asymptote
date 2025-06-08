@@ -1,7 +1,8 @@
 --!strict
 local RunService = game:GetService("RunService")
 
-local player_sight_sensor = require(game.ServerScriptService.server.detection.player_sight_sensor)
+local target_nearby_sensor = require(game.ServerScriptService.server.detection.target_nearby_sensor)
+--local player_sight_sensor = require(game.ServerScriptService.server.detection.player_sight_sensor)
 local char_utils = require(game.ServerScriptService.server.character.character_utils)
 
 local bob = workspace:FindFirstChild("Bob") :: Model
@@ -20,20 +21,21 @@ local bob_agent = {
 	primary_part = root_part
 }
 
-local bob_sight_sensor = player_sight_sensor.create(
+local bob_hearing_sensor = target_nearby_sensor.create(
 	bob_agent,
 	20,
-	90
+	25,
+	true
 )
 
-bob_sight_sensor.on_inside_vision:Connect(function(player)
-	warn(`{player} just got in!`)
+bob_hearing_sensor.on_inside_range:Connect(function(plr)
+	warn(plr, "Just got in!")
 end)
 
-bob_sight_sensor.on_outside_vision:Connect(function(player)
-	warn(`{player} just got out!`)
+bob_hearing_sensor.on_outside_range:Connect(function(plr)
+	warn(plr, "Just got out!")
 end)
 
 RunService.Heartbeat:Connect(function()
-	bob_sight_sensor:update()
+	bob_hearing_sensor:update()
 end)
