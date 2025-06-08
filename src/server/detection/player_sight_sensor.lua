@@ -1,16 +1,14 @@
 --!strict
 
 local Players = game:GetService("Players")
+local agent = require("../character/agent")
 local Signal = require(game.ReplicatedStorage.shared.thirdparty.Signal)
+local CharUtils = require(game.ServerScriptService.server.character.character_utils)
 
 local sensor = {}
 sensor.__index = sensor
 
-type Agent = {
-	character: Model,
-	head: BasePart,
-	primary_part: BasePart
-}
+type Agent = agent.Agent
 
 export type PlayerSightSensor = typeof(setmetatable({} :: {
 	agent: Agent,
@@ -33,20 +31,6 @@ local function create_ray_params(agent: Agent): RaycastParams
 	return ray_params
 end
 
-local function get_plr_root_part(player: Player): BasePart?
-	local character = player.Character
-	if not character then
-		return nil
-	end
-
-	local root_part = character:FindFirstChild("HumanoidRootPart")
-	if not root_part then
-		return nil
-	end
-
-	return root_part :: BasePart
-end
-
 function sensor.create(agent: Agent, sight_radius: number, periph_angle: number): PlayerSightSensor
 	return setmetatable({
 		agent = agent,
@@ -62,9 +46,8 @@ function sensor.create(agent: Agent, sight_radius: number, periph_angle: number)
 end
 
 function sensor.update(self: PlayerSightSensor): ()
-	-- this is unsafe. but what are the odds of having a non-player Instance
-	-- in this service, am right? ...right?
-	local players = Players:GetChildren() :: {Player}
+	-- oh. roblox already have a GetPlayers function? neat.
+	local players = Players:GetPlayers()
 	local current_visible_plrs: {[Player]: true} = {}
 
 	for _, player in ipairs(players) do
@@ -91,7 +74,7 @@ function sensor.update(self: PlayerSightSensor): ()
 end
 
 function sensor.is_in_vision(self: PlayerSightSensor, player: Player): boolean
-	local plr_root_part = get_plr_root_part(player)
+	local plr_root_part = CharUtils.get_plr_root_part(player)
 	if not plr_root_part then
 		return false
 	end
@@ -156,7 +139,7 @@ function sensor.ray_cast_glass(self: PlayerSightSensor, direction: Vector3): Ray
 end
 
 function sensor.ray_sweep(self: PlayerSightSensor, player: Player): boolean
-	local plr_root_part = get_plr_root_part(player)
+	local plr_root_part = CharUtils.get_plr_root_part(player)
 	if not plr_root_part then
 		return false
 	end
