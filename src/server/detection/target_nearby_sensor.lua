@@ -55,9 +55,10 @@ function sensor.update(self: TargetNearbySensor): ()
 			-- if must_see is true, see_method must pass
 			local passes_sight = true
 			if self.must_see then
-				passes_sight = self.see_method(self, plr)
+				local shit = self :: any -- TODO: remove this shit when the luau devs evantually fix this issue.
+				passes_sight = self.see_method(shit, plr)
 			end
-	
+
 			if passes_sight and self.filter_method(self, plr) then
 				cur_plrs_in_range[plr] = true
 			end
