@@ -1,7 +1,7 @@
 --!strict
 local Players = game:GetService("Players")
 
-local Signal = require("../../shared/thirdparty/Signal")
+local Signal = require(game.ReplicatedStorage.shared.thirdparty.Signal)
 local agent = require("../character/agent")
 local character_utils = require("../character/character_utils")
 
