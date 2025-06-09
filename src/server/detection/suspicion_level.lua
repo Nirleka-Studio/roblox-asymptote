@@ -1,95 +1,81 @@
 --!strict
 
+local lerper = require(game.ReplicatedStorage.shared.interpolation.lerper)
 local Signal = require(game.ReplicatedStorage.shared.thirdparty.Signal)
 
 local suspicion = {}
 suspicion.__index = suspicion
 
 export type SuspicionLevel = typeof(setmetatable({} :: {
-	current_sus: number,
-	start_sus: number,
-	lower_speed: number,
-	raise_speed: number,
-	target_sus: number,
-	_dur: number,
-	_elapsed: number,
-	finished: boolean,
-	focusing_player: Player?,
-	playing: boolean,
+	suspicion_level: number,
+	suspicion_decrement_speed: number,
+	suspicion_increment_speed: number,
+	curiosity_threshold: number,
+	calm_threshold: number,
+	alerted: boolean,
+	target_player: Player?,
+	_lerper: lerper.LerpObject,
 
 	on_suspicion_update: Signal.Signal<Player>,
-	on_suspicion_max: Signal.Signal<Player>
+	on_alerted: Signal.Signal<Player>
 }, suspicion))
 
 function suspicion.create(raise_speed: number, lower_speed: number): SuspicionLevel
 	return setmetatable({
-		current_sus = 0,
-		start_sus = 0,
-		lower_speed = lower_speed,
-		raise_speed = raise_speed,
-		target_sus = 0,
-		_dur = 0,
-		_elapsed = 0,
-		finished = false,
-		focusing_player = nil :: Player?, -- WHY.
-		playing = false,
+		suspicion_level = 0,
+		suspicion_decrement_speed = lower_speed,
+		suspicion_increment_speed = raise_speed,
+		curiosity_threshold = 0,
+		calm_threshold = 0,
+		alerted = false,
+		target_player = nil :: Player?, -- jesus fucking christ, why.
+		_lerper = lerper.create(0, 0, 0), -- just so i dont want any fucking "might be nil" bullshit.
 
 		on_suspicion_update = Signal.new(),
-		on_suspicion_max = Signal.new()
+		on_alerted = Signal.new()
 	}, suspicion)
 end
 
 function suspicion.update(self: SuspicionLevel, delta: number): ()
-	if not self.playing then
+	-- suspicion has reached 1
+	local alerted = self.alerted -- this wont fool the typechecker when it gets smarter... oh well.
+	if alerted then
 		return
 	end
-	if self.finished then
+
+	local target_player = self.target_player
+	if not target_player then
+		return -- this shouldnt even happen but its for the sake of the typechecker.
+	end
+
+	-- the lerper.step function returns true if finished and false if doesnt
+	local finished: boolean
+	if self._lerper then
+		finished = self._lerper:step(delta)
+		self.on_suspicion_update:Fire(target_player)
+	else
+		-- no lerper object, why even bother?
+		finished = false
 		return
 	end
-	if self.current_sus == self.target_sus then
-		--print("the same")
-		if not self.finished and self.playing then
-			--print("not finished")
-			self.finished = true -- "Type 'true' could not be converted into 'false'" LUAU FIX YOUR BULLSHIT.
-			self.on_suspicion_max:Fire(self.focusing_player :: Player)
-			return
-		end
+
+	if finished then
+		self.alerted = true
+		self.on_alerted:Fire(target_player)
 	end
-
-	--print("passed")
-
-	self._elapsed += delta
-
-	local c = math.clamp(self._elapsed / self._dur, 0.0, 1.0)
-	self.current_sus = math.lerp(self.start_sus, self.target_sus, c)
-	self.on_suspicion_update:Fire(self.focusing_player)
 end
 
 function suspicion.update_suspicion_target(self: SuspicionLevel, new_target: number, plr: Player): ()
-	print("new target:", new_target)
-	--new_target = math.clamp(new_target, 0, 1)
-
-	if new_target == self.target_sus then
-		self.playing = false
-		return
-	end
-
-	self.playing = true
-	self.finished = false -- CRUCIAL FIX
-	self._elapsed = 0 -- CRUCIAL FIX
-	self.focusing_player = plr
-	self.target_sus = new_target
-	self.start_sus = self.current_sus
-
-	local suspicion_difference = math.abs(new_target - self.current_sus)
+	local suspicion_difference = math.abs(new_target - self.suspicion_level)
 	local duration
-	if new_target > self.current_sus then
-		duration = suspicion_difference / self.raise_speed
+	if new_target > self.suspicion_level then
+		duration = suspicion_difference / self.suspicion_increment_speed
 	else
-		duration = suspicion_difference / self.lower_speed
+		duration = suspicion_difference / self.suspicion_decrement_speed
 	end
 
-	self._dur = duration
+	self._lerper = lerper.create(0, new_target, duration)
+	self.target_player = plr
 end
 
 return suspicion
