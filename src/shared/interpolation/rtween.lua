@@ -5,7 +5,6 @@
 --!strict
 
 local TweenService = game:GetService("TweenService")
-local array = require("../standard/array")
 
 --[=[
 	@class rtween
@@ -15,16 +14,15 @@ local array = require("../standard/array")
 	Unlike the `src/modules/animation/tween` which uses an entirely custom
 	implemention for tweening.
 
-	Due to being part of the Dasar Standard Library, RTween will take the
-	functional programming approach. Standing on the philosphy that everything
-	must be explicit.
+	This module was once part of the Dasar Standard Library.
 ]=]
 local rtween = {}
+rtween.__index = rtween
 
-export type RTween = {
-	tweens: array.Array<Tween>,
-	stack: array.Array<array.Array<Tween>>,
-	connections: array.Array<RBXScriptConnection>,
+export type RTween = typeof(setmetatable({} :: {
+	tweens: {Tween},
+	stack: {{Tween}},
+	connections: {RBXScriptConnection},
 	easing_style: Enum.EasingStyle,
 	easing_direction: Enum.EasingDirection,
 	parallel_enabled: boolean,
@@ -32,54 +30,61 @@ export type RTween = {
 	is_playing: boolean,
 	is_paused: boolean,
 	current_step: number
-}
+}, rtween))
 
 export type PropertyParam = {
 	[ string ] : any
 }
 
-local function append_tweens(rtween_inst: RTween, tweens_arr: array.Array<Tween>)
-	local stack = rtween_inst.stack
-	local tweens = rtween_inst.tweens
+local function append_tweens(self: RTween, tweens_arr: {Tween})
+	local stack = self.stack
+	local tweens = self.tweens
 	local current_step_index = 0
 
-	local stack_size = array.size(stack)
-	if rtween_inst.parallel_enabled then
+	local stack_size = #stack
+	if self.parallel_enabled then
 		current_step_index = math.max(1, stack_size)
 	else
 		current_step_index = stack_size + 1
 	end
 
-	rtween_inst.parallel_enabled = rtween_inst.default_parallel
+	self.parallel_enabled = self.default_parallel
 
-	if not array.get(stack, current_step_index) then
-		array.push_back(stack, array.create())
+	if not stack[current_step_index] then
+		table.insert(stack, {})
 	end
 
-	local current_step = array.get(stack, current_step_index)
+	local current_step = stack[current_step_index]
 
-	for _, tween in array.iter(tweens_arr) do
-		array.push_back(current_step, tween)
-		array.push_back(tweens, tween)
+	for _, tween in ipairs(tweens_arr) do
+		table.insert(current_step, tween)
+		table.insert(tweens, tween)
 	end
 end
 
-local function play_step(rtween_inst: RTween, step_index: number)
-	if step_index > array.size(rtween_inst.stack) then
+local function clear_connections(connections: {RBXScriptConnection})
+	for k, connection in ipairs(connections) do
+		connection:Disconnect()
+		connections[k] = nil
+	end
+end
+
+local function play_step(self: RTween, step_index: number)
+	if step_index > #self.stack then
 		-- all steps completed
-		rtween_inst.current_step = 1
-		rtween_inst.is_playing = false
+		self.current_step = 1
+		self.is_playing = false
 		return
 	end
 
-	rtween_inst.current_step = step_index
-	rtween_inst.is_playing = true
+	self.current_step = step_index
+	self.is_playing = true
 
-	local step = array.get(rtween_inst.stack, step_index)
-	local step_size = array.size(step)
+	local step = self.stack[step_index]
+	local step_size = #step
 	local completed_tweens = 0
 
-	for _, tween in array.iter(step) do
+	for _, tween in ipairs(step) do
 		tween:Play()
 
 		local connection
@@ -88,15 +93,14 @@ local function play_step(rtween_inst: RTween, step_index: number)
 			if completed_tweens == step_size then
 				-- all tweens in this step are done
 				if connection then
-					local connection = connection :: RBXScriptConnection -- ANOTHER BLOCKED BUG AGAIN!!!!!!!
 					connection:Disconnect()
 				end
 
-				play_step(rtween_inst, step_index + 1) -- move to next step
+				play_step(self, step_index + 1) -- move to next step
 			end
 		end)
 
-		array.push_back(rtween_inst.connections, connection)
+		table.insert(self.connections, connection)
 	end
 end
 
@@ -104,10 +108,10 @@ function rtween.create(
 	easing_style: Enum.EasingStyle,
 	easing_direction: Enum.EasingDirection
 ): RTween
-	local new_rtween: RTween = {
-		tweens = array.create() :: array.Array<Tween>, -- these will make the type checker stfu
-		stack = array.create() :: array.Array<array.Array<Tween>>,
-		connections = array.create() :: array.Array<RBXScriptConnection>,
+	local self = {
+		tweens = {},
+		stack = {},
+		connections = {},
 		easing_style = easing_style or Enum.EasingStyle.Linear,
 		easing_direction = easing_direction or Enum.EasingDirection.InOut,
 		parallel_enabled = false,
@@ -117,10 +121,10 @@ function rtween.create(
 		current_step = 1
 	}
 
-	return new_rtween
+	return setmetatable(self, rtween)
 end
 
-function rtween.play(rtween_inst: RTween)
+function rtween.play(self: RTween)
 
 	-- I should probably tell you how the Stack works.
 	-- The Stack holds references to the tweens table,
@@ -129,72 +133,57 @@ function rtween.play(rtween_inst: RTween)
 	-- In order to advance to the next step, all tweens in the current step
 	-- has to be completed.
 
-	-- this is meant to fix the "cannot convert true to false" bullshit.
-	-- yes. this is apprently a bug:
-	-- https://devforum.roblox.com/t/type-true-could-not-be-converted-into-false/3553568/3?u=nirlekaplay
-	-- how retarded.
-	local is_playing: boolean = rtween_inst.is_playing
-
-	if is_playing and not rtween_inst.is_paused then
+	local is_paused = self.is_paused -- to make the typechecker stfu on line 142
+	if self.is_playing and not is_paused then
 		return
 	end
 
-	local connections = rtween_inst.connections
+	clear_connections(self.connections)
 
-	for k, connection in array.iter(connections) do
-		connection:Disconnect()
-		array.set(connections, k, nil)
-	end
+	self.is_paused = false -- YEAH, TAKE THAT
 
-	rtween_inst.is_paused = false -- YEAH, TAKE THAT
-
-	play_step(rtween_inst, rtween_inst.is_paused and rtween_inst.current_step or 1)
+	play_step(self, if self.is_paused then self.current_step else 1)
 end
 
-function rtween.kill(rtween_inst: RTween)
-	for k, tween in array.iter(rtween_inst.tweens) do
+function rtween.kill(self: RTween)
+	for k, tween in ipairs(self.tweens) do
 		tween:Cancel()
 		tween:Destroy()
-		array.set(rtween_inst.tweens, k, nil)
+		self.tweens[k] = nil
 	end
 
-	for k, step in array.iter(rtween_inst.stack) do
-		for j, _ in array.iter(step) do
-			array.set(step, j , nil)
-		end
-		array.set(rtween_inst.stack, k, nil)
+	local stack = self.stack
+	for k, step in ipairs(stack) do
+		table.clear(step)
 	end
+	table.clear(stack)
 
-	for k, connection: RBXScriptConnection in array.iter(rtween_inst.connections) do
-		connection:Disconnect()
-		array.set(rtween_inst.connections, k, nil)
-	end
+	clear_connections(self.connections)
 
-	rtween_inst.current_step = 1
-	rtween_inst.is_playing = false
-	rtween_inst.is_paused = false
+	self.current_step = 1
+	self.is_playing = false
+	self.is_paused = false
 end
 
-function rtween.parallel(rtween_inst: RTween)
-	rtween_inst.parallel_enabled = true
+function rtween.parallel(self: RTween)
+	self.parallel_enabled = true
 end
 
-function rtween.pause(rtween_inst: RTween)
-	rtween_inst.is_paused = true
+function rtween.pause(self: RTween)
+	self.is_paused = true
 
-	local tweens = rtween_inst.tweens
-	for k, tween in array.iter(tweens) do
+	for k, tween in ipairs(self.tweens) do
 		tween:Pause()
 	end
 end
 
-function rtween.set_parallel(rtween_inst: RTween, parallel: boolean)
-	rtween_inst.default_parallel = true
-	rtween_inst.parallel_enabled = true
+function rtween.set_parallel(self: RTween, parallel: boolean)
+	self.default_parallel = true
+	self.parallel_enabled = true
 end
 
 function rtween.tween_instance(
-	rtween_inst: RTween,
+	self: RTween,
 	inst: Instance,
 	properties: PropertyParam,
 	dur: number,
@@ -204,13 +193,13 @@ function rtween.tween_instance(
 )
 	local tween_info = TweenInfo.new(
 		dur,
-		easing_style or rtween_inst.easing_style,
-		easing_direction or rtween_inst.easing_direction,
+		easing_style or self.easing_style,
+		easing_direction or self.easing_direction,
 		0,
 		false,
 		delay or 0
 	)
-	local tweens_arr = array.create() :: array.Array<Tween>
+	local tweens_arr = {}
 
 	for prop_name, prop_fnl_val in pairs(properties) do
 		local tween_inst = TweenService:Create(
@@ -218,11 +207,10 @@ function rtween.tween_instance(
 			tween_info,
 			{ [prop_name] = prop_fnl_val }
 		)
-
-		array.push_back(tweens_arr, tween_inst)
+		table.insert(tweens_arr, tween_inst)
 	end
 
-	append_tweens(rtween_inst, tweens_arr)
+	append_tweens(self, tweens_arr)
 end
 
 return rtween
