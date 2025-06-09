@@ -28,18 +28,20 @@ function sensor.create(
 	must_see: boolean
 ): TargetNearbySensor
 
-	return setmetatable({
+	local self = {
 		agent = agent,
 		inside_range = inside_range,
 		outside_range = outside_range,
 		must_see = must_see,
-		see_method = sensor.default_see_method,
+		see_method = sensor.default_see_method(agent.character),
 		filter_method = sensor.default_filter_method,
 		plrs_in_inside_range = {},
 
 		on_inside_range = Signal.new(),
 		on_outside_range = Signal.new()
-	}, sensor)
+	}
+
+	return setmetatable(self, sensor)
 end
 
 function sensor.update(self: TargetNearbySensor): ()
@@ -82,24 +84,44 @@ function sensor.update(self: TargetNearbySensor): ()
 	end
 end
 
+local MOVEMENT_THRESHOLD = 0.1
+local players_last_pos: { [Player]: Vector3 } = {}
 function sensor.default_filter_method(self: TargetNearbySensor, player: Player): boolean
-	-- for simplicity, check if a player is moving if their velocity magnitude is above zero.
-	-- of course, this wont check if a player actually moves physically.
+	local root_part = character_utils.get_plr_root_part(player)
+	if not root_part then
+		return false
+	end
+	local current_pos = root_part.Position
 	local humanoid = ((player.Character :: Model):FindFirstChild("Humanoid") :: Humanoid) -- istg.
 	local velocity = humanoid:GetMoveVelocity().Magnitude > 0
+	
 	if not velocity then
 		return false
 	end
+
+	local last_pos = players_last_pos[player]
+	if not last_pos then
+		players_last_pos[player] = current_pos
+		return false
+	end
+
+	local magnitude = (current_pos - last_pos).Magnitude
+	if not (magnitude > MOVEMENT_THRESHOLD) then
+		return false
+	end
+
+	players_last_pos[player] = current_pos
+
 	return true
 end
 
-function sensor.default_see_method(self: TargetNearbySensor, player: Player): boolean
+function sensor.default_see_method(character: Model): (self: TargetNearbySensor, player: Player) -> boolean
 	local params = RaycastParams.new()
 	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = {self.agent.character} :: {Instance}
+	params.FilterDescendantsInstances = {character} :: {Instance}
 
 	-- magic.
-	return (function()
+	return function(self: TargetNearbySensor, player: Player)
 		local agent_head_pos = self.agent.head.Position
 		-- no need to check shit cuz this function wont get called if player doesnt have a character or
 		-- root part anyway.
@@ -118,7 +140,7 @@ function sensor.default_see_method(self: TargetNearbySensor, player: Player): bo
 		end
 
 		return true
-	end)()
+	end
 end
 
 return sensor
