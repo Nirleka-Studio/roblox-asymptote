@@ -40,8 +40,8 @@ local bob_hearing_sensor = player_sight_sensor.create(
 )
 
 local bob_sus_comp = suspicion_level.create(
-	3/5,
-	2/5
+	4/5,
+	1/5
 )
 
 bob_hearing_sensor.on_inside_vision:Connect(function(plr)

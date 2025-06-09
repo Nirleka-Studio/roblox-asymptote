@@ -3,7 +3,7 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local world_pointer = require(Players.LocalPlayer.PlayerScripts.client.modules.gui.world_pointer)
+local world_pointer = require("./modules/gui/world_pointer")
 local rtween = require(ReplicatedStorage.shared.interpolation.rtween)
 
 type MeterObject = {
@@ -52,6 +52,32 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 		rtween.set_parallel(current_meter.current_rtween, true)
 	end
 
+	if sus_value == 1 then
+		local udim_pos = current_meter.gui_inst.Position
+		local rotationDegrees = current_meter.gui_inst.Rotation
+		local distance = 30
+
+		local rotationRadians = math.rad(rotationDegrees - 90) -- idk why but subtracting it with 90 fixes the direction
+		local direction = Vector2.new(math.cos(rotationRadians), math.sin(rotationRadians))
+
+		local xOffset = udim_pos.X.Offset + direction.X * distance
+		local yOffset = udim_pos.Y.Offset + direction.Y * distance
+
+		udim_pos = UDim2.new(udim_pos.X.Scale, xOffset, udim_pos.Y.Scale, yOffset)
+
+		local current_rtween: rtween.RTween = current_meter.current_rtween
+		if current_rtween.is_playing then
+			rtween.kill(current_rtween)
+		end
+		rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageTransparency = 1}, .3)
+		rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 1}, .3)
+		rtween.tween_instance(current_rtween, current_meter.gui_inst, {Position = udim_pos}, .3)
+		rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageColor3 = Color3.new(1, 0, 0)}, .3)
+		rtween.play(current_rtween)
+		game.ReplicatedStorage.shared.assets.sounds.temp_undertale_alert:Play()
+		return
+	end
+
 	current_meter.comp_pointer.target_pos = origin
 	current_meter.gui_inst.Frame.CanvasGroup.Size = UDim2.fromScale(sus_value, 1)
 
@@ -63,7 +89,7 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 		current_meter.is_raising = false
 	end
 
-	local function animate()
+	(function()
 		if current_meter.is_raising then
 			if not (sus_value < 0.5) then
 				return
@@ -87,8 +113,7 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 1}, .5)
 			rtween.play(current_rtween)
 		end
-	end
-	animate()
+	end)()
 
 	current_meter.last_sus = sus_value
 end)

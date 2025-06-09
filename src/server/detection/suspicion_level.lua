@@ -29,7 +29,7 @@ function suspicion.create(raise_speed: number, lower_speed: number): SuspicionLe
 		calm_threshold = 0,
 		alerted = false,
 		target_player = nil :: Player?, -- jesus fucking christ, why.
-		_lerper = lerper.create(0, 0, 0), -- just so i dont want any fucking "might be nil" bullshit.
+		_lerper = lerper.create(0, 0, 0), -- dummy
 
 		on_suspicion_update = Signal.new(),
 		on_alerted = Signal.new()
@@ -40,28 +40,26 @@ function suspicion.update(self: SuspicionLevel, delta: number): ()
 	-- suspicion has reached 1
 	local alerted = self.alerted -- this wont fool the typechecker when it gets smarter... oh well.
 	if alerted then
+		print("alerted")
 		return
 	end
 
 	local target_player = self.target_player
 	if not target_player then
+		print("no target player")
 		return -- this shouldnt even happen but its for the sake of the typechecker.
 	end
 
 	-- the lerper.step function returns true if finished and false if doesnt
-	local finished: boolean
-	if self._lerper then
-		finished = self._lerper:step(delta)
-		self.on_suspicion_update:Fire(target_player)
-	else
-		-- no lerper object, why even bother?
-		finished = false
-		return
-	end
+	local finished = self._lerper:step(delta)
+	self.suspicion_level = self._lerper.current_value
+	self.on_suspicion_update:Fire(target_player)
 
 	if finished then
-		self.alerted = true
-		self.on_alerted:Fire(target_player)
+		if self._lerper.final_value == 1 then
+			self.alerted = true
+			self.on_alerted:Fire(target_player)
+		end
 	end
 end
 
@@ -74,7 +72,7 @@ function suspicion.update_suspicion_target(self: SuspicionLevel, new_target: num
 		duration = suspicion_difference / self.suspicion_decrement_speed
 	end
 
-	self._lerper = lerper.create(0, new_target, duration)
+	self._lerper:reset(self.suspicion_level, new_target, duration)
 	self.target_player = plr
 end
 

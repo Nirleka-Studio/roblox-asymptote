@@ -42,4 +42,15 @@ function lerper.step(self: LerpObject, delta: number): boolean
 	return false
 end
 
+--[=[
+	Why? Idk why.
+]=]
+function lerper.reset(self: LerpObject, from: number, to: number, duration: number)
+	self.start_value = from
+	self.current_value = from
+	self.final_value = to
+	self.duration = duration
+	self.elapsed = 0
+end
+
 return lerper
