@@ -2,7 +2,7 @@
 local RunService = game:GetService("RunService")
 
 --local target_nearby_sensor = require(game.ServerScriptService.server.detection.target_nearby_sensor)
-local suspicion_2 = require(game.ServerScriptService.server.detection.suspicion_2)
+local suspicion_2 = require(game.ServerScriptService.server.detection.suspicion_level)
 local player_sight_sensor = require(game.ServerScriptService.server.detection.player_sight_sensor)
 local char_utils = require(game.ServerScriptService.server.character.character_utils)
 
