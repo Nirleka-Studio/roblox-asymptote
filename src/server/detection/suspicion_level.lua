@@ -40,13 +40,11 @@ function suspicion.update(self: SuspicionLevel, delta: number): ()
 	-- suspicion has reached 1
 	local alerted = self.alerted -- this wont fool the typechecker when it gets smarter... oh well.
 	if alerted then
-		print("alerted")
 		return
 	end
 
 	local target_player = self.target_player
 	if not target_player then
-		print("no target player")
 		return -- this shouldnt even happen but its for the sake of the typechecker.
 	end
 
