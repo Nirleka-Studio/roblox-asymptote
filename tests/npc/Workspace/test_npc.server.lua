@@ -54,6 +54,12 @@ bob_hearing_sensor.on_outside_vision:Connect(function(plr)
 	bob_sus_comp:update_suspicion_target(0, plr)
 end)
 
+bob_sus_comp.on_alerted:Connect(function(player)
+	task.wait(1.5)
+	bob_sus_comp:reset()
+	player.Character:PivotTo(workspace.SpawnLocation.CFrame + Vector3.new(0,5,0))
+end)
+
 bob_sus_comp.on_suspicion_update:Connect(function(plr)
 	--print(plr)
 	--print(bob_agent.primary_part.Position)

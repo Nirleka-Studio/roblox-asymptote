@@ -76,4 +76,11 @@ function suspicion.update_suspicion_target(self: SuspicionLevel, new_target: num
 	self.target_player = plr
 end
 
+function suspicion.reset(self: SuspicionLevel): ()
+	self.suspicion_level = 0
+	self.alerted = false
+	self.target_player = nil
+	self._lerper:reset(0, 0, 0)
+end
+
 return suspicion
