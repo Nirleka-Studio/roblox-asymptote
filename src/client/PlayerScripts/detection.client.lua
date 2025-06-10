@@ -18,7 +18,8 @@ type MeterObject = {
 	meter_gui: MeterGui,
 	last_sus: number,
 	current_rtween: rtween.RTween,
-	is_raising: boolean
+	is_raising: boolean,
+	do_rotate: boolean
 }
 
 local ALERTED_SOUND = ReplicatedStorage.shared.assets.sounds.temp_undertale_alert
@@ -56,12 +57,17 @@ local function create_meter_object(origin: Vector3): MeterObject
 		meter_gui = create_meter_gui_object(new_gui_inst),
 		last_sus = 0,
 		current_rtween = rtween.create(Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		is_raising = false
+		is_raising = false,
+		do_rotate = true
 	}
 end
 
 RunService.RenderStepped:Connect(function()
 	for _, meter in pairs(active_meters) do
+		if not meter.do_rotate then
+			continue
+		end
+
 		world_pointer.update(meter.comp_pointer)
 	end
 end)
@@ -95,6 +101,7 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 		if cur_tween.is_playing then
 			(cur_tween :: rtween.RTween):kill() -- FYM TRUE??!?!?! THIS SHIT AINT A BOOLEAN YOU CUNT
 		end
+		current_meter.do_rotate = false -- due to the meter constantly rotating, tweening it up while rotating can make it rotate weirdly. so a lazy solution to this is to not rotate it.
 		cur_tween:tween_instance(cur_meter_gui.background_meter, {ImageTransparency = 1}, .3)
 		cur_tween:tween_instance(cur_meter_gui.fill_meter, {ImageTransparency = 1}, .3)
 		cur_tween:tween_instance(cur_meter_gui.main_gui, {Position = udim_pos}, .3)
@@ -102,6 +109,8 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 		cur_tween:play()
 		ALERTED_SOUND:Play()
 		return
+	else
+		current_meter.do_rotate = true
 	end
 
 	local clamped_sus = math.clamp(sus_value, 0, 1) -- keeps the sus_value between 0 and 1
