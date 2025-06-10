@@ -23,6 +23,9 @@ local active_meters: { [Model]: MeterObject } = {}
 local function clone_meter_frame(): Frame
 	local cloned: Frame = FRAME_METER_REF:Clone()
 	cloned.Visible = true
+	cloned.Frame.CanvasGroup.A1.ImageTransparency = 1
+	cloned.Frame.A1.ImageTransparency = 1
+	cloned.Visible = true
 	cloned.Parent = DETECTION_GUI
 	return cloned
 end
