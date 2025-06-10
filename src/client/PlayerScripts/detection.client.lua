@@ -6,14 +6,22 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local world_pointer = require("./modules/gui/world_pointer")
 local rtween = require(ReplicatedStorage.shared.interpolation.rtween)
 
+type MeterGui = {
+	main_gui: Frame,
+	background_meter: ImageLabel,
+	seperator: CanvasGroup,
+	fill_meter: ImageLabel
+}
+
 type MeterObject = {
 	comp_pointer: world_pointer.WorldPointer,
-	gui_inst: Frame,
+	meter_gui: MeterGui,
 	last_sus: number,
 	current_rtween: rtween.RTween,
 	is_raising: boolean
 }
 
+local ALERTED_SOUND = ReplicatedStorage.shared.assets.sounds.temp_undertale_alert
 local REMOTE: RemoteEvent = ReplicatedStorage.remotes.Detection
 local DETECTION_GUI = Players.LocalPlayer.PlayerGui:WaitForChild("Detection")
 local FRAME_METER_REF = DETECTION_GUI.SusMeter
@@ -21,7 +29,7 @@ local FRAME_METER_REF = DETECTION_GUI.SusMeter
 local active_meters: { [Model]: MeterObject } = {}
 
 local function clone_meter_frame(): Frame
-	local cloned: Frame = FRAME_METER_REF:Clone()
+	local cloned = FRAME_METER_REF:Clone() :: any -- use any so the typechecker will stfu
 	cloned.Visible = true
 	cloned.Frame.CanvasGroup.A1.ImageTransparency = 1
 	cloned.Frame.A1.ImageTransparency = 1
@@ -30,11 +38,22 @@ local function clone_meter_frame(): Frame
 	return cloned
 end
 
+local function create_meter_gui_object(gui: Frame): MeterGui
+	local frame = gui:FindFirstChild("Frame") :: Frame
+	local canvas = frame:FindFirstChild("CanvasGroup") :: CanvasGroup
+	return {
+		main_gui = gui,
+		background_meter = frame:FindFirstChild("A1") :: ImageLabel,
+		seperator = canvas,
+		fill_meter = canvas:FindFirstChild("A1") :: ImageLabel
+	}
+end
+
 local function create_meter_object(origin: Vector3): MeterObject
 	local new_gui_inst = clone_meter_frame()
 	return {
 		comp_pointer = world_pointer.create(new_gui_inst, origin),
-		gui_inst = new_gui_inst,
+		meter_gui = create_meter_gui_object(new_gui_inst),
 		last_sus = 0,
 		current_rtween = rtween.create(Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 		is_raising = false
@@ -49,46 +68,51 @@ end)
 
 REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vector3)
 	local current_meter = active_meters[id]
-	if not current_meter then
-		active_meters[id] = create_meter_object(origin)
-		current_meter = active_meters[id]
-		rtween.set_parallel(current_meter.current_rtween, true)
+	local exists = current_meter ~= nil
+	if not exists then
+		local new_gui = create_meter_object(origin)
+		active_meters[id] = new_gui
+		new_gui.current_rtween:set_parallel(true)
+		current_meter = new_gui -- HOW ARE YOU THIS FUCKING RETARDED, TYPECHECKER?!
 	end
 
+	local cur_meter_gui = current_meter.meter_gui :: MeterGui -- WHEN THE TYPECHECKER IS SO FUCKING RETARDED THAT IT CANT EVEN ACCESS METER GUI CUZ OF THE `current_meter = new_gui` FUCKER
+	local cur_tween = current_meter.current_rtween :: rtween.RTween -- OH NOW ITS TYPE NEVER?!??! ARE YOU FUCKING RETARDED?!??!
+
 	if sus_value == 1 then
-		local udim_pos = current_meter.gui_inst.Position
-		local rotationDegrees = current_meter.gui_inst.Rotation
+		local udim_pos = cur_meter_gui.main_gui.Position
+		local rotation_deg = cur_meter_gui.main_gui.Rotation
 		local distance = 30
 
-		local rotationRadians = math.rad(rotationDegrees - 90) -- idk why but subtracting it with 90 fixes the direction
-		local direction = Vector2.new(math.cos(rotationRadians), math.sin(rotationRadians))
+		local rotation_rad = math.rad(rotation_deg - 90) -- idk why but subtracting it with 90 fixes the direction
+		local direction = Vector2.new(math.cos(rotation_rad), math.sin(rotation_rad))
 
-		local xOffset = udim_pos.X.Offset + direction.X * distance
-		local yOffset = udim_pos.Y.Offset + direction.Y * distance
+		local x_offset = udim_pos.X.Offset + direction.X * distance
+		local y_offset = udim_pos.Y.Offset + direction.Y * distance
 
-		udim_pos = UDim2.new(udim_pos.X.Scale, xOffset, udim_pos.Y.Scale, yOffset)
+		udim_pos = UDim2.new(udim_pos.X.Scale, x_offset, udim_pos.Y.Scale, y_offset)
 
-		local current_rtween: rtween.RTween = current_meter.current_rtween
-		if current_rtween.is_playing then
-			rtween.kill(current_rtween)
+		if cur_tween.is_playing then
+			(cur_tween :: rtween.RTween):kill() -- FYM TRUE??!?!?! THIS SHIT AINT A BOOLEAN YOU CUNT
 		end
-		rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageTransparency = 1}, .3)
-		rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 1}, .3)
-		rtween.tween_instance(current_rtween, current_meter.gui_inst, {Position = udim_pos}, .3)
-		rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageColor3 = Color3.new(1, 0, 0)}, .3)
-		rtween.play(current_rtween)
-		game.ReplicatedStorage.shared.assets.sounds.temp_undertale_alert:Play()
+		cur_tween:tween_instance(cur_meter_gui.background_meter, {ImageTransparency = 1}, .3)
+		cur_tween:tween_instance(cur_meter_gui.fill_meter, {ImageTransparency = 1}, .3)
+		cur_tween:tween_instance(cur_meter_gui.main_gui, {Position = udim_pos}, .3)
+		cur_tween:tween_instance(cur_meter_gui.fill_meter, {ImageColor3 = Color3.new(1, 0, 0)}, .3)
+		cur_tween:play()
+		ALERTED_SOUND:Play()
 		return
 	end
 
+	local clamped_sus = math.clamp(sus_value, 0, 1) -- keeps the sus_value between 0 and 1
 	current_meter.comp_pointer.target_pos = origin
-	current_meter.gui_inst.Frame.CanvasGroup.Size = UDim2.fromScale(sus_value, 1)
+	cur_meter_gui.seperator.Size = UDim2.fromScale(clamped_sus, 1)
 
 	if sus_value > current_meter.last_sus then
-		current_meter.gui_inst.Frame.CanvasGroup.A1.ImageColor3 = Color3.new(1, 1, 1)
+		cur_meter_gui.fill_meter.ImageColor3 = Color3.new(1, 1, 1)
 		current_meter.is_raising = true
 	elseif sus_value < current_meter.last_sus then
-		current_meter.gui_inst.Frame.CanvasGroup.A1.ImageColor3 = Color3.new(0.509804, 0.509804, 0.509804)
+		cur_meter_gui.fill_meter.ImageColor3 = Color3.new(0.509804, 0.509804, 0.509804)
 		current_meter.is_raising = false
 	end
 
@@ -97,24 +121,22 @@ REMOTE.OnClientEvent:Connect(function(sus_value: number, id: Model, origin: Vect
 			if not (sus_value < 0.5) then
 				return
 			end
-			local current_rtween: rtween.RTween = current_meter.current_rtween
-			if current_rtween.is_playing then
-				rtween.kill(current_rtween)
+			if cur_tween then
+				cur_tween:kill()
 			end
-			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageTransparency = 0}, .3)
-			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 0.5}, .3) -- makes the back a lil bit transparent
-			rtween.play(current_rtween)
+			cur_tween:tween_instance(cur_meter_gui.fill_meter, {ImageTransparency = 0}, .3)
+			cur_tween:tween_instance(cur_meter_gui.background_meter, {ImageTransparency = 0.5}, .3) -- makes the back a lil bit transparent
+			cur_tween:play()
 		else
 			if not (sus_value < 0.5) then
 				return
 			end
-			local current_rtween: rtween.RTween = current_meter.current_rtween
-			if current_rtween.is_playing then
-				rtween.kill(current_rtween)
+			if cur_tween.is_playing then
+				(cur_tween :: rtween.RTween):kill() -- ISTG ITS NOT A BOOLEAN YOU BASTARD
 			end
-			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.CanvasGroup.A1, {ImageTransparency = 1}, .5)
-			rtween.tween_instance(current_rtween, current_meter.gui_inst.Frame.A1, {ImageTransparency = 1}, .5)
-			rtween.play(current_rtween)
+			cur_tween:tween_instance(cur_meter_gui.fill_meter, {ImageTransparency = 1}, .5)
+			cur_tween:tween_instance(cur_meter_gui.background_meter, {ImageTransparency = 1}, .5)
+			cur_tween:play()
 		end
 	end)()
 
