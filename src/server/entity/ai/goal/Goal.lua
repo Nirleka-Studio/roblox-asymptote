@@ -7,7 +7,7 @@ export type Goal = typeof(setmetatable({} :: {
 	flags: {any}
 }, Goal))
 
-function Goal.new(name: string, priority: number, flags: {any}?): Goal
+function Goal.new(flags: {any}): Goal
 	return setmetatable({
 		flags = flags or {}
 	}, Goal)

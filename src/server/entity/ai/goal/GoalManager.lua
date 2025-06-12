@@ -1,5 +1,6 @@
 --!strict
 
+local Goal = require("./Goal")
 local WrappedGoal = require("./WrappedGoal")
 
 --[=[
@@ -10,6 +11,7 @@ local WrappedGoal = require("./WrappedGoal")
 local GoalManager = {}
 GoalManager.__index = GoalManager
 
+type Goal = Goal.Goal
 type WrappedGoal = WrappedGoal.WrappedGoal
 
 export type GoalManager = typeof(setmetatable({} :: {
@@ -26,8 +28,8 @@ function GoalManager.new()
 	}, GoalManager)
 end
 
-function GoalManager.addGoal(self: GoalManager, goal: WrappedGoal)
-	table.insert(self.availableGoals, goal)
+function GoalManager.addGoal(self: GoalManager, goal: Goal, priority: number)
+	table.insert(self.availableGoals, WrappedGoal.new(goal, priority))
 end
 
 function GoalManager.disableFlag(self: GoalManager, flag: any)
@@ -77,7 +79,7 @@ function GoalManager.update(self: GoalManager, delta: number)
 		if not goal:isRunning()
 			and not goalContainsAnyFlags(goal, self.disabledFlags)
 			and goalCanBeReplacedForAllFlags(goal, self.flagLocks)
-			and goal:canUse() then
+			and goal.goal:canUse() then
 
 			-- Steal ownership of all required flags
 			for _, flag in ipairs(goal.goal:getFlags()) do

@@ -2,7 +2,7 @@
 
 local Goal = require("./Goal")
 
-local PatrolGoal = Goal.new("PatrolGoal", 4)
+local PatrolGoal = Goal.new({"PatrolGoal"})
 
 function PatrolGoal.update(self: Goal.Goal, delta: number?): ()
     print("updated, comign from patrol goal")
