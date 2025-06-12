@@ -1,4 +1,4 @@
---!strict
+--!nonstrict
 
 local Goal = require("./Goal")
 local WrappedGoal = require("./WrappedGoal")
