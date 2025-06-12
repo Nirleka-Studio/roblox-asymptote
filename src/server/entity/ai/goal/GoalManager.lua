@@ -1,6 +1,6 @@
 --!strict
 
-local Goal = require("./Goal")
+local WrappedGoal = require("./WrappedGoal")
 
 --[=[
 	@class GoalManager
@@ -10,67 +10,92 @@ local Goal = require("./Goal")
 local GoalManager = {}
 GoalManager.__index = GoalManager
 
+type WrappedGoal = WrappedGoal.WrappedGoal
+
 export type GoalManager = typeof(setmetatable({} :: {
-	availableGoals: {Goal.Goal},
-	activeGoals: {Goal.Goal},
-	flagLocks: {any}
+	availableGoals: {WrappedGoal},
+	disabledFlags: {[any]: boolean},
+	flagLocks: {[any]: WrappedGoal}
 }, GoalManager))
 
 function GoalManager.new()
 	return setmetatable({
 		availableGoals = {},
-		activeGoals = {},
-		flagLocks = {}
+		disabledFlags = {},
+		flagLocks = {} -- [flag] = goal
 	}, GoalManager)
 end
 
-function GoalManager.addGoal(self: GoalManager, goal)
+function GoalManager.addGoal(self: GoalManager, goal: WrappedGoal)
 	table.insert(self.availableGoals, goal)
 end
 
-local function flagsConflict(a, b)
-	for _, flag in ipairs(a) do
-		for _, other in ipairs(b) do
-			if flag == other then return true end
+function GoalManager.disableFlag(self: GoalManager, flag: any)
+	self.disabledFlags[flag] = true
+end
+
+function GoalManager.enableFlag(self: GoalManager, flag: any)
+	self.disabledFlags[flag] = nil
+end
+
+local function goalContainsAnyFlags(goal: WrappedGoal, disabledFlags: {[any]: boolean}): boolean
+	for _, flag in ipairs(goal.goal:getFlags()) do
+		if disabledFlags[flag] then
+			return true
 		end
 	end
 	return false
 end
 
+local function goalCanBeReplacedForAllFlags(goal: WrappedGoal, flagLocks: {[any]: WrappedGoal}): boolean
+	for _, flag in ipairs(goal.goal:getFlags()) do
+		local current = flagLocks[flag]
+		if current and not current:canBeReplacedBy(goal) then
+			return false
+		end
+	end
+	return true
+end
+
 function GoalManager.update(self: GoalManager, delta: number)
-	-- stop goals that can not continue
-	for i, goal in ipairs(self.activeGoals) do
-		if not goal:canUse() then
-			goal:stop()
-			table.remove(self.activeGoals, i)
-		end
-	end
-
-	-- check for new goals to activate
+	-- Cleanup phase
 	for _, goal in ipairs(self.availableGoals) do
-		if not goal.IsRunning and goal:canUse() then
-			local conflict = false
-			for _, active in ipairs(self.activeGoals) do
-				if flagsConflict(goal:getFlags(), active:getFlags()) and goal.priority > active.priority then
-					active:stop()
-					active.isGoalRunning = false
-				elseif flagsConflict(goal., active:getFlags()) then
-					conflict = true
-				end
-			end
-
-			if not conflict then
-				goal:start()
-				goal.isGoalRunning = true
-				table.insert(self.activeGoals, goal)
-			end
+		if goal:isRunning() and (goalContainsAnyFlags(goal, self.disabledFlags) or not goal.goal:canContinueToUse()) then
+			goal:stop()
 		end
 	end
 
-	-- Tick active goals
-	for _, goal in ipairs(self.activeGoals) do
-		if goal:requiresUpdating() then
-			goal:update(delta)
+	-- Remove non-running owners from flagLocks
+	for flag, goal in pairs(self.flagLocks) do
+		if not goal:isRunning() then
+			self.flagLocks[flag] = nil
+		end
+	end
+
+	-- Update phase: start new goals if valid
+	for _, goal in ipairs(self.availableGoals) do
+		if not goal:isRunning()
+			and not goalContainsAnyFlags(goal, self.disabledFlags)
+			and goalCanBeReplacedForAllFlags(goal, self.flagLocks)
+			and goal:canUse() then
+
+			-- Steal ownership of all required flags
+			for _, flag in ipairs(goal.goal:getFlags()) do
+				local prev = self.flagLocks[flag]
+				if prev then
+					prev:stop()
+				end
+				self.flagLocks[flag] = goal
+			end
+
+			goal:start()
+		end
+	end
+
+	-- Tick running goals
+	for _, goal in ipairs(self.availableGoals) do
+		if goal:isRunning() and goal.goal:requiresUpdating() then
+			goal.goal:update(delta)
 		end
 	end
 end

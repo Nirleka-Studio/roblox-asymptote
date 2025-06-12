@@ -4,18 +4,12 @@ local Goal = {}
 Goal.__index = Goal
 
 export type Goal = typeof(setmetatable({} :: {
-	name: string,
-	priority: number,
-	flags: {any},
-	isGoalRunning: boolean
+	flags: {any}
 }, Goal))
 
-function Goal.new(name: string, priority: number, flags: {any}): Goal
+function Goal.new(name: string, priority: number, flags: {any}?): Goal
 	return setmetatable({
-		name = name,
-		priority = priority or 0,
-		flags = flags or {},
-		isGoalRunning = false,
+		flags = flags or {}
 	}, Goal)
 end
 
@@ -23,8 +17,12 @@ function Goal.canUse(self: Goal): boolean
 	return false
 end
 
-function Goal.isRunning(self: Goal): boolean
-	return self.isGoalRunning
+function Goal.canContinueToUse(self: Goal): boolean
+	return true
+end
+
+function Goal.isInterruptable(self: Goal): boolean
+	return true
 end
 
 function Goal.getFlags(self: Goal): {Flag}
