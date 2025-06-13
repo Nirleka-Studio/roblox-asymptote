@@ -7,3 +7,6 @@
 
 # Apple's Mac files
 .DS_Store
+
+# Luau Language Server
+sourcemap.json
