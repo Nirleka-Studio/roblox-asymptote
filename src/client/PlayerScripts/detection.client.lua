@@ -23,7 +23,7 @@ type MeterObject = {
 }
 
 local ALERTED_SOUND = ReplicatedStorage.shared.assets.sounds.temp_undertale_alert
-local REMOTE: RemoteEvent = ReplicatedStorage.remotes.Detection
+local REMOTE = require(ReplicatedStorage.shared.network.TypedDetectionRemote)
 local DETECTION_GUI = Players.LocalPlayer.PlayerGui:WaitForChild("Detection")
 local FRAME_METER_REF = DETECTION_GUI.SusMeter
 
