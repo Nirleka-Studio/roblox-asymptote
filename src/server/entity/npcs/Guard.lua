@@ -46,6 +46,15 @@ function Guard.create(character: Model): Guard
 		self:onLosePlayer(player)
 	end)
 
+	self.suspicionLevel.on_suspicion_update:Connect(function(player)
+		REMOTE_DETECTION:FireClient(
+				player,
+				self.suspicionLevel.suspicion_level,
+				self.character.model,
+				self.character.primaryPart.Position
+			)
+	end)
+
 	return self
 end
 
@@ -60,14 +69,6 @@ end
 function Guard.update(self: Guard, delta: number): ()
 	self.suspicionLevel:update(delta)
 	self.playerSightSensor:update()
-	if self.suspicionLevel.target_player then
-		REMOTE_DETECTION:FireClient(
-			self.suspicionLevel.target_player,
-			self.suspicionLevel.suspicion_level,
-			self.character.model,
-			self.character.primaryPart.Position
-		)
-	end
 end
 
 return Guard
