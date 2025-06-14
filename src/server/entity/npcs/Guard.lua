@@ -23,7 +23,7 @@ function Guard.create(character: Model): Guard
 			primaryPart = character.PrimaryPart :: BasePart
 		},
 		suspicionLevel = suspicion_level.create(
-			1/5,
+			4/5,
 			2/5
 		),
 		playerSightSensor = player_sight_sensor.create(
