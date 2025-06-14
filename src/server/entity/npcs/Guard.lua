@@ -42,7 +42,7 @@ function Guard.create(character: Model): Guard
 		self:onDetectedPlayer(player)
 	end)
 
-	self.playerSightSensor.on_inside_vision:Connect(function(player)
+	self.playerSightSensor.on_outside_vision:Connect(function(player)
 		self:onLosePlayer(player)
 	end)
 
