@@ -30,12 +30,15 @@ function Goal.getFlags(self: Goal): {Flag}
 end
 
 function Goal.start(self: Goal): ()
+	return
 end
 
 function Goal.stop(self: Goal): ()
+	return
 end
 
 function Goal.update(self: Goal, delta: number?): ()
+	return
 end
 
 function Goal.requiresUpdating(self: Goal): boolean
