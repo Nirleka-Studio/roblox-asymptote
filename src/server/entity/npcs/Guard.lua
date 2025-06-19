@@ -3,6 +3,7 @@
 local player_sight_sensor = require("../../detection/player_sight_sensor")
 local suspicion_level = require("../../detection/suspicion_level")
 local HumanoidEntity = require("../humanoid/HumanoidEntity")
+local GoalManager = require("../ai/goal/GoalManager")
 
 local REMOTE_DETECTION = require(game.ReplicatedStorage.shared.network.TypedDetectionRemote)
 
@@ -12,7 +13,8 @@ Guard.__index = Guard
 export type Guard = typeof(setmetatable({} :: {
 	character: HumanoidEntity.HumanoidCharacter,
 	suspicionLevel: suspicion_level.SuspicionLevel,
-	playerSightSensor: player_sight_sensor.PlayerSightSensor
+	playerSightSensor: player_sight_sensor.PlayerSightSensor,
+	goalManager: GoalManager.GoalManager
 }, Guard))
 
 function Guard.create(character: Model): Guard
@@ -34,7 +36,8 @@ function Guard.create(character: Model): Guard
 			},
 			20,
 			180
-		)
+		),
+		goalManager = GoalManager.new()
 	}, Guard)
 	
 
@@ -52,7 +55,7 @@ function Guard.create(character: Model): Guard
 				self.suspicionLevel.suspicion_level,
 				self.character.model,
 				self.character.primaryPart.Position
-			)
+		)
 	end)
 
 	return self
