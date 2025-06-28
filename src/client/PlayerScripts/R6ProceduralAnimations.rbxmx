@@ -1,0 +1,1752 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<Meta name="ExplicitAutoJoints">true</Meta>
+	<External>null</External>
+	<External>nil</External>
+	<Item class="LocalScript" referent="RBXdb789a31f8734b8297a11ecf6c601903">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+			<bool name="DefinesCapabilities">false</bool>
+			<bool name="Disabled">false</bool>
+			<Content name="LinkedSource"><null></null></Content>
+			<string name="Name">R6ProceduralAnimations</string>
+			<token name="RunContext">0</token>
+			<string name="ScriptGuid">{843F0166-AB25-468B-985E-481364868CB3}</string>
+			<ProtectedString name="Source"><![CDATA[--Script in Starter Player Scripts
+--Made by dthecoolest, 18/08/2021
+--Please give credit
+
+local player = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+
+local ProceduralAnimator = require(script.ProceduralAnimator)
+local CCDIKController = require(script.CCDIKController)
+
+local RunService = game:GetService("RunService")
+
+--Creates fake Upper hip motors and upper leg part
+local function createFakeLegs(character, Torso, RealLeftLeg, RealRightLeg)
+	--create LLEg First
+
+	local FakeUpperLLeg = Instance.new("Part")
+	FakeUpperLLeg.Transparency = 1
+	FakeUpperLLeg.Size = Vector3.new(0.1,0.1,0.1)
+	FakeUpperLLeg.CanCollide = false
+	FakeUpperLLeg.CanQuery = false
+	FakeUpperLLeg.CanTouch = false
+
+	local LeftHip = Instance.new("Motor6D")
+	LeftHip.Name = "Fake Left Hip"
+	LeftHip.C1 = CFrame.new(0, 0.3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	LeftHip.C0 = CFrame.new(-0.5, -0.95, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	LeftHip.Part0 = Torso
+	LeftHip.Part1 = FakeUpperLLeg
+
+	local LeftLeg = Instance.new("Motor6D")
+	LeftLeg.Name = "Fake Left Leg"
+	LeftLeg.C1 = CFrame.new(0, 0.6, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	LeftLeg.C0 = CFrame.new(0, -0.15, 0)
+	LeftLeg.Part0 = FakeUpperLLeg
+	LeftLeg.Part1 = RealLeftLeg
+
+	--Start parenting
+	FakeUpperLLeg.Parent = character
+	LeftHip.Parent = Torso
+	LeftLeg.Parent = Torso
+
+	--Begin right leg
+	local FakeUpperRLeg = Instance.new("Part")
+	FakeUpperRLeg.Transparency = 1
+	FakeUpperRLeg.Size = Vector3.new(0.1,0.1,0.1)
+	FakeUpperRLeg.CanCollide = false
+	FakeUpperRLeg.CanQuery = false
+	FakeUpperRLeg.CanTouch = false
+	FakeUpperRLeg.Parent = character
+
+	local RightHip = Instance.new("Motor6D")
+	RightHip.Name = "Fake Right Hip"
+	RightHip.C1 = CFrame.new(0, 0.3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	RightHip.C0 = CFrame.new(0.5, -0.95, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	RightHip.Part0 = Torso
+	RightHip.Part1 = FakeUpperRLeg
+
+	local RightLeg = Instance.new("Motor6D")
+	RightLeg.Name = "Fake Right Leg"
+	RightLeg.C1 = CFrame.new(0, 0.6, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	RightLeg.C0 = CFrame.new(0, -0.15, 0)
+	RightLeg.Part0 = FakeUpperRLeg
+	RightLeg.Part1 = RealRightLeg
+
+	--Start parenting
+	FakeUpperRLeg.Parent = character
+	RightHip.Parent = Torso
+	RightLeg.Parent = Torso
+	--return Motor6Ds packaged form
+	return {LeftHip,LeftLeg},{RightHip, RightLeg}, FakeUpperLLeg,FakeUpperRLeg
+
+end
+
+local function giveCharacterIK(character)
+
+	local Torso = character:WaitForChild("Torso")
+
+	local RealRightLeg : BasePart = character:WaitForChild("Right Leg")
+	local RealLeftLeg : BasePart = character:WaitForChild("Left Leg")
+
+	local EndEffector = Instance.new("Attachment")
+	EndEffector.Name = "EndEffector"
+	EndEffector.Position = Vector3.new(0, -0.9, 0)
+	EndEffector.Parent = RealRightLeg
+
+	local cloneEndEffect = EndEffector:Clone()
+	cloneEndEffect.Parent = RealLeftLeg
+
+	local LeftLegData, RightLegData, FakeUpperLLeg, FakeUpperRLeg = createFakeLegs(character,Torso,RealLeftLeg,RealRightLeg)
+
+	--Create hinge constraint for CCDIK
+	local function createHingeConstraints()
+		local LKneeAttachment = Instance.new("Attachment")
+		LKneeAttachment.Position = Vector3.new(0, -0.35, 0)
+		LKneeAttachment.Parent = FakeUpperLLeg
+
+		local LKneeAttachment1 = Instance.new("Attachment")
+		LKneeAttachment1.Position = Vector3.new(0, 0.4, 0)
+		LKneeAttachment1.Parent = RealLeftLeg
+
+		local kneeConstraint = Instance.new("HingeConstraint")
+		kneeConstraint.Attachment0 = LKneeAttachment
+		kneeConstraint.Attachment1 = LKneeAttachment1
+		kneeConstraint.LowerAngle = -145
+		kneeConstraint.UpperAngle = -15
+		kneeConstraint.Parent = FakeUpperLLeg
+
+		--Repeat for right leg
+		local RKneeAttachment = Instance.new("Attachment")
+		RKneeAttachment.Position = Vector3.new(0, -0.35, 0)
+		RKneeAttachment.Parent = FakeUpperRLeg
+
+		local RKneeAttachment1 = Instance.new("Attachment")
+		RKneeAttachment1.Position = Vector3.new(0, 0.4, 0)
+		RKneeAttachment1.Parent = RealRightLeg
+
+		local kneeConstraintRight = Instance.new("HingeConstraint")
+		kneeConstraintRight.Attachment0 = RKneeAttachment
+		kneeConstraintRight.Attachment1 = RKneeAttachment1
+		kneeConstraintRight.LowerAngle = -145
+		kneeConstraintRight.UpperAngle = -15
+		kneeConstraintRight.Parent = FakeUpperRLeg
+	end	
+	createHingeConstraints()
+	
+	local function createBallSocketConstraints()
+		
+		local RightHipAttachment = Instance.new("Attachment")
+		RightHipAttachment.Position = Vector3.new(0.5, -0.95, 0)
+		RightHipAttachment.Parent = Torso
+		
+		local RightHipAttachment1 = Instance.new("Attachment")
+		RightHipAttachment1.Position = Vector3.new(0, 0.3, 0)
+		RightHipAttachment1.Parent = FakeUpperRLeg
+		
+		local hipConstraint = Instance.new("BallSocketConstraint")
+		hipConstraint.Name = "RightBallSocketConstraint"
+		hipConstraint.LimitsEnabled = true
+		hipConstraint.TwistLimitsEnabled = true
+		hipConstraint.UpperAngle = 5
+		hipConstraint.Attachment0 = RightHipAttachment
+		hipConstraint.Attachment1 = RightHipAttachment1
+		hipConstraint.Parent = Torso
+		
+		local LeftHipAttachment = Instance.new("Attachment")
+		LeftHipAttachment.Position = Vector3.new(-0.5, -0.95, 0)
+		LeftHipAttachment.Parent = Torso
+		
+		local LeftHipAttachment1 = Instance.new("Attachment")
+		LeftHipAttachment1.Position = Vector3.new(0, 0.3, 0)
+		LeftHipAttachment1.Parent = FakeUpperLLeg
+		
+		local hipConstraintLeft = hipConstraint:Clone()
+		hipConstraintLeft.Attachment0 = LeftHipAttachment
+		hipConstraintLeft.Attachment1 = LeftHipAttachment1
+		hipConstraintLeft.Name = "LeftBallSocketConstraint"
+		hipConstraintLeft.Parent = Torso
+	end
+	createBallSocketConstraints()
+	--Disable the original Hip motor6ds
+	local RHip = Torso:WaitForChild("Right Hip")
+	local LHip = Torso:WaitForChild("Left Hip")
+	RHip.Enabled = false
+	LHip.Enabled = false
+
+	local rightLegController = CCDIKController.new(RightLegData)
+	rightLegController.UseLastMotor = true
+	rightLegController:GetConstraints()
+	rightLegController:GetConstraintsFromMotor(RightLegData[1],"RightBallSocketConstraint")
+	
+	local leftLegController = CCDIKController.new(LeftLegData)
+	leftLegController.UseLastMotor = true
+	leftLegController:GetConstraints()
+	leftLegController:GetConstraintsFromMotor(LeftLegData[1],"LeftBallSocketConstraint")
+	
+	local leftStepAttach = Instance.new("Attachment")
+	leftStepAttach.Name = "LeftStepAttach"
+	leftStepAttach.Position = Vector3.new(-0.5, -2.8, 0.1)
+	leftStepAttach.Parent = Torso
+
+	local rightStepAttach = Instance.new("Attachment")
+	rightStepAttach.Name = "rightStepAttach"
+	rightStepAttach.Position = Vector3.new(0.5, -2.8, 0.1)
+	rightStepAttach.Parent = Torso
+
+	local rightHipAttach = Instance.new("Attachment")
+	rightHipAttach.Name = "RightHipAttach"
+	rightHipAttach.Position = Vector3.new(0.5, -0.9, 0)
+	rightHipAttach.Parent = Torso
+
+	local leftHipAttach = Instance.new("Attachment")
+	leftHipAttach.Name = "LeftHipAttach"
+	leftHipAttach.Position = Vector3.new(-0.5, -0.9, 0)
+	leftHipAttach.Parent = Torso
+
+	local r6Legs = {
+		["rightLeg"] = {
+			["CurrentCycle"] = 0,
+			["CCDIKController"] =rightLegController,
+			["HipAttachment"]= rightHipAttach,
+			["FootAttachment"] = rightStepAttach,
+		},
+
+		["leftLeg"] = {
+			["CurrentCycle"] = math.pi,
+			["CCDIKController"] =leftLegController,
+			["HipAttachment"]= leftHipAttach,
+			["FootAttachment"] = leftStepAttach,
+		}
+	}
+	local params = RaycastParams.new()
+	params.FilterDescendantsInstances = {character}
+	local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+	local rootMotor = humanoidRootPart:WaitForChild("RootJoint")
+	local animator = ProceduralAnimator.new(humanoidRootPart,r6Legs,rootMotor,params)
+	--LeftLegData:InitDragDebug()
+	
+	local runSound = humanoidRootPart:WaitForChild("Running")
+	runSound.Volume = 0
+	local objectValue = script:FindFirstChild("FootStepSound")
+	if objectValue then
+		animator:ConnectFootStepSound(objectValue)
+	end
+	--Begin animation
+	local animationConnection = RunService.Heartbeat:Connect(function(dt)
+		animator:Animate(dt)
+	end)
+
+	--cleanup when died functions, or root part is destroyed
+	local humanoid : Humanoid = character:WaitForChild("Humanoid")
+
+	humanoid.Died:Connect(function()
+		if animationConnection then
+			animationConnection:Disconnect()
+			animationConnection = nil
+		end
+	end)
+	humanoidRootPart.AncestryChanged:Connect(function(_, parent)
+		if not parent then
+			if animationConnection then
+				animationConnection:Disconnect()
+				animationConnection = nil
+			end
+		end
+	end)
+
+end
+
+local function givePlayerIK(player)
+	player.CharacterAdded:Connect(giveCharacterIK)
+	if player.Character then
+		giveCharacterIK(player.Character)
+	end
+end
+
+Players.PlayerAdded:Connect(givePlayerIK)
+
+for _,player in pairs(Players:GetPlayers()) do
+	givePlayerIK(player)
+end
+]]></ProtectedString>
+			<int64 name="SourceAssetId">7503546100</int64>
+			<BinaryString name="Tags"></BinaryString>
+		</Properties>
+		<Item class="ModuleScript" referent="RBXa7755582b35d4170bc08cf42b0c53064">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">ProceduralAnimator</string>
+				<string name="ScriptGuid">{411E1A16-D6AC-4431-A77E-2486D5200F21}</string>
+				<ProtectedString name="Source"><![CDATA[-- Procedural Animator Class
+-- Dthecoolest
+-- November 20, 2020
+local RunService = game:GetService("RunService")
+
+local ProceduralAnimatorClass = {}
+ProceduralAnimatorClass.__index = ProceduralAnimatorClass
+
+--Module to handle the procedural animation the hip and legs
+--remnants from iGottics Code
+local CF			=CFrame.new 
+local ANGLES		=CFrame.Angles 
+local x_and_y = Vector3.new(1, 0, 1)
+local TAU = 2*math.pi
+local DOWN = 10*Vector3.new(0,-1,0)
+
+--template for legs
+-- local mechLegs = {
+-- 	["rightLeg"] = {
+-- 		["CurrentCycle"] = 0,
+-- 		["LimbChain"] = rightLegChain,
+-- 		["HipAttachment"]= rightHipAttachment,
+-- 		["FootAttachment"] = rightStepAttachment,
+-- 	},
+
+-- 	["leftLeg"] = {
+-- 		["CurrentCycle"] = math.pi,
+-- 		["LimbChain"] =leftLegChain,
+-- 		["CCDIKController"] =leftLegChain,
+-- 		["HipAttachment"]= leftHipAttachment,
+-- 		["FootAttachment"] = leftStepAttachment,
+-- 	}
+-- }
+local Signal = require(script.Parent.Signal)
+
+function ProceduralAnimatorClass.new(RootPart,Legs,RootMotor,raycastParams)
+
+	local self = setmetatable({}, ProceduralAnimatorClass)
+
+	--Constants
+	self.RootPart = RootPart
+	self.RaycastParams = raycastParams --manual input it
+
+	if RootMotor then
+		self.RootMotor = RootMotor
+		self.RootMotorC1Store = RootMotor.C1
+		self.WaistCycle = 0 
+	end
+
+	self.Legs = Legs
+
+	--Default settings for legs
+	self.DefaultStride = 2 -- Changes how far the legs move
+	self.CycleSpeed = 15 -- How fast the leg-movement cycle is. Change this to suit your needs!
+	self.DefaultStrideOffset = 0
+	-- Radius of the circle at CFrame front of the player
+	self.DefaultStrideCF = CFrame.new(0, 0, -self.DefaultStride / 2) -- Turn that stride number into a CFrame we can use
+
+
+	--Variables that will change
+	self.MovementDirectionXZ = Vector3.new(1, 0, 1) -- This will be changed
+	self.rootvelm = 0
+
+	--Sound
+	self.FootStep = Signal.new();
+	self.MaxSpeed = 20
+	self.EngineSound = nil;
+	self.FootStepSound = nil;
+	self.RandomNumGenerator = Random.new()
+	--debug the signal, works
+	--self.FootStep:Connect(function()
+	--	print("Step")
+	--end)
+
+	self.WalkBounce = 0.4 -- factor by which it bounces
+	self.SwayX = -1*5 -- factor in Z direction front or behind, currently set to tilt forward
+	return self
+end
+
+function ProceduralAnimatorClass:MoveLegs(stepCycle,dt)
+	--if moving
+	if self.rootVelocityMagnitude > 0.1 then
+		for _, Leg in pairs(self.Legs) do
+			local strideCF = Leg.StrideCF or self.DefaultStrideCF
+			local strideOffset = Leg.StrideOffset or self.DefaultStrideOffset
+			local raycastParams = self.RaycastParams
+			Leg.CurrentCycle = (Leg.CurrentCycle+stepCycle)%360
+			local cycle = Leg.CurrentCycle
+			local IKTolerance = Leg.IKTolerance or 0
+
+			local hip			=Leg.HipAttachment.WorldPosition
+			--Position of where the lower leg should be, spread out
+			local ground		=Leg.FootAttachment.WorldPosition
+			local desiredPos	=(CF(ground, ground+self.MovementDirectionXZ)*ANGLES(-cycle, 0, 0)*strideCF).p
+			local offset		=(desiredPos-hip)--vector from hip to the circle
+			local raycastResult = workspace:Raycast(hip,offset.unit*(offset.magnitude+strideOffset),raycastParams)
+			local footPos = raycastResult and raycastResult.Position or (hip + offset.unit*(offset.magnitude+strideOffset))
+
+			--debug foot pos position
+			--local part = Instance.new("Part")
+			--part.CanCollide = false
+			--part.CanTouch = false
+			--part.BrickColor = BrickColor.Red()
+			--part.Anchored = true
+			--part.CanQuery = false
+			--part.Size = Vector3.new(0.1,0.1,0.1)
+			--part.Position = footPos
+			--part.Parent = workspace
+			--game.Debris:AddItem(part,0.1)
+
+			--Do IK towards foot pos
+			--Leg.CCDIKController:CCDIKIterateOnce(footPos,IKTolerance)
+			--Iterating once won't fully track the footPos, needs to iterate until
+			Leg.CCDIKController:CCDIKIterateUntil(footPos,IKTolerance)
+
+			if not Leg.TouchGround and raycastResult then
+				--print("Stomp")
+				self.FootStep:Fire(raycastResult)
+			end
+			--
+			if raycastResult then -- hit ground so raycast result
+				Leg.TouchGround = true
+			else
+				Leg.TouchGround = false
+			end
+		end
+	else--stand still
+		for _, Leg in pairs(self.Legs) do
+			local strideCF = Leg.StrideCF or self.DefaultStrideCF
+			local strideOffset = Leg.StrideOffset or self.DefaultStrideOffset
+			local raycastParams = self.RaycastParams
+			local IKTolerance = Leg.IKTolerance or 0
+
+			local hip			=Leg.HipAttachment.WorldPosition
+			--Position of where the lower leg should be, spread out
+			local desiredPos		=Leg.FootAttachment.WorldPosition+DOWN
+			local offset		=(desiredPos-hip)--vector from hip to the circle
+			local raycastResult = workspace:Raycast(hip,offset.unit*(offset.magnitude+strideOffset),raycastParams)
+			local footPos = raycastResult and raycastResult.Position or (hip + offset.unit*(offset.magnitude+strideOffset))
+
+			--Do IK towards foot pos
+			Leg.CCDIKController:CCDIKIterateOnce(footPos,IKTolerance)
+			--Leg.LimbChain:IterateOnce(footPos,0.1)
+			--Leg.LimbChain:UpdateMotors()
+			if not Leg.TouchGround and raycastResult then
+				--print("Stomp")
+				self.FootStep:Fire(raycastResult)
+			end
+
+			if raycastResult then -- hit ground so raycast result
+				Leg.TouchGround = true
+			else
+				Leg.TouchGround = false
+			end
+
+		end
+	end
+
+end
+
+
+function ProceduralAnimatorClass:MoveTorso(stepCycle,dt10,rootVelocity)
+
+	local lowercf = self.RootPart.CFrame
+	local waistjoint = self.RootMotor
+	local waist1 = self.RootMotorC1Store
+	local rootvel = rootVelocity
+
+
+	if self.rootVelocityMagnitude > 0.1 then
+
+		self.WaistCycle = (self.WaistCycle+stepCycle)%360
+
+		local relv0		=lowercf:vectorToObjectSpace(rootvel)
+		local relv1		=relv0*0.2
+
+		do -- Upper Torso
+			local bounceCFrame = CFrame.new(0,self.WalkBounce*math.cos((self.WaistCycle+90+45)*2),0)
+
+			local sway = math.rad(-relv1.X)+0.08*math.cos(self.WaistCycle+90)
+			local swayY = 0.1*math.cos(self.WaistCycle)-2*math.rad(relv1.X)
+			local swayX = math.rad(relv1.Z)*0.5*self.SwayX
+			local goalCF = bounceCFrame*waist1*ANGLES(swayX,swayY,sway):inverse()
+			-- goalCF *= CFrame.new(0,math.cos((self.WaistCycle+90+45)*2),0)-- Up and down
+			--goalCF *= CFrame.new(0,self.WalkBounce*math.cos((self.WaistCycle+90+45)*2),0)-- Up and down
+			--local rotationOnly = goalCF-goalCF.Position
+			waistjoint.C1	=	waistjoint.C1:Lerp(goalCF,dt10)
+		end
+
+	else
+		--when not moving go back to original position
+		local goalCF = waistjoint.C1:Lerp(waist1, dt10)
+		--local rotationOnly = goalCF-goalCF.Position
+		waistjoint.C1	= goalCF
+	end
+end
+
+
+function ProceduralAnimatorClass:Animate(dt)
+
+	-- Begin the step-------
+	local dt10 = math.min(dt*10, 1) -- Normalize dt for our needs
+
+	local rootpart = self.RootPart
+	local rootvel0 = rootpart.Velocity -- Our movement velocity
+
+	local rootVelocity = rootvel0 * x_and_y --XY plane velocity only
+	local rootVelocityMagnitude = rootVelocity.Magnitude --root velocity magnitude
+	self.rootVelocityMagnitude = rootVelocityMagnitude
+
+	if self.EngineSound then
+		self.EngineSound.PlaybackSpeed = (rootVelocityMagnitude / self.MaxSpeed) + 0.6
+	end
+
+	--if moving then lerp current direction
+	if rootVelocityMagnitude > 0.1 then 
+		--lerp current direction towards curren velocity
+		self.MovementDirectionXZ = self.MovementDirectionXZ:Lerp(rootVelocity.unit, dt10) 
+	end
+
+	local relativizeToHumanoidSpeed = rootVelocityMagnitude/16 --default walk speed is 16
+	local stepCycle = relativizeToHumanoidSpeed*dt*self.CycleSpeed
+
+	self:MoveLegs(stepCycle,dt)
+	if self.RootMotor then
+		self:MoveTorso(stepCycle,dt10,rootVelocity)
+	end
+
+end
+
+function ProceduralAnimatorClass:ConnectFootStepSound(objectValue : ObjectValue)
+	self.FootStep:Connect(function(raycastResult)
+		local sound = objectValue.Value
+		if not sound then
+			return
+		end
+		--print(sound)
+		local soundPositionAttachment = Instance.new("Attachment")
+		soundPositionAttachment.WorldPosition = raycastResult.Position
+		soundPositionAttachment.Parent = workspace.Terrain
+
+		local footStepSound = sound:Clone()
+		local randomPlaybackSpeed = self.RandomNumGenerator:NextNumber(0.7,1)
+		footStepSound.PlaybackSpeed = randomPlaybackSpeed
+
+		--local reverbEffect = Instance.new("ReverbSoundEffect")
+		--reverbEffect.Density = 0.8
+		--reverbEffect.DecayTime = 1
+		--reverbEffect.Parent = footStepSound
+		footStepSound.PlayOnRemove = true
+
+		footStepSound.Parent = soundPositionAttachment
+		soundPositionAttachment:Destroy()
+	end)
+end
+
+function ProceduralAnimatorClass:StartEngineSound(sound : Sound)
+	print("engine sound???")
+	local engineSound = sound:Clone()
+	engineSound.Parent = self.RootPart
+	engineSound.Looped = true
+	engineSound:Play()
+end
+
+function ProceduralAnimatorClass:InitDragDebug()
+	for _, Leg in pairs(self.Legs) do
+		Leg.CCDIKController:InitDragDebug()
+	end
+end
+
+function ProceduralAnimatorClass:Destroy()
+	if self.FootStep then
+		self.FootStep:Destroy()
+	end
+	self = nil
+end
+
+return ProceduralAnimatorClass]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+		</Item>
+		<Item class="ModuleScript" referent="RBXd54b711a89d44442974a730a489586fe">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Signal</string>
+				<string name="ScriptGuid">{1171EE5A-2A9B-4850-877F-E4E7C372497A}</string>
+				<ProtectedString name="Source"><![CDATA[--------------------------------------------------------------------------------
+--               Batched Yield-Safe Signal Implementation                     --
+-- This is a Signal class which has effectively identical behavior to a       --
+-- normal RBXScriptSignal, with the only difference being a couple extra      --
+-- stack frames at the bottom of the stack trace when an error is thrown.     --
+-- This implementation caches runner coroutines, so the ability to yield in   --
+-- the signal handlers comes at minimal extra cost over a naive signal        --
+-- implementation that either always or never spawns a thread.                --
+--                                                                            --
+-- API:                                                                       --
+--   local Signal = require(THIS MODULE)                                      --
+--   local sig = Signal.new()                                                 --
+--   local connection = sig:Connect(function(arg1, arg2, ...) ... end)        --
+--   sig:Fire(arg1, arg2, ...)                                                --
+--   connection:Disconnect()                                                  --
+--   sig:DisconnectAll()                                                      --
+--   local arg1, arg2, ... = sig:Wait()                                       --
+--                                                                            --
+-- Licence:                                                                   --
+--   Licenced under the MIT licence.                                          --
+--                                                                            --
+-- Authors:                                                                   --
+--   stravant - July 31st, 2021 - Created the file.                           --
+--------------------------------------------------------------------------------
+
+-- The currently idle thread to run the next handler on
+local freeRunnerThread = nil
+
+-- Function which acquires the currently idle handler runner thread, runs the
+-- function fn on it, and then releases the thread, returning it to being the
+-- currently idle one.
+-- If there was a currently idle runner thread already, that's okay, that old
+-- one will just get thrown and eventually GCed.
+local function acquireRunnerThreadAndCallEventHandler(fn, ...)
+	local acquiredRunnerThread = freeRunnerThread
+	freeRunnerThread = nil
+	fn(...)
+	-- The handler finished running, this runner thread is free again.
+	freeRunnerThread = acquiredRunnerThread
+end
+
+-- Coroutine runner that we create coroutines of. The coroutine can be 
+-- repeatedly resumed with functions to run followed by the argument to run
+-- them with.
+local function runEventHandlerInFreeThread(...)
+	acquireRunnerThreadAndCallEventHandler(...)
+	while true do
+		acquireRunnerThreadAndCallEventHandler(coroutine.yield())
+	end
+end
+
+-- Connection class
+local Connection = {}
+Connection.__index = Connection
+
+function Connection.new(signal, fn)
+	return setmetatable({
+		_connected = true,
+		_signal = signal,
+		_fn = fn,
+		_next = false,
+	}, Connection)
+end
+
+function Connection:Disconnect()
+	assert(self._connected, "Can't disconnect a connection twice.", 2)
+	self._connected = false
+
+	-- Unhook the node, but DON'T clear it. That way any fire calls that are
+	-- currently sitting on this node will be able to iterate forwards off of
+	-- it, but any subsequent fire calls will not hit it, and it will be GCed
+	-- when no more fire calls are sitting on it.
+	if self._signal._handlerListHead == self then
+		self._signal._handlerListHead = self._next
+	else
+		local prev = self._signal._handlerListHead
+		while prev and prev._next ~= self do
+			prev = prev._next
+		end
+		if prev then
+			prev._next = self._next
+		end
+	end
+end
+
+-- Make Connection strict
+setmetatable(Connection, {
+	__index = function(tb, key)
+		error(("Attempt to get Connection::%s (not a valid member)"):format(tostring(key)), 2)
+	end,
+	__newindex = function(tb, key, value)
+		error(("Attempt to set Connection::%s (not a valid member)"):format(tostring(key)), 2)
+	end
+})
+
+-- Signal class
+local Signal = {}
+Signal.__index = Signal
+
+function Signal.new()
+	return setmetatable({
+		_handlerListHead = false,	
+	}, Signal)
+end
+
+function Signal:Connect(fn)
+	local connection = Connection.new(self, fn)
+	if self._handlerListHead then
+		connection._next = self._handlerListHead
+		self._handlerListHead = connection
+	else
+		self._handlerListHead = connection
+	end
+	return connection
+end
+
+-- Disconnect all handlers. Since we use a linked list it suffices to clear the
+-- reference to the head handler.
+function Signal:DisconnectAll()
+	self._handlerListHead = false
+end
+
+-- Signal:Fire(...) implemented by running the handler functions on the
+-- coRunnerThread, and any time the resulting thread yielded without returning
+-- to us, that means that it yielded to the Roblox scheduler and has been taken
+-- over by Roblox scheduling, meaning we have to make a new coroutine runner.
+function Signal:Fire(...)
+	local item = self._handlerListHead
+	while item do
+		if item._connected then
+			if not freeRunnerThread then
+				freeRunnerThread = coroutine.create(runEventHandlerInFreeThread)
+			end
+			task.spawn(freeRunnerThread, item._fn, ...)
+		end
+		item = item._next
+	end
+end
+
+-- Implement Signal:Wait() in terms of a temporary connection using
+-- a Signal:Connect() which disconnects itself.
+function Signal:Wait()
+	local waitingCoroutine = coroutine.running()
+	local cn;
+	cn = self:Connect(function(...)
+		cn:Disconnect()
+		task.spawn(waitingCoroutine, ...)
+	end)
+	return coroutine.yield()
+end
+
+-- Make signal strict
+setmetatable(Signal, {
+	__index = function(tb, key)
+		error(("Attempt to get Signal::%s (not a valid member)"):format(tostring(key)), 2)
+	end,
+	__newindex = function(tb, key, value)
+		error(("Attempt to set Signal::%s (not a valid member)"):format(tostring(key)), 2)
+	end
+})
+
+return Signal]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+		</Item>
+		<Item class="ModuleScript" referent="RBX20bdbc86fe0b4363a866b124887c5719">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">CCDIKController</string>
+				<string name="ScriptGuid">{629AAA10-951A-4F67-8C46-FEB4F6B86D3C}</string>
+				<ProtectedString name="Source"><![CDATA[-- CCDIKController
+-- Dthecoolest
+-- December 27, 2020
+
+local Debris = game:GetService("Debris") -- for debugging
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local VectorUtil = require(script.VectorUtil)
+local Maid = require(script.Maid)
+
+--Axis angle version still here for testing purposes
+local function fromToRotation(u, v, axis)
+	local dot = u:Dot(v)
+	if dot > 0.99999 then
+		-- situation 1
+		return CFrame.new()
+	elseif dot < -0.99999 then
+		-- situation 2
+		return CFrame.fromAxisAngle(axis, math.pi)
+	end
+	-- situation 3
+	return CFrame.fromAxisAngle(u:Cross(v), math.acos(dot) * 0.8)
+end
+
+--Quaternion rotation version from Egomoose
+--The cooler version (⌐□_□)
+local function getRotationBetween(u, v, axis)
+	local dot, uxv = u:Dot(v), u:Cross(v)
+	if dot < -0.99999 then
+		return CFrame.fromAxisAngle(axis, math.pi)
+	end
+	return CFrame.new(0, 0, 0, uxv.x, uxv.y, uxv.z, 1 + dot)
+end
+--[[
+	Amount is in radians
+	rotate vector around an axis
+]]
+local function rotateVectorAround(v, amount, axis)
+	return CFrame.fromAxisAngle(axis, amount):VectorToWorldSpace(v)
+end
+
+local CFNEW = CFrame.new
+local CFLOOKAT = CFrame.lookAt
+local ZEROVEC = Vector3.new()
+local DOWNVECTOR = Vector3.new(0, -1, 0)
+
+--local motor6d = Instance.new("Motor6D")
+--Dictionary of how to setup the axis constraints
+local hipJoint = Instance.new("Motor6D")
+local kneeJoint = Instance.new("Motor6D")
+local constraintsTemplate = {
+	[kneeJoint] = {
+		["ConstraintType"] = "Hinge",
+		["UpperAngle"] = 45, -- same as HingeConstraint [-180,180] degrees
+		["LowerAngle"] = -45,
+		["AxisAttachment"] = nil, --Automatically tries to find first child an attachment with the part0Motor6dName..AxisAttachment
+		["JointAttachment"] = nil,
+	},
+	[hipJoint] = {
+		["ConstraintType"] = "BallSocketConstraint",
+		["UpperAngle"] = 45, -- same as BallSocketConstraint [-180,180] degrees
+		["TwistLimitsEnabled"] = false, -- yep same as roblox constraints
+		["TwistUpperAngle"] = 45,
+		["TwistLowerAngle"] = -45,
+		["AxisAttachment"] = nil, --Automatically tries to find first child during .new() setup but you can manually input it
+		["JointAttachment"] = nil,
+	},
+}
+
+local CCDIKController = {}
+CCDIKController.__index = CCDIKController
+
+function CCDIKController.new(Motor6DTable, Constraints)
+	local self = setmetatable({}, CCDIKController)
+
+	self.Maid = Maid.new()
+	self.Motor6DTable = Motor6DTable
+	--resets the rotation of the Motor6D automatically
+	--Prevents C0 orientated models like R6 from spinning wildly
+	--Not needed anymore, was due to C0 and C1 orientations not being 0
+	--Fixed with new C0 formula
+	-- for i, motor6D in pairs(Motor6DTable) do
+	--local newC1Orientation = motor6D.C1 * motor6D.C0:Inverse()
+	--newC1Orientation -= newC1Orientation.Position
+	--motor6D.C0 = CFrame.new() + motor6D.C0.Position
+	--motor6D.C1 = newC1Orientation + motor6D.C1.Position
+	-- end
+	self.Constraints = Constraints
+	self.JointInfo, self.JointAxisInfo = self:SetupJoints() -- Creates instances make sure to clean up via :Destroy()
+	self.EndEffector = Motor6DTable[#Motor6DTable].Part1:FindFirstChild("EndEffector")
+	print(self.EndEffector)
+	if not self.EndEffector then
+		local endEffector = Instance.new("Attachment")
+		endEffector.Name = "EndEffector"
+		endEffector.Parent = Motor6DTable[#Motor6DTable].Part1
+		self.EndEffector = endEffector
+		self.Maid:GiveTask(endEffector)
+	end
+
+	self.DebugMode = false
+	self.LerpMode = false
+	self.LerpAlpha = 0.9
+
+	self.ConstantLerpSpeed = true
+	self.AngularSpeed = math.rad(90)
+
+	self.FootOrientationSystem = false
+	self.FootRaycastParams = RaycastParams.new()
+	self.RaycastLengthDown = 50
+	self._RayResultTable = {}
+
+	--additional feature
+	self.UseLastMotor = false
+	return self
+end
+
+--[[
+	Sets up the attachments to find the Motor6D joints position in world space, also tries to find the constraint axis
+]]
+function CCDIKController:SetupJoints()
+	local joints = {}
+	local jointAxisInfo = {}
+	for _, motor in pairs(self.Motor6DTable) do
+		--In order to find the joint in world terms and index it fast, only thing that needs to be destroyed
+		local attachment = Instance.new("Attachment")
+		attachment.CFrame = motor.C0
+		attachment.Name = "JointPosition"
+		attachment.Parent = motor.Part0
+		joints[motor] = attachment
+		self.Maid:GiveTask(attachment)
+		if self.Constraints then
+			local motorConstraints = self.Constraints[motor]
+			if motorConstraints then
+				--If it doesn't already have an axis attachment, find one,
+				if not motorConstraints.AxisAttachment then
+					local AxisAttachment = motor.Part0:FindFirstChild(motor.Part0.Name .. "AxisAttachment")
+					motorConstraints["AxisAttachment"] = AxisAttachment
+				elseif typeof(motorConstraints.AxisAttachment) == "string" then
+					local AxisAttachment = motor.Part0:FindFirstChild(
+						motorConstraints.AxisAttachment .. "AxisAttachment"
+					)
+					motorConstraints["AxisAttachment"] = AxisAttachment
+				end
+				--same here for joint attachment
+				if not motorConstraints.JointAttachment then
+					local JointAttachment = motor.Part1:FindFirstChild(motor.Part0.Name .. "JointAttachment")
+					motorConstraints["JointAttachment"] = JointAttachment
+				elseif typeof(motorConstraints.JointAttachment) == "string" then
+					local JointAttachment = motor.Part1:FindFirstChild(
+						motorConstraints.JointAttachment .. "JointAttachment"
+					)
+					motorConstraints["JointAttachment"] = JointAttachment
+				end
+			end
+		end
+	end
+	--self.JointInfo = joints
+	--self.JointAxisInfo = jointAxisInfo
+	return joints, jointAxisInfo
+end
+
+--[[
+	Adds constraints settings from Roblox constraint instances already inside the model.
+]]
+function CCDIKController:GetConstraints()
+	if not self.Constraints then -- construct the constraint table if none
+		self.Constraints = {}
+	end
+	for _, motor in pairs(self.Motor6DTable) do
+		local motorPart0: Part
+		motorPart0 = motor.Part0
+		local hingeConstraint = motorPart0:FindFirstChildWhichIsA("HingeConstraint")
+		local ballSocketConstraint = motorPart0:FindFirstChildWhichIsA("BallSocketConstraint")
+		if hingeConstraint then
+			self.Constraints[motor] = {
+				["ConstraintType"] = "Hinge",
+				["UpperAngle"] = hingeConstraint.UpperAngle, -- same as HingeConstraint [-180,180] degrees
+				["LowerAngle"] = hingeConstraint.LowerAngle,
+				["AxisAttachment"] = hingeConstraint.Attachment0,
+				["JointAttachment"] = hingeConstraint.Attachment1,
+			}
+		elseif ballSocketConstraint then
+			self.Constraints[motor] = {
+				["ConstraintType"] = "BallSocketConstraint",
+				["UpperAngle"] = ballSocketConstraint.UpperAngle, -- same as BallSocketConstraint [-180,180] degrees
+				["TwistLimitsEnabled"] = ballSocketConstraint.TwistLimitsEnabled, -- still have no idea how to do
+				["TwistUpperAngle"] = ballSocketConstraint.TwistUpperAngle, -- so yeah no twist limits for now
+				["TwistLowerAngle"] = ballSocketConstraint.TwistLowerAngle,
+				["AxisAttachment"] = ballSocketConstraint.Attachment0, --Automatically tries to find first child during .new() setup but you can manually input it
+				["JointAttachment"] = ballSocketConstraint.Attachment1,
+			}
+		end
+	end
+end
+
+--[[--------------------------------------------------------
+	Same as GetConstraints except uses :FindFirstChild() to find the roblox constraint and sets settings accordingly
+
+]]
+function CCDIKController:GetConstraintsFromMotor(motor: Motor6D, constraintName: string)
+	if not self.Constraints then -- construct the constraint table if none
+		self.Constraints = {}
+	end
+	local constraint = motor.Part0:FindFirstChild(constraintName)
+	if constraint:IsA("HingeConstraint") then
+		self.Constraints[motor] = {
+			["ConstraintType"] = "Hinge",
+			["UpperAngle"] = constraint.UpperAngle, -- same as HingeConstraint [-180,180] degrees
+			["LowerAngle"] = constraint.LowerAngle,
+			["AxisAttachment"] = constraint.Attachment0,
+			["JointAttachment"] = constraint.Attachment1,
+		}
+	elseif constraint:IsA("BallSocketConstraint") then
+		self.Constraints[motor] = {
+			["ConstraintType"] = "BallSocketConstraint",
+			["UpperAngle"] = constraint.UpperAngle, -- same as BallSocketConstraint [-180,180] degrees
+			["TwistLimitsEnabled"] = constraint.TwistLimitsEnabled, -- still have no idea how to do
+			["TwistUpperAngle"] = constraint.TwistUpperAngle, -- so yeah no twist limits for now
+			["TwistLowerAngle"] = constraint.TwistLowerAngle,
+			["AxisAttachment"] = constraint.Attachment0, --Automatically tries to find first child during .new() setup but you can manually input it
+			["JointAttachment"] = constraint.Attachment1,
+		}
+	end
+end
+
+--[[
+	Internal function for CCDIK Iteration step
+]]
+function CCDIKController:_CCDIKIterateFoot(step)
+	local constraints = self.Constraints
+	local motor6DTable = self.Motor6DTable
+	local footJoint = motor6DTable[#motor6DTable]
+
+	footJoint.C0 *= footJoint.Transform
+	self:OrientFootMotorToFloor(footJoint, step)
+	footJoint.Transform = CFNEW()
+
+	if constraints then
+		local jointConstraintInfo = constraints[footJoint]
+		if jointConstraintInfo then
+			if jointConstraintInfo.ConstraintType == "Hinge" then
+				self:RotateToHingeAxis(footJoint, jointConstraintInfo)
+			end
+			if jointConstraintInfo.ConstraintType == "BallSocketConstraint" then
+				self:RotateToBallSocketConstraintAxis(footJoint, jointConstraintInfo)
+			end
+		end
+	end
+end
+--[[
+	Performs one iteration of the CCDIK step regardless of the end condition
+]]
+
+function CCDIKController:_CCDIKIterateStep(goalPosition, step)
+	local constraints = self.Constraints
+	local useLastMotor = self.UseLastMotor and 1 or 0 --Makes it so that it iterates the only one motor in the table
+	for i = #self.Motor6DTable - 1 + useLastMotor, 1, -1 do
+		local currentJoint = self.Motor6DTable[i]
+
+		currentJoint.C0 *= currentJoint.Transform -- apply animations to C0
+		self:RotateFromEffectorToGoal(currentJoint, goalPosition, step)
+
+		currentJoint.Transform = CFNEW()
+
+		if constraints then
+			local jointConstraintInfo = constraints[currentJoint]
+			if jointConstraintInfo then
+				if jointConstraintInfo.ConstraintType == "Hinge" then
+					self:RotateToHingeAxis(currentJoint, jointConstraintInfo)
+				end
+				if jointConstraintInfo.ConstraintType == "BallSocketConstraint" then
+					self:RotateToBallSocketConstraintAxis(currentJoint, jointConstraintInfo)
+				end
+			end
+		end
+	end
+end
+--[[------------------------------
+	Iterates only if goalPosition is not yet reached
+]]
+function CCDIKController:CCDIKIterateOnce(goalPosition, tolerance, step)
+	local endEffectorPosition = self.EndEffector.WorldPosition
+	local distanceToGoal = endEffectorPosition - goalPosition
+	local tolerance = tolerance or 1
+
+	if distanceToGoal.Magnitude > tolerance then
+		self:_CCDIKIterateStep(goalPosition, step)
+	end
+
+	--Always attempt to orientate foot to floor
+	if self.FootOrientationSystem then
+		self:_CCDIKIterateFoot(step)
+	end
+end
+
+function CCDIKController:CCDIKIterateOnceDebug(goalPosition, tolerance, step)
+	-- local endEffectorPosition = self.EndEffector.WorldPosition
+
+	-- local distanceToGoal = endEffectorPosition-goalPosition
+	-- local tolerance = tolerance or 0
+
+	self:_CCDIKIterateStep(goalPosition, step)
+
+	--Always attempt to orientate foot to floor
+	--not for the debug mode
+	-- if self.FootOrientationSystem then
+	-- 	self:_CCDIKIterateFoot(step)
+	-- end
+end
+
+-- Same as Iterate once but in a while loop
+function CCDIKController:CCDIKIterateUntil(goalPosition, tolerance, maxBreakCount, step)
+	local maxBreakCount = maxBreakCount or 10
+	local currentIterationCount = 0
+	local endEffectorPosition = self.EndEffector.WorldPosition
+
+	local distanceToGoal = endEffectorPosition - goalPosition
+	local tolerance = tolerance or 1
+
+	while distanceToGoal.Magnitude > tolerance and maxBreakCount >= currentIterationCount do
+		currentIterationCount += 1
+		self:_CCDIKIterateStep(goalPosition, step)
+		if self.FootOrientationSystem then
+			self:_CCDIKIterateFoot(step)
+		end
+	end
+end
+
+local function worldCFrameToC0ObjectSpace(motor6DJoint,worldCFrame)
+	local part1CF = motor6DJoint.Part1.CFrame
+	local c1Store = motor6DJoint.C1
+	local c0Store = motor6DJoint.C0
+	local relativeToPart1 =c0Store*c1Store:Inverse()*part1CF:Inverse()*worldCFrame*c1Store
+	relativeToPart1 -= relativeToPart1.Position
+	local goalC0CFrame = relativeToPart1+c0Store.Position
+	return goalC0CFrame
+end
+local function calculateGoalFromToC0CFrame(motor6DJoint, u, v, axis)
+	local rotationCFrame = fromToRotation(u, v, axis)
+	local part1CF = motor6DJoint.Part1.CFrame
+	local c1Store = motor6DJoint.C1
+	local c0Store = motor6DJoint.C0
+	--calculate goal world CFrame
+	local goalWorldCFrame = rotationCFrame*part1CF
+
+	--do the New C1 Inversing
+	local relativeToPart1 =c0Store*c1Store:Inverse()*part1CF:Inverse()*goalWorldCFrame*c1Store
+
+	--maintain original C0 position
+	relativeToPart1 -= relativeToPart1.Position
+	local goalC0CFrame = relativeToPart1+c0Store.Position
+	-- local goalC0CFrame = relativeToPart1
+
+	return goalC0CFrame
+end
+
+function CCDIKController.rotateJointFromTo(motor6DJoint, u, v, axis)
+	local goalC0CFrame = calculateGoalFromToC0CFrame(motor6DJoint, u, v, axis)
+
+	motor6DJoint.C0 = goalC0CFrame
+end
+
+local tweenInfo = TweenInfo.new(0.1)
+
+function CCDIKController.rotateJointFromToTween(motor6DJoint, u, v, axis)
+	print("Tweeen")
+	--alternative calculation method
+	local goalC0CFrame = calculateGoalFromToC0CFrame(motor6DJoint, u, v, axis)
+	local tween = TweenService:Create(motor6DJoint, tweenInfo, { C0 = goalC0CFrame })
+	tween:Play()
+	tween.Completed:Wait()
+end
+
+--Controls the primary CCDIK Method but instead of going fully towards the goal it lerps slowly towards it instead
+function CCDIKController:rotateJointFromToWithLerp(motor6DJoint: Motor6D, u, v, axis, step)
+	--print("Rotateting")
+	local goalC0CFrame = calculateGoalFromToC0CFrame(motor6DJoint, u, v, axis)
+
+	local lerpAlpha = self.LerpAlpha
+
+	local currentC0 = motor6DJoint.C0
+
+	if step and self.ConstantLerpSpeed then
+		local angularDistance = VectorUtil.AngleBetween(currentC0.LookVector, goalC0CFrame.LookVector)
+		local estimatedTime = self.AngularSpeed / angularDistance
+		lerpAlpha = math.min(step * estimatedTime, 1)
+	end
+
+	motor6DJoint.C0 = currentC0:Lerp(goalC0CFrame, lerpAlpha)
+end
+
+--[[------------------------------
+	Primary joint movement method which performs the CCDIK algorithm of rotating a joint from end effector to goal
+]]
+function CCDIKController:RotateFromEffectorToGoal(motor6d: Motor6D, goalPosition, step)
+	local motor6dPart0 = motor6d.Part0
+	local part0CF = motor6dPart0.CFrame
+
+	local jointWorldPosition = self.JointInfo[motor6d].WorldPosition
+	--local jointWorldPosition = (motor6d.Part0.CFrame*motor6d.C0).Position
+	--Faster to use attachments
+	local endEffectorPosition = self.EndEffector.WorldPosition
+	local directionToEffector = (endEffectorPosition - jointWorldPosition).Unit
+	local directionToGoal = (goalPosition - jointWorldPosition).Unit
+	if self.DebugMode then
+		self.VisualizeVector(jointWorldPosition, endEffectorPosition - jointWorldPosition, BrickColor.Blue())
+		self.VisualizeVector(jointWorldPosition, goalPosition - jointWorldPosition, BrickColor.Red())
+		self.rotateJointFromToTween(motor6d, directionToEffector, directionToGoal, part0CF.UpVector)
+		return --skip the rest since debug mode lol
+	end
+
+	if self.LerpMode ~= true then
+		self.rotateJointFromTo(motor6d, directionToEffector, directionToGoal, part0CF.RightVector)
+	else
+		self:rotateJointFromToWithLerp(motor6d, directionToEffector, directionToGoal, part0CF.RightVector, step)
+	end
+end
+
+--[[---------------------------------------------------------
+This function constraints the rotation of the part1 to the hinge axis of the part0, then also does local EulerAngle constraints
+
+Dictionary to setup the constraint information:
+	[motor6d] = {
+		["ConstraintType"] = "Hinge";
+		["UpperAngle"] = 45; -- same as HingeConstraint [-180,180] degrees
+		["LowerAngle"] = -45;
+		["AxisAttachment"] = nil; --Automatically tries to find first child during .new() setup but you can manually input it
+		["JointAttachment"] = nil;
+	};
+]]
+function CCDIKController:RotateToHingeAxis(motor6d: Motor6D, jointConstraintInfo)
+	local motor6dPart0 = motor6d.Part0
+	local part0CF = motor6dPart0.CFrame
+	local axisAttachment = jointConstraintInfo.AxisAttachment
+	local jointAttachment = jointConstraintInfo.JointAttachment
+
+	local hingeAxis = axisAttachment.WorldAxis
+	local currentHingeAxis = jointAttachment.WorldAxis
+
+	--Enforce hinge axis, has to be instantaneous
+	self.rotateJointFromTo(motor6d, currentHingeAxis, hingeAxis, part0CF.RightVector)
+
+	--Then enforce hinge constraints
+	local axisCFrame = axisAttachment.WorldCFrame
+	local jointCFrame = jointAttachment.WorldCFrame
+
+	local upperAngle = jointConstraintInfo.UpperAngle or 180
+	local lowerAngle = jointConstraintInfo.LowerAngle or -180
+
+	local localCFrame: CFrame
+	localCFrame = axisCFrame:ToObjectSpace(jointCFrame)
+	local x, _, _ = localCFrame:ToEulerAnglesXYZ()
+	--print(math.round(math.deg(x)),math.round(math.deg(y)),math.round(math.deg(z))) -- yep x is the rotation
+	local constrainedX = math.clamp(math.deg(x), lowerAngle, upperAngle)
+	constrainedX = math.rad(constrainedX)
+	local constrainedJointCFrame = CFrame.fromEulerAnglesXYZ(constrainedX, 0, 0)
+	local newWorldJointCFrame = axisCFrame:ToWorldSpace(constrainedJointCFrame)
+	local newPart1CFrame = newWorldJointCFrame * jointAttachment.CFrame:Inverse() -- Uhh only works with attachments
+	-- local goalCFRotation = motor6d.Part0.CFrame:Inverse() * newPart1CFrame
+	-- goalCFRotation = goalCFRotation - goalCFRotation.Position
+
+	local goalCFRotation = worldCFrameToC0ObjectSpace(motor6d,newPart1CFrame)
+	motor6d.C0 = goalCFRotation
+end
+
+--[[---------------------------------------------------------
+This function constraints the rotation of the part1 to the hinge axis of the part0, then also does local EulerAngle constraints
+	
+Dictionary to setup the constraint information:
+	[motor6d] = {
+		["ConstraintType"] = "BallSocketConstraint";
+		["UpperAngle"] = 45; -- same as BallSocketConstraint [-180,180] degrees
+		["TwistLimitsEnabled"] = ; -- still have no idea how to do
+		["TwistUpperAngle"] = -45;--
+		["TwistLowerAngle"] = -45;
+		["AxisAttachment"] = nil; --Automatically tries to find first child during .new() setup but you can manually input it
+		["JointAttachment"] = nil;
+	};
+]]
+
+local function twistSwing(cf, direction)
+	local axis, theta = cf:ToAxisAngle()
+	local w, v = math.cos(theta / 2), math.sin(theta / 2) * axis
+	local proj = v:Dot(direction) * direction
+	local twist = CFrame.new(cf.x, cf.y, cf.z, proj.x, proj.y, proj.z, w)
+	local swing = twist:Inverse() * cf
+	return swing, twist
+end
+
+function CCDIKController:RotateToBallSocketConstraintAxis(motor6d, jointConstraintInfo)
+	local motor6dPart0 = motor6d.Part0
+	local part0CF = motor6dPart0.CFrame
+	local axisAttachment = jointConstraintInfo.AxisAttachment
+	local jointAttachment = jointConstraintInfo.JointAttachment
+
+	local centerAxis = axisAttachment.WorldAxis
+	local currentCenterAxis = jointAttachment.WorldAxis
+	local angleDifference = VectorUtil.AngleBetween(currentCenterAxis, centerAxis)
+
+	local constraintUpperAngle = math.rad(jointConstraintInfo.UpperAngle) or math.rad(45)
+
+	--out of bounds constrain it to world axis of the socket
+	if angleDifference > constraintUpperAngle then
+		local axis = currentCenterAxis:Cross(centerAxis)
+		local angleDifference = angleDifference - constraintUpperAngle
+		local newCenterAxisWithinBounds = rotateVectorAround(currentCenterAxis, angleDifference, axis)
+		self.rotateJointFromTo(motor6d, currentCenterAxis, newCenterAxisWithinBounds, part0CF.RightVector)
+	end
+
+	--Now enforce twist limits
+	if jointConstraintInfo.TwistLimitsEnabled then
+		local axisCFrame = axisAttachment.WorldCFrame
+		local currentJointCFrame = jointAttachment.WorldCFrame
+
+		local twistSwingAxis = axisAttachment.WorldAxis
+
+		local jointRelativeCFrame = axisCFrame:ToObjectSpace(currentJointCFrame)
+		local swing, twist = twistSwing(jointRelativeCFrame, twistSwingAxis)
+		local axis, angle = twist:ToAxisAngle()
+		local axisSign = math.sign(axis:Dot(twistSwingAxis))
+		axis, angle = axisSign * axis, axisSign * angle --make the signs relative to twist axis
+		angle = math.deg(angle)
+
+		local upperAngle = jointConstraintInfo.TwistUpperAngle
+		local lowerAngle = jointConstraintInfo.TwistLowerAngle
+		local notConstrained = false
+		if angle > upperAngle then
+			angle = upperAngle
+		elseif angle < lowerAngle then
+			angle = lowerAngle
+		else
+			notConstrained = true
+		end
+
+		if not notConstrained then
+			angle = math.rad(angle)
+			local newTwist = CFrame.fromAxisAngle(axis, angle)
+			local newConstraintedRelativeCFrame = newTwist * swing
+			local newJointWorldCFrame = axisCFrame * newConstraintedRelativeCFrame
+			local part1CF = newJointWorldCFrame * jointAttachment.CFrame:Inverse()
+			-- local goalCF = motor6d.Part0.CFrame:Inverse() * part1CF -- old to object space method
+			local goalCF = worldCFrameToC0ObjectSpace(motor6d,part1CF)
+			motor6d.C0 = goalCF
+		end
+	end
+end
+
+--[[
+	Finds the attachments in the part1 foot and the raycasting params the system uses
+]]
+function CCDIKController:SetupFoot(attachmentNameTable: table, raycastParams)
+	local motor6DTable = self.Motor6DTable
+	local footJoint = motor6DTable[#motor6DTable]
+	local footPart = footJoint.Part1
+	local footAttachmentTable = {}
+	for i, attachmentName in pairs(attachmentNameTable) do
+		footAttachmentTable[i] = footPart:FindFirstChild(attachmentName)
+	end
+	self.FootAttachmentTable = footAttachmentTable
+	self.FootRaycastParams = raycastParams
+	self.FootOrientationSystem = true
+end
+
+function CCDIKController:OrientFootMotorToFloor(motor6d: Motor6D, step)
+	local attachmentTable = self.FootAttachmentTable
+	local lengthToFloor = self.RaycastLengthDown
+	local rayResultTable = self._RayResultTable
+
+	local raycastParams = self.FootRaycastParams
+	for i = 1, 3 do
+		local attachment = attachmentTable[i]
+		local rayOrigin = attachment.WorldPosition
+		local rayDown = -attachment.WorldCFrame.UpVector * lengthToFloor
+		rayResultTable[i] = workspace:Raycast(rayOrigin, rayDown, raycastParams)
+	end
+	local raycastNilCheck = (rayResultTable[1] and rayResultTable[2] and rayResultTable[3]) == nil
+
+	local footCFrame = self.EndEffector.WorldCFrame
+
+	local newUpVector = raycastNilCheck and footCFrame.UpVector
+		or (rayResultTable[2].Position - rayResultTable[1].Position):Cross(
+	rayResultTable[3].Position - rayResultTable[1].Position
+	).Unit
+
+	local currentFootUpVector = footCFrame.UpVector
+
+	--fixes the ? foot inverting issue
+	if raycastNilCheck == false then
+		self:rotateJointFromToWithLerp(motor6d, currentFootUpVector, newUpVector, footCFrame.UpVector, step)
+	end
+	--Then enforce constraints
+	local constraints = self.Constraints
+	if constraints then
+		local jointConstraintInfo = constraints[motor6d]
+		if jointConstraintInfo then
+			if jointConstraintInfo.ConstraintType == "Hinge" then
+				self:RotateToHingeAxis(motor6d, jointConstraintInfo)
+			end
+			if jointConstraintInfo.ConstraintType == "BallSocketConstraint" then
+				self:RotateToBallSocketConstraintAxis(motor6d, jointConstraintInfo)
+			end
+		end
+	end
+end
+
+function CCDIKController:InitDragDebug()
+	local lastPart1 = self.Motor6DTable[#self.Motor6DTable].Part1
+	
+	self.LerpMode = false
+	local dragMe = Instance.new("Part")
+	dragMe.CanCollide = false
+	dragMe.Anchored = true
+	dragMe.Size = Vector3.new(1, 1, 1)
+	dragMe.BrickColor = BrickColor.random()
+	dragMe.Position = lastPart1.Position
+	dragMe.Name = "DragMe!: " .. lastPart1.Name
+	dragMe.Parent = workspace
+	RunService.Heartbeat:Connect(function()
+		self:CCDIKIterateOnce(dragMe.Position,0)
+	end)
+end
+
+function CCDIKController:InitTweenDragDebug()
+	local lastPart1 = self.Motor6DTable[#self.Motor6DTable].Part1
+	self.DebugMode = true
+
+
+	--self.JointInfo[motor6d].WorldPosition
+	for i=1,#self.Motor6DTable-1 do
+		print("test")
+		local motor1 = self.Motor6DTable[i]
+		local motor2 = self.Motor6DTable[i+1]
+		local t1 = self.JointInfo[motor1].WorldPosition
+		local t2 = self.JointInfo[motor2].WorldPosition
+		local position = t1
+		local direction = t2-t1
+		local wedgePart = Instance.new("WedgePart")
+		wedgePart.Size = Vector3.new(0.1, 0.1, direction.Magnitude)
+		wedgePart.CFrame = CFLOOKAT(position, position + direction) * CFrame.new(0, 0, -direction.Magnitude / 2)
+		wedgePart.CanCollide = false
+		local weldConstraint = Instance.new("WeldConstraint")
+		weldConstraint.Part0 = wedgePart
+		weldConstraint.Part1 = motor2.Parent
+		weldConstraint.Parent = motor2.Parent
+
+		wedgePart.Parent = workspace
+		wedgePart.Name = "I am a limb vector"
+
+	end
+	for i,Motor in pairs(self.Motor6DTable) do
+		Motor.Part1.Transparency = 0.75
+		Motor.Part0.Transparency = 0.75
+	end
+
+	local dragMe = Instance.new("Part")
+	dragMe.CanCollide = false
+	dragMe.Anchored = true
+	dragMe.Size = Vector3.new(1, 1, 1)
+	dragMe.BrickColor = BrickColor.random()
+	dragMe.Position = lastPart1.Position
+	dragMe.Name = "DragMe!: " .. lastPart1.Name
+	dragMe.Parent = workspace
+	spawn(function()
+		while true do
+			wait() --eh
+			self:CCDIKIterateOnceDebug(dragMe.Position)
+		end
+	end)
+end
+--[[---------------------------------------------------------
+	Reverse Humanoid:BuildRigFromAttachments
+	Finds Motor6D's and places where the joints are located as attachments
+	Usefull for creating HingeConstraints and BallSocketConstraints to visualize and orientate the attachments
+	Pretty necessary in fact to create the attachment axis and decide the upper angle or lower angle
+]]
+function commandBarSetupJoints(model)
+	local modelDescendants = model:GetDescendants()
+	for _, motor6D in pairs(modelDescendants) do
+		if motor6D:IsA("Motor6D") then
+			--In order to find the joint in world terms
+			local Part0Name = motor6D.Part0.Name
+			local AxisAttachment = Instance.new("Attachment")
+			AxisAttachment.CFrame = motor6D.C0
+			AxisAttachment.Name = Part0Name .. "AxisAttachment"
+			AxisAttachment.Parent = motor6D.Part0
+
+			local JointAttachment = Instance.new("Attachment")
+			JointAttachment.CFrame = motor6D.C1
+			JointAttachment.Name = Part0Name .. "JointAttachment"
+			JointAttachment.Parent = motor6D.Part1
+		end
+	end
+end
+--Same as the above function but follow RigAttachment naming rule
+function commandBarSetupRigAttachments(model)
+	local modelDescendants = model:GetDescendants()
+	for _, motor6D in pairs(modelDescendants) do
+		if motor6D:IsA("Motor6D") then
+			--In order to find the joint in world terms
+			local motor6DName = motor6D.Name
+			local AxisAttachment = Instance.new("Attachment")
+			AxisAttachment.CFrame = motor6D.C0
+			AxisAttachment.Name = motor6DName .. "RigAttachment"
+			AxisAttachment.Parent = motor6D.Part0
+
+			local JointAttachment = Instance.new("Attachment")
+			JointAttachment.CFrame = motor6D.C1
+			JointAttachment.Name = motor6DName .. "RigAttachment"
+			JointAttachment.Parent = motor6D.Part1
+		end
+	end
+end
+
+--[[
+	Utility function spawning a wedge part to visualize a vector in world space
+]]
+function CCDIKController.VisualizeVector(position, direction, brickColor)
+	local wedgePart = Instance.new("WedgePart")
+	wedgePart.Size = Vector3.new(0.1, 0.1, direction.Magnitude)
+	wedgePart.CFrame = CFLOOKAT(position, position + direction) * CFrame.new(0, 0, -direction.Magnitude / 2)
+	wedgePart.Anchored = true
+	wedgePart.CanCollide = false
+	wedgePart.BrickColor = brickColor or BrickColor.random()
+	wedgePart.Parent = workspace
+	Debris:AddItem(wedgePart, 0.75)
+end
+--[[
+	Do cleaning destroys all the instances made by this object
+]]
+function CCDIKController:Destroy()
+	self.Maid:DoCleaning()
+	self = nil
+end
+
+return CCDIKController]]></ProtectedString>
+				<int64 name="SourceAssetId">6204935490</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+			<Item class="ModuleScript" referent="RBXa57fb5e21b454c33adecc2cacf43edac">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">Maid</string>
+					<string name="ScriptGuid">{B4D7C089-8D7F-4866-9DCC-D50489913D75}</string>
+					<ProtectedString name="Source"><![CDATA[-- Maid
+-- Author: Quenty
+-- Source: https://github.com/Quenty/NevermoreEngine/blob/version2/Modules/Shared/Events/Maid.lua
+-- License: MIT (https://github.com/Quenty/NevermoreEngine/blob/version2/LICENSE.md)
+-- This module has been modified for use in AeroGameFramework
+
+--[[
+
+	maid = Maid.new()
+
+	maid:GiveTask(task)
+		> task is an event connection, function, or instance/table with a 'Destroy' method
+
+	maid:GivePromise(promise)
+	
+	maid:DoCleaning()
+		> Alias for Destroy
+	
+	maid:Destroy()
+		> Goes through each task & disconnects events, destroys instances, and calls functions
+
+--]]
+
+---	Manages the cleaning of events and other things.
+-- Useful for encapsulating state and make deconstructors easy
+-- @classmod Maid
+-- @see Signal
+
+local Maid = {}
+Maid.ClassName = "Maid"
+
+local Promise
+
+
+--- Returns a new Maid object
+-- @constructor Maid.new()
+-- @treturn Maid
+function Maid.new()
+	local self = setmetatable({
+		_tasks = {};
+	}, Maid)
+	return self
+end
+
+
+--- Returns Maid[key] if not part of Maid metatable
+-- @return Maid[key] value
+function Maid:__index(index)
+	if (Maid[index]) then
+		return Maid[index]
+	else
+		return self._tasks[index]
+	end
+end
+
+
+--- Add a task to clean up
+-- @usage
+-- Maid[key] = (function)         Adds a task to perform
+-- Maid[key] = (event connection) Manages an event connection
+-- Maid[key] = (Maid)             Maids can act as an event connection, allowing a Maid to have other maids to clean up.
+-- Maid[key] = (Object)           Maids can cleanup objects with a `Destroy` method
+-- Maid[key] = nil                Removes a named task. If the task is an event, it is disconnected. If it is an object,
+--                                it is destroyed.
+function Maid:__newindex(index, newTask)
+	if (Maid[index] ~= nil) then
+		error(("'%s' is reserved"):format(tostring(index)), 2)
+	end
+
+	local tasks = self._tasks
+	local oldTask = tasks[index]
+	tasks[index] = newTask
+
+	if (oldTask) then
+		if (type(oldTask) == "function") then
+			oldTask()
+		elseif (typeof(oldTask) == "RBXScriptConnection") then
+			oldTask:Disconnect()
+		elseif (oldTask.Destroy) then
+			oldTask:Destroy()
+		end
+	end
+end
+
+
+--- Same as indexing, but uses an incremented number as a key.
+-- @param task An item to clean
+-- @treturn number taskId
+function Maid:GiveTask(task)
+	assert(task, "Task cannot be false or nil")
+
+	local taskId = (#self._tasks + 1)
+	self[taskId] = task
+
+	if (type(task) == "table" and (not task.Destroy)) then
+		warn("[Maid.GiveTask] - Gave table task without .Destroy\n\n" .. debug.traceback())
+	end
+
+	return taskId
+end
+
+
+function Maid:GivePromise(promise)
+	if (promise:GetStatus() ~= Promise.Status.Started) then
+		return promise
+	end
+
+	local newPromise = Promise.Resolve(promise)
+	local id = self:GiveTask(newPromise)
+
+	-- Ensure GC
+	newPromise:Finally(function()
+		self[id] = nil
+	end)
+
+	return newPromise
+end
+
+
+--- Cleans up all tasks.
+-- @alias Destroy
+function Maid:DoCleaning()
+	local tasks = self._tasks
+
+	-- Disconnect all events first as we know this is safe
+	for index, task in pairs(tasks) do
+		if (typeof(task) == "RBXScriptConnection") then
+			tasks[index] = nil
+			task:Disconnect()
+		end
+	end
+
+	-- Clear out tasks table completely, even if clean up tasks add more tasks to the maid
+	local index, task = next(tasks)
+	while (task ~= nil) do
+		tasks[index] = nil
+		if (type(task) == "function") then
+			task()
+		elseif (typeof(task) == "RBXScriptConnection") then
+			task:Disconnect()
+		elseif (task.Destroy) then
+			task:Destroy()
+		end
+		index, task = next(tasks)
+	end
+end
+
+
+function Maid:Init()
+	Promise = self.Shared.Promise
+end
+
+
+--- Alias for DoCleaning()
+-- @function Destroy
+Maid.Destroy = Maid.DoCleaning
+
+return Maid]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+			<Item class="ModuleScript" referent="RBX3c7dc00c98f941f38de7d4038198dee0">
+				<Properties>
+					<BinaryString name="AttributesSerialize"></BinaryString>
+					<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+					<bool name="DefinesCapabilities">false</bool>
+					<Content name="LinkedSource"><null></null></Content>
+					<string name="Name">VectorUtil</string>
+					<string name="ScriptGuid">{FC601655-A113-4D37-B53B-0C54816DC808}</string>
+					<ProtectedString name="Source"><![CDATA[-- Vector Util
+-- Stephen Leitnick
+-- April 22, 2020
+
+--[[
+
+	VectorUtil.ClampMagnitude(vector, maxMagnitude)
+	VectorUtil.AngleBetween(vector1, vector2)
+	VectorUtil.AngleBetweenSigned(vector1, vector2, axisVector)
+
+
+	EXAMPLES:
+
+		ClampMagnitude:
+
+			Clamps the magnitude of a vector so it is only a certain length.
+
+			ClampMagnitude(Vector3.new(100, 0, 0), 15) == Vector3.new(15, 0, 0)
+			ClampMagnitude(Vector3.new(10, 0, 0), 20)  == Vector3.new(10, 0, 0)
+
+		
+		AngleBetween:
+
+			Finds the angle (in radians) between two vectors.
+
+			v1 = Vector3.new(10, 0, 0)
+			v2 = Vector3.new(0, 10, 0)
+			AngleBetween(v1, v2) == math.rad(90)
+
+		
+		AngleBetweenSigned:
+
+			Same as AngleBetween, but returns a signed value.
+
+			v1 = Vector3.new(10, 0, 0)
+			v2 = Vector3.new(0, 0, -10)
+			axis = Vector3.new(0, 1, 0)
+			AngleBetweenSigned(v1, v2, axis) == math.rad(90)
+
+--]]
+
+
+local VectorUtil = {}
+
+
+function VectorUtil.ClampMagnitude(vector, maxMagnitude)
+	return (vector.Magnitude > maxMagnitude and (vector.Unit * maxMagnitude) or vector)
+end
+
+
+function VectorUtil.AngleBetween(vector1, vector2)
+	return math.acos(math.clamp(vector1.Unit:Dot(vector2.Unit), -1, 1))
+end
+
+
+function VectorUtil.AngleBetweenSigned(vector1, vector2, axisVector)
+	local angle = VectorUtil.AngleBetween(vector1, vector2)
+	return angle * math.sign(axisVector:Dot(vector1:Cross(vector2)))
+end
+
+function VectorUtil.SquaredMagnitude(vector)
+	return vector.X^2+vector.Y^2+vector.Z^2
+end
+
+
+return VectorUtil]]></ProtectedString>
+					<int64 name="SourceAssetId">-1</int64>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+			</Item>
+		</Item>
+		<Item class="ObjectValue" referent="RBXbbcb0ccfd9d54adc9f9b0ef7f33211dd">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<string name="Name">FootStepSound</string>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+				<Ref name="Value">null</Ref>
+			</Properties>
+		</Item>
+	</Item>
+</roblox>
