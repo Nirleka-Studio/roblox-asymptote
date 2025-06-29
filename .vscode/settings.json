@@ -1,6 +1,6 @@
 {
 	"luau-lsp.diagnostics.strictDatamodelTypes": true,
-	"luau-lsp.fflags.enableNewSolver": true,
+	"luau-lsp.fflags.enableNewSolver": false,
 	"luau-lsp.completion.fillCallArguments": true,
 	"luau-lsp.completion.imports.stringRequires.enabled": true,
 	"luau-lsp.completion.addParentheses": false,
