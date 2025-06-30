@@ -17,12 +17,16 @@ local agent = {}
 
 function agent.agentFromCharacter(character: Model): Agent
 	return {
-		character = {
-			model = character,
-			head = character:FindFirstChild("Head") :: BasePart,
-			humanoid = character:FindFirstChild("Humanoid") :: Humanoid,
-			primaryPart = character.PrimaryPart :: BasePart
-		}
+		character = agent.agentCharacterFromCharacter(character)
+	}
+end
+
+function agent.agentCharacterFromCharacter(character: Model): AgentCharacter
+	return {
+		model = character,
+		head = character:FindFirstChild("Head") :: BasePart,
+		humanoid = character:FindFirstChild("Humanoid") :: Humanoid,
+		primaryPart = character.PrimaryPart :: BasePart
 	}
 end
 
