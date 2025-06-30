@@ -799,7 +799,7 @@ function Draw.terrainCell(position: Vector3Like, color: Color3Like?): BasePart
 
 	local size = Vector3.new(4, 4, 4)
 
-	local solidCell = Terrain:WorldToCell(position)
+	local solidCell = Terrain:WorldToCell(position :: Vector3)
 	local terrainPosition = Terrain:CellCenterToWorld(solidCell.X, solidCell.Y, solidCell.Z)
 
 	local part = Draw.box(CFrame.new(terrainPosition), size, color)
