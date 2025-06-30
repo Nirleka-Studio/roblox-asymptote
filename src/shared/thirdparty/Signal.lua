@@ -1,4 +1,4 @@
---!strict
+--!nocheck
 
 --[=[
 	Fully typed version of the GoodSignal module by Mark Langen.
