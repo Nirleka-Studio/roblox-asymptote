@@ -131,7 +131,7 @@ function TypedRemote.func(name: string, parent: Instance): RemoteFunction
 		rf.Name = name
 		rf.Parent = if parent then parent else script
 	else
-		rf = (if parent then parent else script):WaitForChild(name) :: RemoteFunction
+		rf = (if parent then parent else script :: ModuleScript):WaitForChild(name) :: RemoteFunction
 		assert(rf:IsA("RemoteFunction"), "expected remote function")
 	end
 	return rf
@@ -150,7 +150,7 @@ function TypedRemote.event(name: string, parent: Instance?): RemoteEvent
 		re.Name = name
 		re.Parent = if parent then parent else script
 	else
-		re = (if parent then parent else script):WaitForChild(name) :: RemoteEvent
+		re = (if parent then parent else script :: ModuleScript):WaitForChild(name) :: RemoteEvent
 		assert(re:IsA("RemoteEvent"), "expected remote event")
 	end
 	return re
