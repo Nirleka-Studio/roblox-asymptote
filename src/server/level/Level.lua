@@ -40,8 +40,7 @@ function Level.removePlayer(player): ()
 		return
 	end
 
-	playersInLevel[player]._maid:DoCleaning()
-	playersInLevel[player] = nil
+	playersInLevel[player]:onCharacterRemoving()
 end
 
 Players.PlayerAdded:Connect(function(player)
