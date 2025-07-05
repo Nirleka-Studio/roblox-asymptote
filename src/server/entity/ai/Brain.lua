@@ -1,7 +1,7 @@
 --!strict
 
 local ExpireableValue = require("./memory/ExpireableValue")
-local MemoryModuleType = require("./memory/MemoryModuleType")
+local MemoryModuleTypes = require("./memory/MemoryModuleTypes")
 
 --[=[
 	@class Brain
@@ -12,16 +12,18 @@ local Brain = {}
 Brain.__index = Brain
 
 export type Brain = typeof(setmetatable({} :: {
-	memories: { [MemoryModuleType.MemoryModuleType<any>]: ExpireableValue.ExpireableValue<any> },
+	memories: { [MemoryModuleTypes.MemoryModuleType<any>]: ExpireableValue.ExpireableValue<any> },
 	sensors: {},
 	behaviours: {},
 	activities: {}
 }, Brain))
 
 type ExpireableValue<T> = ExpireableValue.ExpireableValue<T>
-type MemoryModuleType<T> = MemoryModuleType.MemoryModuleType<T>
+type MemoryModuleType<T> = MemoryModuleTypes.MemoryModuleType<T>
 
 function Brain.new()
+	
+end
 
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------

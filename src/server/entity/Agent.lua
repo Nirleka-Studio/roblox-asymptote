@@ -1,27 +1,26 @@
 --!strict
 
 local Entity = require("./Entity")
+local Brain = require("./ai/Brain")
 
-export type AgentCharacter = {
+export type HumanoidCharacter = {
 	model: Model,
 	head: BasePart,
 	humanoid: Humanoid,
-	primaryPart: BasePart,
+	primaryPart: BasePart
 }
 
 export type Agent = {
-	character: AgentCharacter
+	character: HumanoidCharacter,
+	brain: Brain.Brain
 } & Entity.Entity
 
-local agent = {}
+local Agent = {}
+Agent.__index = Agent
 
-function agent.agentFromCharacter(character: Model): Agent
-	return {
-		character = agent.agentCharacterFromCharacter(character)
-	}
-end
+function Agent.new()
 
-function agent.agentCharacterFromCharacter(character: Model): AgentCharacter
+function agent.HumanoidCharacterFromCharacter(character: Model): HumanoidCharacter
 	return {
 		model = character,
 		head = character:FindFirstChild("Head") :: BasePart,
@@ -30,4 +29,4 @@ function agent.agentCharacterFromCharacter(character: Model): AgentCharacter
 	}
 end
 
-return agent
+return Agent

@@ -8,7 +8,7 @@ WrappedPlayer.__index = WrappedPlayer
 
 export type WrappedPlayer = typeof(setmetatable({} :: {
 	playerInst: Player,
-	character: Agent.AgentCharacter?,
+	character: Agent.HumanoidCharacter?,
 	humanoidAlive: boolean,
 	_maid: typeof(Maid.new())
 }, WrappedPlayer))
@@ -16,7 +16,7 @@ export type WrappedPlayer = typeof(setmetatable({} :: {
 function WrappedPlayer.new(player: Player): WrappedPlayer
 	local self = {
 		playerInst = player,
-		character = nil :: Agent.AgentCharacter?, -- istg the devs needs to fix this
+		character = nil :: Agent.HumanoidCharacter?, -- istg the devs needs to fix this
 		humanoidAlive = true,
 		_maid = Maid.new()
 	}
@@ -38,7 +38,7 @@ function WrappedPlayer.new(player: Player): WrappedPlayer
 	return self
 end
 
-function WrappedPlayer.getCharacter(self: WrappedPlayer): Agent.AgentCharacter?
+function WrappedPlayer.getCharacter(self: WrappedPlayer): Agent.HumanoidCharacter?
 	if not self.humanoidAlive then
 		return nil
 	end
@@ -71,9 +71,9 @@ function WrappedPlayer.isMoving(self: WrappedPlayer): boolean
 end
 
 function WrappedPlayer.onCharacterAdded(self: WrappedPlayer, character: Model): ()
-	self.character = Agent.agentCharacterFromCharacter(character)
+	self.character = Agent.HumanoidCharacterFromCharacter(character)
 	self.humanoidAlive = true
-	self._maid["onHumanoidDied"] = (self.character :: Agent.AgentCharacter).humanoid.Died:Once(function()
+	self._maid["onHumanoidDied"] = (self.character :: Agent.HumanoidCharacter).humanoid.Died:Once(function()
 		self:onHumanoidDied()
 	end)
 end
